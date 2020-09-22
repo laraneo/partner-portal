@@ -259,7 +259,7 @@ export const getBalance = (
     let response = [];
     if (status === 200) {
       if (data) {
-        response = data[0];
+        response = data;
       }
       dispatch({
         type: ACTIONS.GET_BALANCE,
