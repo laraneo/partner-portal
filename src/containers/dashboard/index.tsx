@@ -244,24 +244,25 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
         )
           await dispatch(setForcedLogin(values.socio, values.token));
       }
-      await dispatch(checkLogin());
-      if (location.pathname !== '/') {
-        dispatch(setupInterceptors());
-      }
-      dispatch(getMenuList(location.pathname));
-      dispatch(getClient(user.username));
-      dispatch(getProfessions());
-      dispatch(getWidgetList());
-      dispatch(getParameterList());
-      dispatch(getGenderAll());
-      dispatch(getLockerLocationList());
-      dispatch(getStatusPersonAll());
-      dispatch(getMaritalStatusAll());
-      dispatch(getCountries());
-      dispatch(getRelationTypes());
-      dispatch(getSports());
-      dispatch(getBranchCompanyList());
-      dispatch(getTasa());
+      checkLogin()(dispatch).then(() => {
+        if (location.pathname !== '/') {
+          dispatch(setupInterceptors());
+        }
+        dispatch(getMenuList(location.pathname));
+        dispatch(getClient(user.username));
+        dispatch(getProfessions());
+        dispatch(getWidgetList());
+        dispatch(getParameterList());
+        dispatch(getGenderAll());
+        dispatch(getLockerLocationList());
+        dispatch(getStatusPersonAll());
+        dispatch(getMaritalStatusAll());
+        dispatch(getCountries());
+        dispatch(getRelationTypes());
+        dispatch(getSports());
+        dispatch(getBranchCompanyList());
+        dispatch(getTasa());
+      })   
     }
     run();
   }, [dispatch])

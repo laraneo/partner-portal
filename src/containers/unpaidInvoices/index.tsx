@@ -112,7 +112,7 @@ export default function UnpaidInvoices() {
   };
 
   const renderPaypalButton = (row: any) => {
-    const current = unpaidInvoices.data.find((e: any) => e.portal_id == row);
+    const current = unpaidInvoices.data.find((e: any) => e.fact_num == row);
     if (current && current.originalAmount !== "0") {
       return (
         <div onClick={() => handlePayment(current)}>
@@ -190,7 +190,7 @@ export default function UnpaidInvoices() {
       component: (value: any) => <span>{value.value * tasa.tasa}</span>,
     },
     {
-      id: "portal_id",
+      id: "fact_num",
       label: "",
       minWidth: 10,
       align: "right",

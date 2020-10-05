@@ -39,13 +39,8 @@ import SinglePaymentsManagement from "../containers/singlePaymentsManagement";
 import PersonMobile from "../containers/personMobile";
 
 export default function Routes() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(checkLogin());
-  },[dispatch])
   return (
     <HashRouter>
-      <MainLayout>
         <Switch>
           <Route path="/" exact component={Login} />
           <Route path="/template/expiration-cards" component={ExpirationCard} />
@@ -95,7 +90,6 @@ export default function Routes() {
         <CustomModal />
         <SnackBar />
         <MainLoader />
-      </MainLayout>
     </HashRouter>
   );
 }
