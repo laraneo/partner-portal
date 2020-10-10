@@ -1,5 +1,5 @@
 export default interface PersonColumn {
-    id: "id" | "name" | "email" | "username" | "roles" | "username_legacy";
+    id: "id" | "name" | "email" | "username" | "roles" | "username_legacy" | "group_id" | "is_active" | "role";
     label: string;
     minWidth?: number;
     align?: "left" |"right";
