@@ -12,114 +12,122 @@ import DataTable4 from "../../components/DataTable4";
 import UserColumns from "../../interfaces/UserColumns";
 import CustomSearch from "../../components/FormElements/CustomSearch";
 
-const columns: UserColumns[] = [
-  {
-    id: "id",
-    label: "Id",
-    minWidth: 10,
-    component: (value: any) => <span>{value.value}</span>,
-  },
-  {
-    id: "username",
-    label: "Usuario",
-    minWidth: 10,
-    component: (value: any) => <span>{value.value}</span>,
-  },
-  {
-    id: "username_legacy",
-    label: "Uusario Alterno",
-    minWidth: 10,
-    component: (value: any) => <span>{value.value}</span>,
-  },
-  {
-    id: "name",
-    label: "Nombre",
-    minWidth: 10,
-    component: (value: any) => <span>{value.value}</span>,
-  },
-  {
-    id: "email",
-    label: "Correo",
-    minWidth: 10,
-    component: (value: any) => <span>{value.value}</span>,
-  },
-  {
-    id: "roles",
-    label: "Roles",
-    minWidth: 10,
-    component: (value: any) =>
-      value.value.map((element: any) => (
-        <Chip label={element.name} color="primary" size="small" />
-      )),
-  },
-  {
-    id: "group_id",
-    label: "Accion",
-    minWidth: 10,
-    component: (value: any) => <span>{value.value}</span>,
-  },
-  {
-    id: "is_active",
-    label: "Status",
-    minWidth: 10,
-    component: (value: any) => {
-      let status = "";
-      let backgroundColor = "";
-      if (value.value == "1") {
-        status = "SI";
-        backgroundColor = "#2980b9";
-      } else {
-        status = "NO";
-        backgroundColor = "#e74c3c";
-      }
-
-      return (
-        <Chip
-          label={status}
-          style={{
-            backgroundColor,
-            color: "white",
-            fontWeight: "bold",
-            fontSize: "10px",
-          }}
-          size="small"
-        />
-      );
-    },
-  },
-  {
-    id: "role",
-    label: "Rol",
-    minWidth: 10,
-    component: (value: any) => {
-      let status = "";
-      if (value.value == "1") {
-        status = "Socio";
-      } else if (value.value == "2") {
-        status = "Familiar";
-      } else {
-        status = "Usuario";
-      }
-
-      return (
-        <Chip
-          label={status}
-          style={{
-            backgroundColor: "#2980b9",
-            color: "white",
-            fontWeight: "bold",
-            fontSize: "10px",
-          }}
-          size="small"
-        />
-      );
-    },
-  },
-];
-
 export default function User() {
   const dispatch = useDispatch();
   const { list, loading } = useSelector((state: any) => state.userReducer);
+
+  const getCurrentRow = (id: number) =>  list.find((element: any) => element.id === id);
+
+  const columns: UserColumns[] = [
+    {
+      id: "id",
+      label: "Id",
+      minWidth: 10,
+      component: (value: any) => <span>{value.value}</span>,
+    },
+    {
+      id: "username",
+      label: "Usuario",
+      minWidth: 10,
+      component: (value: any) => <span>{value.value}</span>,
+    },
+    {
+      id: "username_legacy",
+      label: "Uusario Alterno",
+      minWidth: 10,
+      component: (value: any) => <span>{value.value}</span>,
+    },
+    {
+      id: "name",
+      label: "Nombre",
+      minWidth: 10,
+      component: (value: any) => <span>{value.value}</span>,
+    },
+    {
+      id: "last_name",
+      label: "Apellido",
+      minWidth: 10,
+      component: (value: any) => <span>{value.value}</span>,
+    },
+    {
+      id: "email",
+      label: "Correo",
+      minWidth: 10,
+      component: (value: any) => <span>{value.value}</span>,
+    },
+    {
+      id: "roles",
+      label: "Roles",
+      minWidth: 10,
+      component: (value: any) =>
+        value.value.map((element: any) => (
+          <Chip label={element.name} color="primary" size="small" />
+        )),
+    },
+    {
+      id: "group_id",
+      label: "Accion",
+      minWidth: 10,
+      component: (value: any) => <span>{value.value}</span>,
+    },
+    {
+      id: "is_active",
+      label: "Status",
+      minWidth: 10,
+      component: (value: any) => {
+        let status = "";
+        let backgroundColor = "";
+        if (value.value == "1") {
+          status = "SI";
+          backgroundColor = "#2980b9";
+        } else {
+          status = "NO";
+          backgroundColor = "#e74c3c";
+        }
+  
+        return (
+          <Chip
+            label={status}
+            style={{
+              backgroundColor,
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "10px",
+            }}
+            size="small"
+          />
+        );
+      },
+    },
+    {
+      id: "isPartner",
+      label: "Rol",
+      minWidth: 10,
+      component: (value: any) => {
+        let status = "";
+        if (value.value == "1") {
+          status = "Socio";
+        } else if (value.value == "2") {
+          status = "Familiar";
+        } else {
+          status = "Otros";
+        }
+  
+        return (
+          <Chip
+            label={status}
+            style={{
+              backgroundColor: "#2980b9",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "10px",
+            }}
+            size="small"
+          />
+        );
+      },
+    },
+  ];
 
   useEffect(() => {
     async function fetchData() {

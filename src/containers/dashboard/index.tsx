@@ -249,7 +249,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
           dispatch(setupInterceptors());
         }
         dispatch(getMenuList(location.pathname));
-        dispatch(getClient(user.username));
+        dispatch(getClient(user.group_id));
         dispatch(getProfessions());
         dispatch(getWidgetList());
         dispatch(getParameterList());

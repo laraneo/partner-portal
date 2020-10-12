@@ -144,7 +144,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
             dFechaRegistro: moment().format('YYYY-MM-DD'),
             EstadoCuenta: '',
             status: 0,
-            Login: user.username,
+            Login: user.group_id,
             NroReferencia2: NroReferencia,
             nMonto: monto,
             nTasa: tasa.tasa,
