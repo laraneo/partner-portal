@@ -69,7 +69,7 @@ const RangePicker: FunctionComponent<ComponentProps> = ({
                     type="date"
                     fullWidth
                     inputRef={register({
-                        required: required ? "Required" : false,
+                        required: required ? "Requerido" : false,
                         validate,
                       })}
                     className={classes.textFieldRangePicker}
@@ -90,7 +90,7 @@ const RangePicker: FunctionComponent<ComponentProps> = ({
                         shrink: true,
                     }}
                     inputRef={register({
-                        required: required ? "Required" : false,
+                        required: required ? "Requerido" : false,
                         validate
                       })}
                 />

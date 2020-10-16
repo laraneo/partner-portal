@@ -24,7 +24,7 @@ const API = {
     });
   },
   getReportedPayments() {
-    return AXIOS.get(`${Prefix.api}/eb`, { 
+    return AXIOS.get(`${Prefix.api}/get-reported-payments`, { 
         headers: headers() 
     });
   },

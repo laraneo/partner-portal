@@ -53,11 +53,11 @@ export const login = (body: object) => async (dispatch: Function) => {
   }
 };
 
-export const logout = () => (dispatch: Function) => {
+export const logout = () => async (dispatch: Function) => {
   SecureStorage.removeItem("token");
   SecureStorage.clear();
   window.location.href = "/";
-  dispatch({ type: ACTIONS.LOGOUT });
+  return dispatch({ type: ACTIONS.LOGOUT });
 };
 
 export const checkLogin = (count: number = 0) => async (dispatch: Function) => {

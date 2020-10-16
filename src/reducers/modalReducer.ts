@@ -6,6 +6,7 @@ type ModalInitialState = {
   isLoader: boolean;
   customSize: string;
   title: String;
+  headerTitle: string;
 }
 
 
@@ -15,6 +16,7 @@ const initialState: ModalInitialState = {
   isLoader: false,
   customSize: '',
   title: '',
+  headerTitle: ''
 };
 
 const modalReducer = (state = initialState, action: any) => {

@@ -23,6 +23,10 @@ type UploadProps = {
     label: string;
     register: any;
     setValue: Function;
+    onlyFile?: boolean;
+    onlyImage?: boolean;
+    required?: boolean;
+    requiredErrorMessage?: any;
 };
 
 const Upload: FunctionComponent<UploadProps> = ({
@@ -30,6 +34,10 @@ const Upload: FunctionComponent<UploadProps> = ({
     label,
     register,
     setValue,
+    onlyFile = false,
+    onlyImage = false,
+    required = false,
+    requiredErrorMessage,
 }) => {
     const [file, setFile] = useState({ preview: '', raw: '' });
     const [docField, setDocField] = useState();
@@ -37,11 +45,42 @@ const Upload: FunctionComponent<UploadProps> = ({
     const dispatch = useDispatch();
     const classes = useStyles();
 
+    const validateExtensions = (type: string): boolean => {
+        console.log('onlyFile ', onlyFile);
+        console.log('onlyImage ', onlyImage);
+        if(onlyFile) {
+            if(type === 'application/pdf' || type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                return true;
+            }
+                
+        }
+        if(onlyImage) {
+            if(type === 'image/png' || type === 'image/jpeg'){
+                return true;
+            }    
+        }
+        if(!onlyFile && !onlyImage) {
+            if(type === 'image/png' || type === 'image/jpeg' || type === 'application/pdf' || type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    const validateMessageExtensions = (type: string): string => {
+        if(onlyFile ) return 'Solo de Admiten Archivos con formatos: .pdf - .doc';
+        if(onlyImage) return 'Solo de Admiten Imagenes con formatos: .png - .jpg';  
+        if(!onlyFile && !onlyImage)  return 'Solo de Admiten los formatos: .png - .jpg - pdf - .doc';
+        return '';
+    }
+
     const loadDocument = (e: any) => {
         const current = e.target.files[0];
         if (e.target.files.length > 0) {
-            //console.log('current.type ', current.type);
-            if (current.type === 'image/png' || current.type === 'image/jpeg' || current.type === 'application/pdf' || current.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+            console.log('current.type ', current.type);
+            console.log('validateExtensions(current.type) ', validateExtensions(current.type));
+            if (validateExtensions(current.type)) {
                 if (current.size <= 5000000) {
                     const reader: any = new FileReader();
                     reader.onload = () => {
@@ -65,7 +104,7 @@ const Upload: FunctionComponent<UploadProps> = ({
                 setName('');
                 dispatch(snackBarUpdate({
                     payload: {
-                        message: "Solo de Admiten los formatos: .pdf - .doc",
+                        message: validateMessageExtensions(current.type),
                         type: "error",
                         status: true
                     }
@@ -109,9 +148,16 @@ const Upload: FunctionComponent<UploadProps> = ({
                 <input
                     style={{ display: "none" }}
                     name={field}
-                    ref={register}
+                    ref={register({
+                        required: required ? "Requerido" : false,
+                      })}
                 />
             </Grid>
+            {requiredErrorMessage && (
+        <Grid item xs={12} style={{ color: "red" }}>
+          {requiredErrorMessage}
+        </Grid>
+      )}
             <Grid item xs={8} className={classes.detail} >{name}</Grid>
         </Grid>
     );

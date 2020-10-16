@@ -24,6 +24,11 @@ import { updateModal } from "../../actions/modalActions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        modalBackdrop: {
+            [theme.breakpoints.down('sm')]: {
+              marginLeft: 1,
+              marginRight: 1,
+            },},
         progress: {
             margin: theme.spacing(2),
             position: 'relative',
@@ -35,15 +40,16 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Modal() {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { status, element, isLoader, customSize, title } = useSelector((state: any) => state.modalReducer);
+    const { status, element, isLoader, customSize, title, headerTitle } = useSelector((state: any) => state.modalReducer);
     return (
         <div className={`modal-container ${status ? "modal-container--active" : ""}`}>
-            <div className="modal-backdrop">
+            <div className={`modal-backdrop ${classes.modalBackdrop} `} >
                 <div className={`modal modal--${customSize}`}>
                     <div className={`modal__loader ${isLoader ? "modal__loader--active" : ""} `}>
                         <CircularProgress className={classes.progress} color="primary" />
                     </div>
                     <div className="modal__header">
+                        <div className="modal__header-title">{headerTitle}</div>
                         <div
                             className="modal__header-close-icon"
                             onClick={() =>
@@ -53,6 +59,7 @@ export default function Modal() {
                                             status: false,
                                             element: <div />,
                                             customSize: "",
+                                            headerTitle: '',
                                         },
                                     })
                                 )

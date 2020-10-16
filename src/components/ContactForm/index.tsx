@@ -63,13 +63,16 @@ type FormData = {
 
 type ContactFormProps = {
   id?: number;
+  subject?: string;
 };
 
 const ContactForm: FunctionComponent<ContactFormProps> = ({
-  id
-}) => {
+  id, subject
+}): JSX.Element => {
   const classes = useStyles();
   const [captcha, setCaptcha] = useState<boolean>(false);
+  const [ subjectDisable, setSubjectDisable ] = useState<boolean>(false);
+  const [ departmentDisable, setDepartmentDisable ] = useState<boolean>(false);
   const { handleSubmit, register, errors, reset, setValue } = useForm<
     FormData
   >();
@@ -80,10 +83,21 @@ const ContactForm: FunctionComponent<ContactFormProps> = ({
     parameterReducer: { listData: parameterList },
   } = useSelector((state: any) => state);
   const dispatch = useDispatch();
+  const contactIdApplicant = Helper.getParameter(parameterList, "CONTACTID_APPLICANT");
 
   useEffect(() => {
     dispatch(getDepartments());
   }, [id, dispatch]);
+
+  useEffect(() => {
+    if(subject) {
+      setValue('asunto',subject)
+      setSubjectDisable(true);
+      const department = departments.find((element: any) => element.id == contactIdApplicant.value );
+      setValue('departamento', department.id);
+      setDepartmentDisable(true);
+    }
+  }, [subject])
 
   useEffect(() => {
     return () => {
@@ -145,6 +159,7 @@ const ContactForm: FunctionComponent<ContactFormProps> = ({
                 selectionMessage="Seleccione"
                 field="departamento"
                 required
+                disabled={departmentDisable}
                 register={register}
                 errorsMessageField={
                   errors.departamento && errors.departamento.message
@@ -164,6 +179,7 @@ const ContactForm: FunctionComponent<ContactFormProps> = ({
                 field="asunto"
                 required
                 register={register}
+                disable={subjectDisable}
                 errorsField={errors.asunto}
                 errorsMessageField={
                   errors.asunto && errors.asunto.message

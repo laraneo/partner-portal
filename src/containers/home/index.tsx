@@ -294,6 +294,17 @@ export default function Home() {
           </Grid>
         }
 
+          <Grid item sm={12} xs={12} md={3}>
+            <Paper>
+              <Widgtet
+                Icon={AccountBoxIcon}
+                title="Aspirantes"
+                link="/dashboard/applicants"
+                internal
+              />
+            </Paper>
+          </Grid>
+
       </Grid>
     </div>
   );

@@ -56,6 +56,10 @@ export const getStatusAccount = (
       }
       if (error.response && error.response.status !== 500) {
         const message = Message.exception(error);
+        dispatch({
+          type: ACTIONS.GET_STATUS_ACCOUNT,
+          payload: [],
+        });
         snackBarUpdate({
           payload: {
             message,

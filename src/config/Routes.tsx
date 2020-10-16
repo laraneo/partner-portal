@@ -37,6 +37,9 @@ import RegisterPassword from "../containers/registerPassword";
 import PendingInvoices from "../containers/pending-invoices";
 import SinglePaymentsManagement from "../containers/singlePaymentsManagement";
 import PersonMobile from "../containers/personMobile";
+import LoadApplicant from "../containers/LoadApplicant";
+import Applicants from "../containers/Applicants";
+import ActiveApplicants from "../containers/ActiveApplicants";
 
 export default function Routes() {
   return (
@@ -79,6 +82,9 @@ export default function Routes() {
                       <Route path="/dashboard/contact" exact component={Contact} />
                       <Route path="/dashboard/update-password" exact component={RegisterPassword} />
                       <Route path="/dashboard/pending-invoices" exact component={PendingInvoices} />
+                      <Route path="/dashboard/applicants" exact component={Applicants} />
+                      <Route path="/dashboard/load-applicant" exact component={LoadApplicant} />
+                      <Route path="/dashboard/active-applicant" exact component={ActiveApplicants} />
                     </Dashboard>
                   </Switch>
                 );

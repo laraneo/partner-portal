@@ -50,6 +50,7 @@ import customModalReducer from './customModalReducer';
 import branchCompanyReducer from './branchCompanyReducer';
 import notificacionReducer from './notificacionReducer';
 import monedasReducer from './monedasReducer';
+import applicantsReducer from './applicantsReducer';
 
 const rootReducer = combineReducers({
   modalReducer,
@@ -99,7 +100,8 @@ const rootReducer = combineReducers({
   customModalReducer,
   branchCompanyReducer,
   notificacionReducer,
-  monedasReducer
+  monedasReducer,
+  applicantsReducer
 });
 
 export default rootReducer;
