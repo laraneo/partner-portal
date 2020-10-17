@@ -187,7 +187,7 @@ export default function UnpaidInvoices() {
       label: "Monto Sugerido",
       minWidth: 10,
       align: "right",
-      component: (value: any) => <span>{value.value * tasa.tasa}</span>,
+      component: (value: any) => <span>{value.value * tasa.dTasa}</span>,
     },
     {
       id: "fact_num",
