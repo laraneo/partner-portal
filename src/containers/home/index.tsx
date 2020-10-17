@@ -299,7 +299,7 @@ export default function Home() {
               <Widgtet
                 Icon={AccountBoxIcon}
                 title="Aspirantes"
-                link="/dashboard/applicants"
+                link="/dashboard/active-applicant"
                 internal
               />
             </Paper>
