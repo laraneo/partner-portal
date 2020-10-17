@@ -294,16 +294,18 @@ export default function Home() {
           </Grid>
         }
 
-          <Grid item sm={12} xs={12} md={3}>
-            <Paper>
-              <Widgtet
-                Icon={AccountBoxIcon}
-                title="Aspirantes"
-                link="/dashboard/active-applicant"
-                internal
-              />
-            </Paper>
-          </Grid>
+        {validateWidget('PARTNERPORTAL_applicants') &&
+         <Grid item sm={12} xs={12} md={3}>
+         <Paper>
+           <Widgtet
+             Icon={AccountBoxIcon}
+             title="Aspirantes"
+             link="/dashboard/active-applicant"
+             internal
+           />
+         </Paper>
+       </Grid>
+        }
 
       </Grid>
     </div>
