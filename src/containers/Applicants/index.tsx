@@ -31,6 +31,7 @@ import { useForm } from "react-hook-form";
 import CustomTextField from "../../components/FormElements/CustomTextField";
 import CustomSelect from "../../components/FormElements/CustomSelect";
 import RangePicker from "../../components/FormElements/RangePicker";
+import { useHistory } from "react-router-dom";
 
 interface IImageViewerProps {
   image: string;
@@ -92,10 +93,10 @@ export default function Applicants() {
   const { list, loading, pagination } = useSelector(
     (state: any) => state.applicantsReducer
   );
-
   const { handleSubmit, register, errors, getValues, watch, reset } = useForm<
     FormData
   >();
+  const history = useHistory();
 
   const handleImage = (image: string) => {
     dispatch(
@@ -262,6 +263,10 @@ export default function Applicants() {
     dispatch(getAll(form, page, perPage));
   };
 
+  const handleNewApplicant = () => {
+    history.push('/dashboard/load-applicant')
+  }
+
   return (
     <Grid container spacing={2}>
       <form
@@ -279,7 +284,7 @@ export default function Applicants() {
           xs={12}
           style={{
             marginTop: 20,
-            marginBottom: 50,
+            marginBottom: 20,
           }}
         >
           <Grid container spacing={3}>
@@ -327,6 +332,11 @@ export default function Applicants() {
               </Button>
             </Grid>
           </Grid>
+        </Grid>
+        <Grid item xs={12} style={{ textAlign: 'right', marginBottom: 20 }} >
+        <Fab size="small" color="primary" aria-label="add" onClick={handleNewApplicant} >
+            <AddIcon />
+          </Fab>
         </Grid>
         <Grid item xs={12}>
           <DataTable4
