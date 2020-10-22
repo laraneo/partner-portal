@@ -53,12 +53,22 @@ function Item(props: ItemProps): JSX.Element {
         paddingRight: 13,
       }}
     >
-      <Grid item sm={9} xs={9} md={9}>
+      <Grid
+        item
+        sm={9}
+        xs={9}
+        md={9}
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          display: "flex",
+        }}
+      >
         <LazyLoadImage
           alt="example"
           effect="blur"
-          width={140}
-          height={140}
+          width={110}
+          height={110}
           src={user.picture}
         />
       </Grid>
@@ -72,7 +82,7 @@ function Item(props: ItemProps): JSX.Element {
               color="primary"
               onClick={() => handleImage(user.sArchivo)}
             >
-              <AssignmentIcon fontSize="inherit" style={{ fontSize: 25 }} />
+              <AssignmentIcon fontSize="inherit" style={{ fontSize: 20 }} />
             </IconButton>
           </Grid>
           <Grid item sm={12} xs={12} md={12}>
@@ -82,7 +92,7 @@ function Item(props: ItemProps): JSX.Element {
               color="primary"
               onClick={() => handleDetail(user)}
             >
-              <AddAlertIcon fontSize="inherit" style={{ fontSize: 25 }} />
+              <AddAlertIcon fontSize="inherit" style={{ fontSize: 20 }} />
             </IconButton>
           </Grid>
         </Grid>
@@ -94,7 +104,7 @@ function Item(props: ItemProps): JSX.Element {
         md={12}
         style={{ textAlign: "center", marginTop: -20, fontWeight: "bold" }}
       >
-        <Grid container>
+        <Grid container style={{ fontSize: 11 }}>
           <Grid item sm={12} xs={12} md={12}>
             {user.sNombres} {user.sApellidos}
           </Grid>
@@ -197,7 +207,7 @@ export default function ActiveApplicants(): JSX.Element {
       <Grid item sm={12} xs={12} md={12}>
         <Grid container spacing={5}>
           {applicantsActiveList.map((element: any, i: number) => (
-            <Grid item sm={12} xs={6} md={2}>
+            <Grid item sm={12} xs={2} md={2}>
               <Item
                 key={i}
                 user={element}
