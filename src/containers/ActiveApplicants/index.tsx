@@ -207,7 +207,7 @@ export default function ActiveApplicants(): JSX.Element {
       <Grid item sm={12} xs={12} md={12}>
         <Grid container spacing={5}>
           {applicantsActiveList.map((element: any, i: number) => (
-            <Grid item sm={12} xs={2} md={2}>
+            <Grid item sm={6} xs={6} md={2} lg={2} >
               <Item
                 key={i}
                 user={element}
