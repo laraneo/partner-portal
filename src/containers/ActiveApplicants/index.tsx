@@ -5,6 +5,7 @@ import { Card, Grid, IconButton } from "@material-ui/core";
 import AddAlertIcon from "@material-ui/icons/AddAlert";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { makeStyles, withStyles, Theme, createStyles } from "@material-ui/core/styles";
 
 import { AnyIfEmpty, useDispatch, useSelector } from "react-redux";
 import { getActiveApplicants } from "../../actions/applicantsActions";
@@ -31,6 +32,38 @@ function ImageViewer(props: IImageViewerProps) {
     </Grid>
   );
 }
+
+const useStyles = makeStyles((theme: Theme) => createStyles(
+  {
+    root: {
+      overflowX: "auto",
+      [theme.breakpoints.up('sm')]: {
+        width: "100%",
+      },
+      [theme.breakpoints.down('sm')]: {
+        maxWidth: window.innerWidth - 20,
+        width: window.innerWidth - 20,
+      },
+    },
+    container: {
+      maxHeight: 440
+    },
+    progress: {
+      display: "flex",
+      justifyContent: "left",
+      padding: 10
+    },
+    tableCellHeader: {
+      padding: 4,
+      '&:first-child': {
+        paddingLeft: 5
+      },
+      '&:last-child': {
+        paddingRight: '0px !important'
+      }
+    },
+  }
+));
 
 interface ItemProps {
   user: any;

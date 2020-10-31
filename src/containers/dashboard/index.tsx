@@ -723,7 +723,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                       onClose={handleClose}
                     >
                       <MenuItem>
-                        <AccountCircleIcon /> Usuario: {!loading && user.name}
+                        <AccountCircleIcon /> Usuario: {!loading ? `${user.name} ${user.last_name}` : ''}
                       </MenuItem>
                       {!currentRole && (
                         <MenuItem>

@@ -48,10 +48,10 @@ const columns: Columns[] = [
       component: (value: any) => <span>{value.value}</span>
   },
   {
-      id: "Destino",
-      label: "Cuenta",
+      id: "cuenta",
+      label: "Destino",
       minWidth: 10,
-      component: (value: any) => <span> {value.value} </span>
+      component: (value: any) => <span> {value.value && `${value.value.cNombreBanco} - ${value.value.cNumCuenta.substring(12, 16)}`} </span>
   },
     {
       id: "Moneda",

@@ -12,7 +12,9 @@ export default interface Columns {
     | "codCuentaDestino"
     | "dFechaPago"
     | "Moneda"
-    | "status";
+    | "status"
+    | "cuenta"
+    | "banco_origen";
   label: string;
   minWidth?: number;
   align?: "left" | "right" | "center";
