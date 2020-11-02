@@ -675,7 +675,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                       onClick={handleMenu}
                       className={classes.profileButton}
                     >
-                      {!loading && user.name}
+                      {!loading && `${user.name} ${user.last_name ? user.last_name : ''}`}
                     </Button>
                     <Menu
                       id="simple-menu"
@@ -685,7 +685,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                       onClose={handleClose}
                     >
                       <MenuItem>
-                        <AccountCircleIcon /> Usuario: {!loading ? `${user.name} ${user.last_name}` : ''}
+                        <AccountCircleIcon /> Usuario: {!loading ? `${user.name} ${user.last_name ? user.last_name: ''}` : ''}
                       </MenuItem>
                       {!currentRole && (
                         <MenuItem>
