@@ -521,6 +521,8 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
        }, finalTime);
       }
 
+    } else {
+      dispatch(logout());
     }
   };
 
