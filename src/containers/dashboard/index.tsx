@@ -471,94 +471,56 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
   };
 
   const handleLogout = () => {
-    const httpRequestList: any = [];
-    const forcedModuleLogout = Helper.checkParameter(
-      parameterList,
-      "FORCED_MODULESLOGOUT"
-    );
-    const tournamentParameter = Helper.checkParameter(
-      parameterList,
-      "SHOW_TOURNAMENT"
-    );
-    const golfParameter = Helper.checkParameter(parameterList, "SHOW_GOLF");
-    const tennisParameter = Helper.checkParameter(parameterList, "SHOW_TENIS");
+    var strWindowFeatures = "menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=500,height=500";
     let currentWindow = window;
-    var strWindowFeatures =
-      "menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=500,height=500";
+
+    const httpRequestList: any = [];
+    const forcedModuleLogout = Helper.checkParameter(parameterList,"FORCED_MODULESLOGOUT");
+    const linkTennisParameter = Helper.getParameter(parameterList, "LINK_TENNIS_LOGOUT");
+    const linkGolfParameter = Helper.getParameter(parameterList, "LINK_GOLF_LOGOUT");
+    const linkTournamentParameter = Helper.checkParameter( parameterList, "SHOW_TOURNAMENT");
+
 
     if (forcedModuleLogout) {
-      if (golfParameter && tennisParameter) {
-        const link = Helper.getParameter(parameterList, "LINK_GOLF_LOGOUT");
-        currentWindow.open(link.value, "test1", strWindowFeatures);
-        const link2 = Helper.getParameter(parameterList, "LINK_TENNIS_LOGOUT");
+      if(linkTournamentParameter) {
+        httpRequestList.push(linkTournamentParameter);
+      }
 
+      if(linkGolfParameter) {
         setTimeout(() => {
-          currentWindow.open(link2.value, "test1", strWindowFeatures);
-          if (httpRequestList.length > 0) {
-            axios
-              .all(httpRequestList)
-              .then((res: any) => {
-                dispatch(logout());
-              })
-              .catch((errors) => {
-                console.log("errors ", errors);
-              });
-          } else {
-            dispatch(logout());
-          }
-        }, 10000);
+          console.log('linkGolfParameter ', linkGolfParameter);
+          currentWindow.open(linkGolfParameter.value, "test1", strWindowFeatures);
+          currentWindow.blur();
+          window.focus();
+         }, 1000);
+      }
+  
+      if(linkTennisParameter) {
+        setTimeout(() => {
+          currentWindow.open(linkTennisParameter.value, "test1", strWindowFeatures);
+          currentWindow.blur();
+          window.focus();
+         }, 5000);
       }
 
-      if (!golfParameter && tennisParameter) {
-        const link = Helper.getParameter(parameterList, "LINK_TENNIS_LOGOUT");
-        currentWindow.open(link.value, "test1", strWindowFeatures);
-        if (httpRequestList.length > 0) {
-          axios
-            .all(httpRequestList)
-            .then((res: any) => {
+      const finalTime = linkGolfParameter && linkTennisParameter ? 10000 : 6000;
+      if (httpRequestList.length > 0) {
+        axios
+          .all(httpRequestList)
+          .then((res: any) => {
+            setTimeout(() => {
               dispatch(logout());
-            })
-            .catch((errors) => {
-              console.log("errors ", errors);
-            });
-        } else {
-          dispatch(logout());
-        }
+             }, finalTime);
+          })
+          .catch((errors) => {
+            console.log("errors ", errors);
+          });
+      } else {
+       setTimeout(() => {
+        dispatch(logout());
+       }, finalTime);
       }
 
-      if (golfParameter && !tennisParameter) {
-        const link = Helper.getParameter(parameterList, "LINK_GOLF_LOGOUT");
-        currentWindow.open(link.value, "test1", strWindowFeatures);
-        if (httpRequestList.length > 0) {
-          axios
-            .all(httpRequestList)
-            .then((res: any) => {
-              dispatch(logout());
-            })
-            .catch((errors) => {
-              console.log("errors ", errors);
-            });
-        } else {
-          dispatch(logout());
-        }
-      }
-
-      if (!golfParameter && !tennisParameter) {
-        if (httpRequestList.length > 0) {
-          axios
-            .all(httpRequestList)
-            .then((res: any) => {
-              dispatch(logout());
-            })
-            .catch((errors) => {
-              console.log("errors ", errors);
-            });
-        } else {
-          dispatch(logout());
-        }
-      }
-    } else {
-      dispatch(logout());
     }
   };
 
