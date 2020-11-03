@@ -201,9 +201,9 @@ export default function Home() {
                 <Widgtet
                   Icon={AccountBalanceIcon}
                   title={
-                    clientBalance.status === "1"
-                      ? "Saldo Deudor"
-                      : "Saldo a Favor"
+                    parseFloat(clientBalance.saldo) <= 0
+                      ? "Saldo a Favor"
+                      : "Saldo Deudor"
                   }
                   amount={clientBalance.saldo}
                   statusSaldo={clientBalance.status}
