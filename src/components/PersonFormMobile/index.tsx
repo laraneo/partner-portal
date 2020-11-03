@@ -1441,7 +1441,7 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
     if (!_.isEmpty(socio)) {
       return (
         <Grid item sm={12} xs={12} md={12} className={classes.profileMovement}>
-          <div className={classes.profileShareTitle}>Accion N° {user.username}</div>
+          <div className={classes.profileShareTitle}>Accion N° {user.group_id}</div>
         </Grid>
       )
     }

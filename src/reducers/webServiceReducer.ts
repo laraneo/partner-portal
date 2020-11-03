@@ -11,7 +11,7 @@ type InitState = {
   listData: any;
   statusAccountList: Array<string | number>;
   unpaidInvoices: Array<string | number>;
-  clientBalance: Array<string | number>;
+  clientBalance: any;
   reportedPayments: any;
   setUnpaidInvoicestLoading: boolean;
   setReportedPaymentsLoading: boolean;
@@ -37,7 +37,7 @@ const initialState: InitState = {
   setUnpaidInvoicestLoading: false,
   setReportedPaymentsLoading: false,
   setBalanceLoading: false,
-  clientBalance: [],
+  clientBalance: {},
   cache: false,
   tasa: {},
 };

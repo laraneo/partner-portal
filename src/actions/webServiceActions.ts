@@ -260,7 +260,7 @@ export const getBalance = (
       data: { data },
       status,
     } = await API.getBalance(isCache);
-    let response = [];
+    let response = {};
     if (status === 200) {
       if (data) {
         response = data;
@@ -302,6 +302,10 @@ export const getBalance = (
             type: "error",
           },
         })(dispatch);
+        dispatch({
+          type: ACTIONS.GET_BALANCE,
+          payload: {},
+        });
       }
     }
     dispatch({

@@ -1440,7 +1440,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
     if (!_.isEmpty(socio)) {
       return (
         <Grid item xs={12} className={classes.profileMovement}>
-          <Grid item xs={12} className={classes.profileShareTitle}>Accion N° {user.username}</Grid>
+          <Grid item xs={12} className={classes.profileShareTitle}>Accion N° {user.group_id}</Grid>
         </Grid>
       )
     }
