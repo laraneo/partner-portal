@@ -4,6 +4,7 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import NumberFormat from "react-number-format";
 
 import { getUnpaidInvoices } from "../../actions/webServiceActions";
 import { updateModal } from "../../actions/modalActions";
@@ -58,7 +59,12 @@ export default function UnpaidInvoices() {
   const {
     parameterReducer: { listData: parameterList },
     loginReducer: { user },
-    webServiceReducer: { unpaidInvoices, setUnpaidInvoicestLoading, cache, tasa },
+    webServiceReducer: {
+      unpaidInvoices,
+      setUnpaidInvoicestLoading,
+      cache,
+      tasa,
+    },
   } = useSelector((state: any) => state);
 
   const moneda = Helper.getParameter(parameterList, "MONEDA_DEFAULT");
@@ -181,13 +187,23 @@ export default function UnpaidInvoices() {
       minWidth: 10,
       align: "right",
       component: (value: any) => <span>{value.value}</span>,
-    },
+    }, //<span>{value.value * tasa.dTasa}</span>,
     {
       id: "saldo",
       label: "Monto Sugerido",
       minWidth: 10,
       align: "right",
-      component: (value: any) => <span>{value.value * tasa.dTasa}</span>,
+      component: (value: any) => value.value && tasa.dTasa && (
+        <NumberFormat
+          thousandSeparator={"."}
+          decimalSeparator={","}
+          isNumericString
+          disabled
+          inputMode="none"
+          displayType="text"
+          value={value.value * tasa.dTasa}
+        />
+      ),
     },
     {
       id: "fact_num",
@@ -196,7 +212,7 @@ export default function UnpaidInvoices() {
       align: "right",
       component: (value: any) => {
         if (cache && !enablePaymentsCache) {
-          return ( <div />);
+          return <div />;
         }
         return (
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
@@ -218,7 +234,6 @@ export default function UnpaidInvoices() {
     if (parameterList.length > 0) {
       dispatch(getUnpaidInvoices(wsAttemps.value));
     }
-
   }, [dispatch, parameterList, wsAttemps]);
 
   return (
