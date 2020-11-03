@@ -442,7 +442,7 @@ export const getTasa = (count: number = 0) => async (
   } catch (error) {
     if (count <= attempts) {
       let counter = count + 1;
-      dispatch(getReportedPayments(counter));
+      dispatch(getTasa(counter));
     } else {
       snackBarUpdate({
         payload: {
