@@ -1504,7 +1504,7 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
   if (isLoader) {
     return (
       <Grid container>
-        <Grid item sm={12} xs={12} md={12} style={{ textAlign: 'center' }}><Loader size={50} /></Grid>
+        <Grid item sm={12} xs={12} md={12} style={{ textAlign: 'center', height: 100 }}><Loader size={50} /></Grid>
       </Grid>
     )
   }

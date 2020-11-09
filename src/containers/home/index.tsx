@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { makeStyles, createStyles, Theme, useTheme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 import PaymentIcon from "@material-ui/icons/Payment";
@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
 import Widgtet from "../../components/Widget";
-import { Paper } from "@material-ui/core";
+import { Paper, useMediaQuery } from "@material-ui/core";
 import Helper from "../../helpers/utilities";
 import Loader from "../../components/common/Loader";
 import { getBalance } from "../../actions/webServiceActions";
@@ -39,10 +39,17 @@ const useStyles = makeStyles((theme: Theme) =>
         display: "none",
       },
     },
+    showMobileWidget: {
+      [theme.breakpoints.down("xs")]: {
+        display: "block",
+      },
+    },
   })
 );
 
 export default function Home() {
+  const theme = useTheme();
+  const match = useMediaQuery(theme.breakpoints.down("xs"))
   const classes = useStyles();
   const {
     webServiceReducer: { clientBalance, setBalanceLoading },
@@ -107,6 +114,14 @@ export default function Home() {
       "LINK_ACTUALIZACION_DATOS"
     );
     actualizacionDatosLink = parameter.value;
+    if(!hiddeMobileWidget("PARTNERPORTAL_actualizacion-datos")) {
+      if(match) {
+        actualizacionDatosLink = '/dashboard/actualizacion-datos-mobile';
+      } else {
+        actualizacionDatosLink = '/dashboard/actualizacion-datos-mobile';
+      }
+    }
+
   }
 
   let miAccesoLink = null;
@@ -223,7 +238,7 @@ export default function Home() {
             className={`${
               hiddeMobileWidget("PARTNERPORTAL_actualizacion-datos")
                 ? classes.hideMobileWidget
-                : ""
+                : ''
             }`}
           >
             <Paper>
