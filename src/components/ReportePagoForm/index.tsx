@@ -279,6 +279,8 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                                     label="Archivo"
                                     register={register}
                                     setValue={setValue}
+                                    requiredErrorMessage={errors.file1 && errors.file1.message}
+                                    required
                                 /></Grid>
                             </Grid>
                         </Grid>

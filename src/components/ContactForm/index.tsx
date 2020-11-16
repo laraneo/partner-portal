@@ -110,7 +110,7 @@ const ContactForm: FunctionComponent<ContactFormProps> = ({
   const handleForm = async (form: FormData) => {
     const { asunto, descripcion, departamento } = form;
     const currentDepartment: any = departments.find((e: any) => e.id == departamento);
-    const sContenido = `Enviado por: ${user.name} <br> ${descripcion}`;
+    const sContenido = `Enviado por: ${user.name} ${user.last_name} <br> Acción: ${user.group_id} <br> Login: ${user.username} <br> Email ${user.email} <br> ${descripcion}`;
     const activeCaptcha = Helper.checkParameter(parameterList, "SHOW_CAPTCHA_CONTACT");
     const body = {
       sFuente: 'PARTNERPORTAL_CONTACTO',
