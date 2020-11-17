@@ -193,17 +193,22 @@ export default function UnpaidInvoices() {
       label: "Monto Sugerido",
       minWidth: 10,
       align: "right",
-      component: (value: any) => value.value && tasa.dTasa && (
-        <NumberFormat
-          thousandSeparator={"."}
-          decimalSeparator={","}
-          isNumericString
-          disabled
-          inputMode="none"
-          displayType="text"
-          value={value.value * tasa.dTasa}
-        />
-      ),
+      component: (value: any) => {
+        if (value.value && tasa.dTasa) {
+          const currentTasa = value.value * tasa.dTasa;
+          return (
+            <NumberFormat
+              thousandSeparator={"."}
+              decimalSeparator={","}
+              isNumericString
+              disabled
+              inputMode="none"
+              displayType="text"
+              value={currentTasa.toFixed(2)}
+            />
+          );
+        }
+      },
     },
     {
       id: "fact_num",

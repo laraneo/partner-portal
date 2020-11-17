@@ -158,7 +158,7 @@ export default function Home() {
               Icon={EventAvailableIcon}
               title="Golf"
               type="Saldo"
-              amount={clientBalance.saldo}
+              amount={clientBalance.saldo_vigencia}
               statusSaldo={clientBalance.status}
               link={reservacionesLink}
               paramText="SHOW_GOLF"
@@ -185,7 +185,7 @@ export default function Home() {
               Icon={EventAvailableIcon}
               title="Tenis"
               type="Saldo"
-              amount={clientBalance.saldo}
+              amount={clientBalance.saldo_vigencia}
               statusSaldo={clientBalance.status}
               link={tennisLink}
               paramText="SHOW_TENIS"
