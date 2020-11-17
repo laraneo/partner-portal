@@ -67,10 +67,8 @@ const Widgtet: FunctionComponent<FormComponentProps> = ({
   } = useSelector((state: any) => state);
 
   let statusAmount = false;
-  if (type === "Saldo" && parseFloat(amount) > 0) statusAmount = true;
-  if (type === "Saldo" && parseFloat(amount) <= 0) statusAmount = false;
-  if (type === "Saldo" && statusSaldo == "-2" && amount == 0 && (title === "Golf" || title === "Tenis")) statusAmount = true;
-
+  if (type === "Saldo" && amount && parseFloat(amount) > 0) statusAmount = true;
+  if (type === "Saldo" && amount && parseFloat(amount) <= 0) statusAmount = false;
 
   const renderTitle = () => {
     if (title === "Golf" || title === "Tenis") {
