@@ -129,7 +129,7 @@ const Widgtet: FunctionComponent<FormComponentProps> = ({
             <div className="widget-container__detail-title">{subTitle}</div>
           )}
           {!link && (
-            <div className="widget-container__detail-amount">{amount}</div>
+            <div className="widget-container__detail-amount">{amount ? amount : 'N/A'}</div>
           )}
         </div>
       </div>
