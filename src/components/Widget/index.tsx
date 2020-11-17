@@ -5,8 +5,8 @@ import { useHistory } from "react-router-dom";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 
 import "./index.sass";
-import Parse from 'react-html-parser';
-import Helper from '../../helpers/utilities';
+import Parse from "react-html-parser";
+import Helper from "../../helpers/utilities";
 import { useSelector, useDispatch } from "react-redux";
 import snackBarUpdate from "../../actions/snackBarActions";
 
@@ -15,24 +15,24 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: "flex",
       "& > *": {
-        margin: theme.spacing(1)
-      }
+        margin: theme.spacing(1),
+      },
     },
     avatarContainer: {
       backgroundColor: "#fff",
       width: theme.spacing(7),
       height: theme.spacing(7),
-      padding: "0px"
+      padding: "0px",
     },
     blue: {
       color: "#2980b9",
     },
     red: {
-      color: '#c0392b',
+      color: "#c0392b",
     },
     icon: {
-      fontSize: "50px"
-    }
+      fontSize: "50px",
+    },
   })
 );
 
@@ -57,67 +57,82 @@ const Widgtet: FunctionComponent<FormComponentProps> = ({
   link,
   internal,
   paramText,
-  statusSaldo
+  statusSaldo,
 }) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
   const {
-    parameterReducer: { listData: parameterList }
+    parameterReducer: { listData: parameterList },
   } = useSelector((state: any) => state);
 
   let statusAmount = false;
-  if (type === 'Saldo' && parseFloat(amount) > 0) statusAmount = true;
-  if (type === 'Saldo' && parseFloat(amount) <= 0) statusAmount = false;
+  if (type === "Saldo" && parseFloat(amount) > 0) statusAmount = true;
+  if (type === "Saldo" && parseFloat(amount) <= 0) statusAmount = false;
+  if (type === "Saldo" && statusSaldo == "-2" && amount == 0 && (title === "Golf" || title === "Tenis")) statusAmount = true;
+
 
   const renderTitle = () => {
     if (title === "Golf" || title === "Tenis") {
-      return !statusAmount ? true : false;
+      return statusAmount ? false : true;
     }
-    return true;
-  }
+  };
 
   const handleLink = () => {
     const parameter = Helper.getParameter(parameterList, paramText);
-    const appParameter = Helper.getParameter(parameterList, 'APP_NA_TEXT');
+    const appParameter = Helper.getParameter(parameterList, "APP_NA_TEXT");
     if (paramText && appParameter && parameter && parameter.value === "0") {
-      dispatch(snackBarUpdate({
-        payload: {
-          message: appParameter.value,
-          type: "error",
-          status: true
-        }
-      }))
+      dispatch(
+        snackBarUpdate({
+          payload: {
+            message: appParameter.value,
+            type: "error",
+            status: true,
+          },
+        })
+      );
     } else {
       if (internal) {
-        history.push(link)
+        history.push(link);
       } else {
         if (renderTitle()) {
-          window.open(link, '_blank');
+          window.open(link, "_blank");
+        } else {
+          statusAmount = true;
         }
       }
     }
-
-  }
-
+  };
   return (
-    <Card className="widget-container__card" onClick={() => link ? handleLink() : {}} style={{ cursor: link ? 'pointer' : '' }} >
-      <div className={`widget-container__widget ${statusAmount ? 'widget-container__widget--red' : ''}`}>
-        {
-          Icon && (
-            <div className="widget-container__avatar">
-              <Avatar className={`${classes.avatarContainer} ${statusAmount ? classes.red : classes.blue}`}>
-                <Icon className={classes.icon} />
-              </Avatar>
-            </div>
-          )
-        }
+    <Card
+      className="widget-container__card"
+      onClick={() => (link ? handleLink() : {})}
+      style={{ cursor: link ? "pointer" : "" }}
+    >
+      <div
+        className={`widget-container__widget ${
+          statusAmount ? "widget-container__widget--red" : ""
+        }`}
+      >
+        {Icon && (
+          <div className="widget-container__avatar">
+            <Avatar
+              className={`${classes.avatarContainer} ${
+                statusAmount ? classes.red : classes.blue
+              }`}
+            >
+              <Icon className={classes.icon} />
+            </Avatar>
+          </div>
+        )}
         <div className="widget-container__detail">
           <div className="widget-container__detail-title">{Parse(title)}</div>
           {subTitle && (
             <div className="widget-container__detail-title">{subTitle}</div>
           )}
-          {!link && (<div className="widget-container__detail-amount">{amount}</div>)}
+          {!link && (
+            <div className="widget-container__detail-amount">{amount}</div>
+          )}
         </div>
       </div>
     </Card>
