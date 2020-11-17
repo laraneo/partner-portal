@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
 import Widgtet from "../../components/Widget";
+import Widgtet1 from "../../components/Widget1";
 import { Paper, useMediaQuery } from "@material-ui/core";
 import Helper from "../../helpers/utilities";
 import Loader from "../../components/common/Loader";
@@ -154,7 +155,7 @@ export default function Home() {
       return (
         <Grid item sm={12} xs={12} md={3}>
           <Paper>
-            <Widgtet
+            <Widgtet1
               Icon={EventAvailableIcon}
               title="Golf"
               type="Saldo"
@@ -181,7 +182,7 @@ export default function Home() {
       return (
         <Grid item sm={12} xs={12} md={3}>
           <Paper>
-            <Widgtet
+            <Widgtet1
               Icon={EventAvailableIcon}
               title="Tenis"
               type="Saldo"
