@@ -733,6 +733,7 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
       profession_list: null,
       sport_list: null,
       country_list: null,
+      group_id: user.group_id
     };
     if (tempPersonId > 0) {
       await dispatch(update({ id: tempPersonId, ...form, ...data }));

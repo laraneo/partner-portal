@@ -190,7 +190,7 @@ export default function UnpaidInvoices() {
     }, //<span>{value.value * tasa.dTasa}</span>,
     {
       id: "saldo",
-      label: "Monto Sugerido",
+      label: "Monto Sugerido Bs",
       minWidth: 10,
       align: "right",
       component: (value: any) => {

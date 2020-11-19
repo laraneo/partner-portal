@@ -420,7 +420,7 @@ export const get = (id: number) => async (dispatch: Function) => {
   }
 };
 
-export const update = (body: object) => async (dispatch: Function) => {
+export const update = (body: any) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
     payload: true
@@ -440,6 +440,11 @@ export const update = (body: object) => async (dispatch: Function) => {
           status: true
         }
       })(dispatch);
+      if(body.groupId) {
+        dispatch(getAll(body.groupId));
+      } else {
+        dispatch(getPartners());
+      }
       dispatch({
         type: ACTIONS.SET_LOADING,
         payload: false

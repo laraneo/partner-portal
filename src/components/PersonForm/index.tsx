@@ -794,6 +794,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
       id_card_picture: null,
       user: user.username,
       date: moment().format('YYYY-MM-DD'),
+      groupId: user.group_id,
     };
     if (tempPersonId > 0) {
       await dispatch(update({ id: tempPersonId, ...form, ...data }));
