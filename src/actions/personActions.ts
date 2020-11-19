@@ -15,23 +15,23 @@ export const getAll = (share: any, count: number = 0) => async (
 ) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.getFamilyByPartner(share);
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_ALL,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
@@ -44,12 +44,12 @@ export const getAll = (share: any, count: number = 0) => async (
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -58,24 +58,24 @@ export const getAll = (share: any, count: number = 0) => async (
 export const search = (term: string) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.search(term);
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_ALL,
-        payload: response
+        payload: response,
       });
     }
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return response;
   } catch (error) {
@@ -83,26 +83,28 @@ export const search = (term: string) => async (dispatch: Function) => {
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
 };
 
-export const searchByPartners = (term: string) => async (dispatch: Function) => {
+export const searchByPartners = (term: string) => async (
+  dispatch: Function
+) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.searchByPartners(term);
     let response = [];
     if (status === 200) {
@@ -117,16 +119,16 @@ export const searchByPartners = (term: string) => async (dispatch: Function) => 
       response = data.data;
       dispatch({
         type: ACTIONS.GET_PARTNERS,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_PAGINATION,
-        payload: pagination
+        payload: pagination,
       });
     }
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return response;
   } catch (error) {
@@ -134,12 +136,12 @@ export const searchByPartners = (term: string) => async (dispatch: Function) => 
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -151,12 +153,12 @@ export const searchPersonToAssignFamily = (
 ) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_SECOND_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.searchPersonToAssignFamily(id, term);
     let response = [];
     if (status === 200) {
@@ -164,21 +166,21 @@ export const searchPersonToAssignFamily = (
         total: data.total,
         perPage: data.per_page,
         prevPageUrl: data.prev_page_url,
-        currentPage: data.current_page
+        currentPage: data.current_page,
       };
       response = data.data;
       dispatch({
         type: ACTIONS.GET_PERSON_TO_ASSIGN,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_PERSON_ASSIGN_PAGINATION,
-        payload: pagination
+        payload: pagination,
       });
     }
     dispatch({
       type: ACTIONS.SET_SECOND_LOADING,
-      payload: false
+      payload: false,
     });
     return response;
   } catch (error) {
@@ -186,12 +188,12 @@ export const searchPersonToAssignFamily = (
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_SECOND_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -200,31 +202,31 @@ export const searchPersonToAssignFamily = (
 export const create = (body: object) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const response = await Person.create(body);
     const {
       status,
-      data: { data }
+      data: { data },
     } = response;
     let createresponse: any = [];
     if (status === 200 || status === 201) {
       createresponse = { ...data };
       dispatch({
         type: ACTIONS.SET_PERSON,
-        payload: data
+        payload: data,
       });
       snackBarUpdate({
         payload: {
           message: "Persona Creada!",
           type: "success",
-          status: true
-        }
+          status: true,
+        },
       })(dispatch);
       dispatch({
         type: ACTIONS.SET_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return createresponse;
@@ -232,7 +234,7 @@ export const create = (body: object) => async (dispatch: Function) => {
     let message = "General Error";
     if (error && error.response) {
       const {
-        data: { message: msg }
+        data: { message: msg },
       } = error.response;
       message = msg;
     }
@@ -240,12 +242,12 @@ export const create = (body: object) => async (dispatch: Function) => {
       payload: {
         message,
         type: "error",
-        status: true
-      }
+        status: true,
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -254,13 +256,13 @@ export const create = (body: object) => async (dispatch: Function) => {
 export const createFamily = (body: any) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_FAMILY_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const response = await Person.create(body);
     const {
       status,
-      data: { data }
+      data: { data },
     } = response;
     let createresponse: any = [];
     if (status === 200 || status === 201) {
@@ -269,8 +271,8 @@ export const createFamily = (body: any) => async (dispatch: Function) => {
         payload: {
           message: "Familiar Regisrado!",
           type: "success",
-          status: true
-        }
+          status: true,
+        },
       })(dispatch);
       dispatch(searchFamilyByPerson(body.base_id));
       // dispatch(getAll());
@@ -278,13 +280,13 @@ export const createFamily = (body: any) => async (dispatch: Function) => {
         updateSecondModal({
           payload: {
             status: false,
-            element: null
-          }
+            element: null,
+          },
         })
       );
       dispatch({
         type: ACTIONS.SET_FAMILY_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return createresponse;
@@ -292,7 +294,7 @@ export const createFamily = (body: any) => async (dispatch: Function) => {
     let message = "Error en el Servidor";
     if (error && error.response) {
       const {
-        data: { message: msg }
+        data: { message: msg },
       } = error.response;
       message = msg;
     }
@@ -300,12 +302,12 @@ export const createFamily = (body: any) => async (dispatch: Function) => {
       payload: {
         message,
         type: "error",
-        status: true
-      }
+        status: true,
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_FAMILY_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -316,13 +318,13 @@ export const createGuest = (body: any, refresh: Function) => async (
 ) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const response = await Person.create(body);
     const {
       status,
-      data: { data }
+      data: { data },
     } = response;
     let createresponse: any = [];
     if (status === 200 || status === 201) {
@@ -331,21 +333,21 @@ export const createGuest = (body: any, refresh: Function) => async (
         payload: {
           message: "Invitado Registrado",
           type: "success",
-          status: true
-        }
+          status: true,
+        },
       })(dispatch);
       refresh(body.rif_ci);
       dispatch(
         updateSecondModal({
           payload: {
             status: false,
-            element: null
-          }
+            element: null,
+          },
         })
       );
       dispatch({
         type: ACTIONS.SET_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return createresponse;
@@ -353,7 +355,7 @@ export const createGuest = (body: any, refresh: Function) => async (
     let message = "General Error";
     if (error && error.response) {
       const {
-        data: { message: msg }
+        data: { message: msg },
       } = error.response;
       message = msg;
     }
@@ -361,12 +363,12 @@ export const createGuest = (body: any, refresh: Function) => async (
       payload: {
         message,
         type: "error",
-        status: true
-      }
+        status: true,
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -376,28 +378,28 @@ export const get = (id: number) => async (dispatch: Function) => {
   dispatch(
     updateModal({
       payload: {
-        isLoader: true
-      }
+        isLoader: true,
+      },
     })
   );
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.get(id);
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.SET_PERSON,
-        payload: data
+        payload: data,
       });
     }
     dispatch(
       updateModal({
         payload: {
-          isLoader: false
-        }
+          isLoader: false,
+        },
       })
     );
     return response;
@@ -405,16 +407,16 @@ export const get = (id: number) => async (dispatch: Function) => {
     dispatch(
       updateModal({
         payload: {
-          isLoader: false
-        }
+          isLoader: false,
+        },
       })
     );
     snackBarUpdate({
       payload: {
         message: error.message,
         type: "error",
-        status: true
-      }
+        status: true,
+      },
     })(dispatch);
     return error;
   }
@@ -423,7 +425,7 @@ export const get = (id: number) => async (dispatch: Function) => {
 export const update = (body: any) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const { data, status } = await Person.update(body);
@@ -431,23 +433,23 @@ export const update = (body: any) => async (dispatch: Function) => {
     if (status === 200) {
       response = {
         data,
-        status
+        status,
       };
       snackBarUpdate({
         payload: {
           message: "Persona Actualizada!",
           type: "success",
-          status: true
-        }
+          status: true,
+        },
       })(dispatch);
-      if(body.groupId) {
+      if (body.groupId) {
         dispatch(getAll(body.groupId));
       } else {
         dispatch(getPartners());
       }
       dispatch({
         type: ACTIONS.SET_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
@@ -456,12 +458,12 @@ export const update = (body: any) => async (dispatch: Function) => {
       payload: {
         message: error.message,
         type: "error",
-        status: true
-      }
+        status: true,
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -474,14 +476,14 @@ export const remove = (id: number) => async (dispatch: Function) => {
     if (status === 200) {
       response = {
         data,
-        status
+        status,
       };
       snackBarUpdate({
         payload: {
           message: "Person Elmiminada",
           type: "success",
-          status: true
-        }
+          status: true,
+        },
       })(dispatch);
     }
     return response;
@@ -490,8 +492,8 @@ export const remove = (id: number) => async (dispatch: Function) => {
       payload: {
         message: error.message,
         type: "error",
-        status: true
-      }
+        status: true,
+      },
     })(dispatch);
     return error;
   }
@@ -502,7 +504,7 @@ export const removeRelation = (relationId: number, personId: any) => async (
 ) => {
   dispatch({
     type: ACTIONS.SET_RELATION_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const { data, status } = await Person.removeRelation(relationId);
@@ -510,33 +512,33 @@ export const removeRelation = (relationId: number, personId: any) => async (
     if (status === 200) {
       response = {
         data,
-        status
+        status,
       };
       await dispatch(searchFamilyByPerson(personId));
       snackBarUpdate({
         payload: {
           message: "Relacion Eliminada!",
           type: "success",
-          status: true
-        }
+          status: true,
+        },
       })(dispatch);
       dispatch({
         type: ACTIONS.SET_RELATION_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
   } catch (error) {
     dispatch({
       type: ACTIONS.SET_RELATION_LOADING,
-      payload: false
+      payload: false,
     });
     snackBarUpdate({
       payload: {
         message: error.message,
         type: "error",
-        status: true
-      }
+        status: true,
+      },
     })(dispatch);
     return error;
   }
@@ -549,15 +551,15 @@ export const updateRelation = (body: any) => async (dispatch: Function) => {
     if (status === 200) {
       response = {
         data,
-        status
+        status,
       };
       await dispatch(searchFamilyByPerson(body.personId));
       snackBarUpdate({
         payload: {
           message: "Relacion Actualizada!",
           type: "success",
-          status: true
-        }
+          status: true,
+        },
       })(dispatch);
     }
     return response;
@@ -566,8 +568,8 @@ export const updateRelation = (body: any) => async (dispatch: Function) => {
       payload: {
         message: error.message,
         type: "error",
-        status: true
-      }
+        status: true,
+      },
     })(dispatch);
     return error;
   }
@@ -576,14 +578,14 @@ export const updateRelation = (body: any) => async (dispatch: Function) => {
 export const geReports = () => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_SECOND_LOADING,
-    payload: true
+    payload: true,
   });
   Axios({
     url: `${Prefix.api}/person-report`,
     method: "GET",
     responseType: "blob", // important
-    headers: headers()
-  }).then(response => {
+    headers: headers(),
+  }).then((response) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
     link.href = url;
@@ -592,7 +594,7 @@ export const geReports = () => async (dispatch: Function) => {
     link.click();
     dispatch({
       type: ACTIONS.SET_SECOND_LOADING,
-      payload: false
+      payload: false,
     });
   });
 };
@@ -600,15 +602,15 @@ export const geReports = () => async (dispatch: Function) => {
 export const getReportsByPartner = (id: any) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_REPORT_BY_PARTNER_LOADING,
-    payload: true
+    payload: true,
   });
   Axios({
     url: `${Prefix.api}/report-by-partner?id=${id}`,
     method: "GET",
     responseType: "blob", // important
-    headers: headers()
+    headers: headers(),
   })
-    .then(response => {
+    .then((response) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -617,20 +619,20 @@ export const getReportsByPartner = (id: any) => async (dispatch: Function) => {
       link.click();
       dispatch({
         type: ACTIONS.SET_REPORT_BY_PARTNER_LOADING,
-        payload: false
+        payload: false,
       });
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch({
         type: ACTIONS.SET_REPORT_BY_PARTNER_LOADING,
-        payload: false
+        payload: false,
       });
       snackBarUpdate({
         payload: {
           message: "General Error",
           type: "error",
-          status: true
-        }
+          status: true,
+        },
       })(dispatch);
     });
 };
@@ -640,37 +642,37 @@ export const searchFamilyByPerson = (id: number, term: string = "") => async (
 ) => {
   dispatch({
     type: ACTIONS.SET_FAMILY_BY_PERSON_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.searchFamilyByPerson(id, term);
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_FAMILY_BY_PERSON,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_FAMILY_BY_PERSON_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
   } catch (error) {
     dispatch({
       type: ACTIONS.SET_FAMILY_BY_PERSON_LOADING,
-      payload: false
+      payload: false,
     });
     snackBarUpdate({
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     return error;
   }
@@ -679,13 +681,13 @@ export const searchFamilyByPerson = (id: number, term: string = "") => async (
 export const assignPerson = (body: any) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_ASSIGN_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const response = await Person.assignPerson(body);
     const {
       status,
-      data: { data }
+      data: { data },
     } = response;
     let createresponse: any = [];
     if (status === 200 || status === 201) {
@@ -694,13 +696,13 @@ export const assignPerson = (body: any) => async (dispatch: Function) => {
         payload: {
           message: "Persona Relacionada!",
           type: "success",
-          status: true
-        }
+          status: true,
+        },
       })(dispatch);
       dispatch(searchFamilyByPerson(body.base_id));
       dispatch({
         type: ACTIONS.SET_ASSIGN_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return createresponse;
@@ -708,7 +710,7 @@ export const assignPerson = (body: any) => async (dispatch: Function) => {
     let message = "General Error";
     if (error && error.response) {
       const {
-        data: { message: msg }
+        data: { message: msg },
       } = error.response;
       message = msg;
     }
@@ -716,12 +718,12 @@ export const assignPerson = (body: any) => async (dispatch: Function) => {
       payload: {
         message,
         type: "error",
-        status: true
-      }
+        status: true,
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_ASSIGN_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -732,24 +734,24 @@ export const searchPartnersToAssign = (term: string) => async (
 ) => {
   dispatch({
     type: ACTIONS.SET_PARTNERS_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.searchToAssign(term);
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_PARTNERS_TO_ASSIGN,
-        payload: response
+        payload: response,
       });
     }
     dispatch({
       type: ACTIONS.SET_PARTNERS_LOADING,
-      payload: false
+      payload: false,
     });
     return response;
   } catch (error) {
@@ -757,12 +759,12 @@ export const searchPartnersToAssign = (term: string) => async (
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_PARTNERS_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -773,24 +775,24 @@ export const searchTitularToAssign = (term: string) => async (
 ) => {
   dispatch({
     type: ACTIONS.SET_TITULAR_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.searchToAssign(term);
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_TITULAR_TO_ASSIGN,
-        payload: response
+        payload: response,
       });
     }
     dispatch({
       type: ACTIONS.SET_TITULAR_LOADING,
-      payload: false
+      payload: false,
     });
     return response;
   } catch (error) {
@@ -798,12 +800,12 @@ export const searchTitularToAssign = (term: string) => async (
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_TITULAR_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -814,31 +816,31 @@ export const getFamiliesPartnerByCard = (card: string) => async (
 ) => {
   dispatch({
     type: ACTIONS.SET_FAMILIES_PARTNER_CARD_LOADING,
-    payload: true
+    payload: true,
   });
   dispatch({
     type: ACTIONS.GET_FAMILIES_PARTNER_BY_CARD,
-    payload: {}
+    payload: {},
   });
   dispatch({
     type: ACTIONS.GET_GUEST_BY_PARTNER,
-    payload: {}
+    payload: {},
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.getFamiliesPartnerByCard(card);
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_FAMILIES_PARTNER_BY_CARD,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_FAMILIES_PARTNER_CARD_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
@@ -846,7 +848,7 @@ export const getFamiliesPartnerByCard = (card: string) => async (
     let message = "General Error";
     if (error && error.response) {
       const {
-        data: { message: msg }
+        data: { message: msg },
       } = error.response;
       message = msg;
     }
@@ -854,12 +856,12 @@ export const getFamiliesPartnerByCard = (card: string) => async (
       payload: {
         message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_FAMILIES_PARTNER_CARD_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -870,27 +872,27 @@ export const getGuestByPartner = (identification: string) => async (
 ) => {
   dispatch({
     type: ACTIONS.SET_GUEST_BY_PARTNER_LOADING,
-    payload: true
+    payload: true,
   });
   dispatch({
     type: ACTIONS.GET_GUEST_BY_PARTNER,
-    payload: {}
+    payload: {},
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.getGuestByPartner(identification);
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_GUEST_BY_PARTNER,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_GUEST_BY_PARTNER_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
@@ -899,12 +901,12 @@ export const getGuestByPartner = (identification: string) => async (
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_GUEST_BY_PARTNER_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -915,7 +917,7 @@ export const clear = () => ({ type: ACTIONS.CLEAR });
 export const clearPersons = () => ({ type: ACTIONS.CLEAR_PERSONS });
 
 export const clearPersonLockersByLocation = () => ({
-  type: ACTIONS.CLEAR_PERSON_LOCKERS_BY_LOCATION
+  type: ACTIONS.CLEAR_PERSON_LOCKERS_BY_LOCATION,
 });
 
 export const filter = (
@@ -925,12 +927,12 @@ export const filter = (
 ) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.filter(form, page, perPage);
     let response = [];
     if (status === 200) {
@@ -938,21 +940,21 @@ export const filter = (
         total: data.total,
         perPage: data.per_page,
         prevPageUrl: data.prev_page_url,
-        currentPage: data.current_page
+        currentPage: data.current_page,
       };
       response = data.data;
       dispatch({
         type: ACTIONS.GET_ALL,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_PAGINATION,
-        payload: pagination
+        payload: pagination,
       });
     }
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return response;
   } catch (error) {
@@ -960,12 +962,12 @@ export const filter = (
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -974,15 +976,15 @@ export const filter = (
 export const filterReport = (body: object) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_SECOND_LOADING,
-    payload: true
+    payload: true,
   });
   Axios({
     url: `${Prefix.api}/person-filter-report`,
     method: "GET",
     responseType: "blob", // important
     params: { ...body },
-    headers: headers()
-  }).then(response => {
+    headers: headers(),
+  }).then((response) => {
     const url = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
     link.href = url;
@@ -991,7 +993,7 @@ export const filterReport = (body: object) => async (dispatch: Function) => {
     link.click();
     dispatch({
       type: ACTIONS.SET_SECOND_LOADING,
-      payload: false
+      payload: false,
     });
   });
 };
@@ -1001,37 +1003,37 @@ export const getLockersByLocation = (queryString: object) => async (
 ) => {
   dispatch({
     type: ACTIONS.SET_PERSON_LOCKERS_BY_LOCATION_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.getLockersByLocation(queryString);
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_PERSON_LOCKERS_BY_LOCATION,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_PERSON_LOCKERS_BY_LOCATION_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
   } catch (error) {
     dispatch({
       type: ACTIONS.SET_PERSON_LOCKERS_BY_LOCATION_LOADING,
-      payload: false
+      payload: false,
     });
     snackBarUpdate({
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     return error;
   }
@@ -1040,37 +1042,37 @@ export const getLockersByLocation = (queryString: object) => async (
 export const getLockersByPartner = (id: any) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_PERSON_LOCKERS_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.getLockersByPartner(id);
     let response = [];
     if (status === 200) {
       response = data.lockers;
       dispatch({
         type: ACTIONS.SET_PERSON_LOCKERS,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_PERSON_LOCKERS_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
   } catch (error) {
     dispatch({
       type: ACTIONS.SET_PERSON_LOCKERS_LOADING,
-      payload: false
+      payload: false,
     });
     snackBarUpdate({
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     return error;
   }
@@ -1079,37 +1081,37 @@ export const getLockersByPartner = (id: any) => async (dispatch: Function) => {
 export const getPartnerStatistics = () => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_PARTNER_STATISTICS_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.getPersonCountByIsPartner(1);
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_PARTNER_STATISTICS,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_PARTNER_STATISTICS_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
   } catch (error) {
     dispatch({
       type: ACTIONS.SET_PARTNER_STATISTICS_LOADING,
-      payload: false
+      payload: false,
     });
     snackBarUpdate({
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     return error;
   }
@@ -1118,77 +1120,76 @@ export const getPartnerStatistics = () => async (dispatch: Function) => {
 export const getFamilyStatistics = () => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_FAMILY_STATISTICS_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.getPersonCountByIsPartner(2);
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_FAMILY_STATISTICS,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_FAMILY_STATISTICS_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
   } catch (error) {
     dispatch({
       type: ACTIONS.SET_FAMILY_STATISTICS_LOADING,
-      payload: false
+      payload: false,
     });
     snackBarUpdate({
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     return error;
   }
 };
 
-
 export const getGuestStatistics = () => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_GUEST_STATISTICS_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.getPersonCountByIsPartner(3);
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_GUEST_STATISTICS,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_GUEST_STATISTICS_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
   } catch (error) {
     dispatch({
       type: ACTIONS.SET_GUEST_STATISTICS_LOADING,
-      payload: false
+      payload: false,
     });
     snackBarUpdate({
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     return error;
   }
@@ -1197,127 +1198,136 @@ export const getGuestStatistics = () => async (dispatch: Function) => {
 export const getPersonsStatistics = () => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_PERSONS_STATISTICS_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.getPersonsCount();
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_PERSONS_STATISTICS,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_PERSONS_STATISTICS_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
   } catch (error) {
     dispatch({
       type: ACTIONS.SET_PERSONS_STATISTICS_LOADING,
-      payload: false
+      payload: false,
     });
     snackBarUpdate({
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     return error;
   }
 };
 
-export const getPersonsExceptionStatistics = () => async (dispatch: Function) => {
+export const getPersonsExceptionStatistics = () => async (
+  dispatch: Function
+) => {
   dispatch({
     type: ACTIONS.SET_PERSONS_EXCEPTION_STATISTICS_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.getPersonsExceptionStatistics();
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_PERSONS_EXCEPTION_STATISTICS,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_PERSONS_EXCEPTION_STATISTICS_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
   } catch (error) {
     dispatch({
       type: ACTIONS.SET_PERSONS_EXCEPTION_STATISTICS_LOADING,
-      payload: false
+      payload: false,
     });
     snackBarUpdate({
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     return error;
   }
 };
 
-export const getPersonsBirthdayStatistics = () => async (dispatch: Function) => {
+export const getPersonsBirthdayStatistics = () => async (
+  dispatch: Function
+) => {
   dispatch({
     type: ACTIONS.SET_PERSONS_BIRTHDAY_STATISTICS_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.getPersonsBirthdayStatistics();
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_PERSONS_BIRTHDAY_STATISTICS,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_PERSONS_BIRTHDAY_STATISTICS_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
   } catch (error) {
     dispatch({
       type: ACTIONS.SET_PERSONS_BIRTHDAY_STATISTICS_LOADING,
-      payload: false
+      payload: false,
     });
     snackBarUpdate({
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     return error;
   }
 };
 
-export const getPartners = (page: number = 1, perPage: number = 8) => async (dispatch: Function) => {
+export const getPartners = (page: number = 1, perPage: number = 8) => async (
+  dispatch: Function
+) => {
   dispatch({
     type: ACTIONS.GET_PARTNERS_LOADING,
-    payload: true
+    payload: true,
   });
   try {
-    const { data: { data }, status } = await Person.getPartners(page, perPage);
+    const {
+      data: { data },
+      status,
+    } = await Person.getPartners(page, perPage);
     let response = [];
     if (status === 200) {
       const pagination = {
@@ -1331,15 +1341,15 @@ export const getPartners = (page: number = 1, perPage: number = 8) => async (dis
       response = data.data;
       dispatch({
         type: ACTIONS.GET_PARTNERS,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_PAGINATION,
-        payload: pagination
+        payload: pagination,
       });
       dispatch({
         type: ACTIONS.GET_PARTNERS_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
@@ -1348,55 +1358,102 @@ export const getPartners = (page: number = 1, perPage: number = 8) => async (dis
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
 };
 
-export const getClient = (login: string = "") => async (
-  dispatch: Function
-) => {
+export const getClient = (login: string = "") => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_CLIENT_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const {
       data: { data },
-      status
+      status,
     } = await Person.getClient(login);
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_CLIENT,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_CLIENT_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
   } catch (error) {
     dispatch({
       type: ACTIONS.SET_CLIENT_LOADING,
-      payload: false
+      payload: false,
     });
     snackBarUpdate({
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     return error;
   }
 };
 
+export const setForgotPassword = (body: object) => async (dispatch: Function) => {
+  dispatch({
+    type: ACTIONS.SET_LOADING,
+    payload: true,
+  });
+  try {
+    const response = await Person.forgotPassword(body);
+    const {
+      status,
+      data: { data },
+    } = response;
+    let forgotPasswordResponse: any = [];
+    if (status === 200 || status === 201) {
+      forgotPasswordResponse = data;
+      snackBarUpdate({
+        payload: {
+          message: "La contraseña fue establecida exitosamente",
+          type: "success",
+          status: true,
+        },
+      })(dispatch);
+      dispatch({
+        type: ACTIONS.SET_LOADING,
+        payload: false,
+      });
+    }
+    return forgotPasswordResponse;
+  } catch (error) {
+    let message = "General Error";
+    if (error && error.response) {
+      const {
+        data: { message: msg },
+      } = error.response;
+      message = msg;
+    }
+    snackBarUpdate({
+      payload: {
+        message,
+        type: "error",
+        status: true,
+      },
+    })(dispatch);
+    dispatch({
+      type: ACTIONS.SET_LOADING,
+      payload: false,
+    });
+    return error;
+  }
+};

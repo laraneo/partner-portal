@@ -30,8 +30,8 @@ const API = {
   remove(id: number) {
     return AXIOS.delete(`${Prefix.api}/user/${id}`, { headers: headers() });
   },
-  search(term: string) {
-    return AXIOS.get(`${Prefix.api}/user-search?term=${term}`, { headers: headers() });
+  search(data: any) {
+    return AXIOS.get(`${Prefix.api}/user-search`, { params: { ...data }, headers: headers() });
   },
   updatePassword(data: object) {
     return AXIOS.post(

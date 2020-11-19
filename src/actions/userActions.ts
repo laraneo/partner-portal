@@ -40,19 +40,31 @@ export const getAll = () => async (dispatch: Function) => {
   }
 };
 
-export const search = (term: string) => async (dispatch: Function) => {
+export const search = (queryString: any) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
     payload: true
   });
   try {
-    const { data: { data }, status } = await API.search(term);
+    const { data: { data }, status } = await API.search(queryString);
     let response = [];
     if (status === 200) {
-      response = data;
+      const pagination = {
+        total: data.total,
+        perPage: data.per_page,
+        prevPageUrl: data.prev_page_url,
+        currentPage: data.current_page,
+        from: data.from,
+        to: data.to,
+      };
+      response = data.data;
       dispatch({
         type: ACTIONS.GET_ALL,
         payload: response
+      });
+      dispatch({
+        type: ACTIONS.SET_PAGINATION,
+        payload: pagination
       });
     }
     dispatch({

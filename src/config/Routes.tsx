@@ -40,6 +40,7 @@ import PersonMobile from "../containers/personMobile";
 import LoadApplicant from "../containers/LoadApplicant";
 import Applicants from "../containers/Applicants";
 import ActiveApplicants from "../containers/ActiveApplicants";
+import ForgotPasswword from "../containers/ForgotPassword";
 
 export default function Routes() {
   return (
@@ -47,6 +48,7 @@ export default function Routes() {
         <Switch>
           <Route path="/" exact component={Login} />
           <Route path="/template/expiration-cards" component={ExpirationCard} />
+          <Route path="/forgot-password" exact component={ForgotPasswword} />
           <Route
             path="/dashboard"
             exact={false}

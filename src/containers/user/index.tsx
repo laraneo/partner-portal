@@ -11,12 +11,21 @@ import UserForm from "../../components/UserForm";
 import DataTable4 from "../../components/DataTable4";
 import UserColumns from "../../interfaces/UserColumns";
 import CustomSearch from "../../components/FormElements/CustomSearch";
+import { useForm } from "react-hook-form";
+
+type FormData = {
+  term: string;
+};
 
 export default function User() {
+  const { handleSubmit, register, setValue, getValues } = useForm<FormData>();
   const dispatch = useDispatch();
-  const { list, loading } = useSelector((state: any) => state.userReducer);
+  const { list, loading, pagination } = useSelector(
+    (state: any) => state.userReducer
+  );
 
-  const getCurrentRow = (id: number) =>  list.find((element: any) => element.id === id);
+  const getCurrentRow = (id: number) =>
+    list.find((element: any) => element.id === id);
 
   const columns: UserColumns[] = [
     {
@@ -84,7 +93,7 @@ export default function User() {
           status = "NO";
           backgroundColor = "#e74c3c";
         }
-  
+
         return (
           <Chip
             label={status}
@@ -112,7 +121,7 @@ export default function User() {
         } else {
           status = "Otros";
         }
-  
+
         return (
           <Chip
             label={status}
@@ -131,7 +140,7 @@ export default function User() {
 
   useEffect(() => {
     async function fetchData() {
-      dispatch(getAll());
+      dispatch(search({ perPage: 8 }));
     }
     fetchData();
   }, [dispatch]);
@@ -166,38 +175,58 @@ export default function User() {
 
   const handleSearch = (event: any) => {
     if (event.value.trim() === "") {
-      dispatch(getAll());
+      dispatch(search({ perPage: 8 }));
+      setValue("term", "");
     } else {
-      dispatch(search(event.value));
+      dispatch(search({ term: event.value, perPage: 8 }));
+      setValue("term", event.value);
     }
   };
 
+  const handleChangePage = (newPage: number) => {
+    const form = getValues();
+    const page = pagination.currentPage === 1 ? 2 : newPage;
+    dispatch(search({ term: form.term, page, perPage: pagination.perPage }));
+  };
+
+  const handlePerPage = (page: number, perPage: number) => {
+    const form = getValues();
+    dispatch(search({ term: form.term, page, perPage }));
+  };
+
+  const handleForm = () => {};
   return (
     <div className="gender-container">
-      <div className="gender-container__header">
-        <div className="gender-container__title">Usuarios</div>
-        <div
-          className="gender-container__button"
-          onClick={() => handleCreate()}
-        >
-          <Fab size="small" color="primary" aria-label="add">
-            <AddIcon />
-          </Fab>
+      <form onSubmit={handleSubmit(handleForm)} noValidate>
+        <div className="gender-container__header">
+          <div className="gender-container__title">Usuarios</div>
+          <div
+            className="gender-container__button"
+            onClick={() => handleCreate()}
+          >
+            <Fab size="small" color="primary" aria-label="add">
+              <AddIcon />
+            </Fab>
+          </div>
         </div>
-      </div>
-      <div className="gender-container__search">
-        <CustomSearch handleSearch={handleSearch} />
-      </div>
-      <div>
-        <DataTable4
-          rows={list}
-          columns={columns}
-          handleEdit={handleEdit}
-          handleDelete={handleDelete}
-          loading={loading}
-          fontSize="11px"
-        />
-      </div>
+        <div className="gender-container__search">
+          <CustomSearch handleSearch={handleSearch} />
+          <input style={{ display: "none" }} name="term" ref={register} />
+        </div>
+        <div>
+          <DataTable4
+            rows={list}
+            columns={columns}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            loading={loading}
+            fontSize="11px"
+            onChangePage={handleChangePage}
+            onChangePerPage={handlePerPage}
+            pagination={pagination}
+          />
+        </div>
+      </form>
     </div>
   );
 }

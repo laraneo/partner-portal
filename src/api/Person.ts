@@ -182,6 +182,15 @@ const Person = {
       headers: headers()
     });
   },
+  forgotPassword(data: any) {
+    return AXIOS.post(
+      `${Prefix.api}/forgot-password`,
+      {
+        ...data
+      },
+      { headers: headers() }
+    );
+  },
 };
 
 export default Person;

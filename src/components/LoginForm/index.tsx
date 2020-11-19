@@ -59,6 +59,10 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ handleForm, loading }) =
   const history = useHistory();
   const { handleSubmit, register, errors } = useForm<FormData>();
 
+  const handleForgotPassword = () => {
+    history.push('/forgot-password');
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
@@ -121,6 +125,18 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ handleForm, loading }) =
             Iniciar Sesion
           </Button>
         {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+      </div>
+      <div className={classes.wrapper}>
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={handleForgotPassword}
+          >
+            Restablecer contraseña
+          </Button>
       </div>
       {/* <div className={classes.wrapper}>
           <Button
