@@ -122,6 +122,7 @@ export default function ForgotPasswword(): JSX.Element {
                 placeholder="Nueva Clave"
                 field="password"
                 required
+                type="password"
                 register={register}
                 errorsField={errors.password}
                 errorsMessageField={errors.password && errors.password.message}
@@ -132,6 +133,7 @@ export default function ForgotPasswword(): JSX.Element {
                 placeholder="Confirmar Clave"
                 field="password2"
                 required
+                type="password"
                 register={register}
                 errorsField={errors.password2}
                 errorsMessageField={
