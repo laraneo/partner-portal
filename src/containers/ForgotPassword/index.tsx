@@ -5,11 +5,13 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
 import CustomTextField from "../../components/FormElements/CustomTextField";
 import snackBarUpdate from "../../actions/snackBarActions";
 import { setForgotPassword } from "../../actions/personActions";
 import { useHistory } from "react-router-dom";
+import Logo from "../../components/Logo";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,9 +50,13 @@ type FormData = {
 
 export default function ForgotPasswword(): JSX.Element {
   const classes = useStyles();
-  const { handleSubmit, register, errors, reset, setValue } = useForm<
-    FormData
-  >();
+  const {
+    handleSubmit,
+    register,
+    errors,
+    reset,
+    setValue,
+  } = useForm<FormData>();
   const loading = useSelector((state: any) => state.personReducer.loading);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -76,10 +82,7 @@ export default function ForgotPasswword(): JSX.Element {
   };
 
   return (
-    <Grid container spacing={3} justify="center">
-      <Grid item xs={12} style={{ textAlign: "center", marginTop: 30, fontWeight: 'bold' }}>
-        Proporcione los detalles para registrar su contraseña a continuacion
-      </Grid>
+    <Grid container spacing={3} justify="center" style={{ paddingTop: 40 }}>
       <Grid item xs={3} style={{ textAlign: "center" }}>
         <Grid container spacing={3} justify="center">
           <form
@@ -88,7 +91,19 @@ export default function ForgotPasswword(): JSX.Element {
             noValidate
           >
             <Grid item xs={12}>
+              <Logo />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography component="h1" variant="h5">
+                Portal de Socios
+              </Typography>
+            </Grid>
+            <Grid item xs={12} style={{ marginTop: 10, marginBottom: 10 }}>
+              Registro de Contraseña
+            </Grid>
+            <Grid item xs={12}>
               <CustomTextField
+                variant="outlined"
                 placeholder="Cedula"
                 field="doc_id"
                 required
@@ -99,6 +114,7 @@ export default function ForgotPasswword(): JSX.Element {
             </Grid>
             <Grid item xs={12}>
               <CustomTextField
+                variant="outlined"
                 placeholder="Acción"
                 field="group_id"
                 required
@@ -109,6 +125,7 @@ export default function ForgotPasswword(): JSX.Element {
             </Grid>
             <Grid item xs={12}>
               <CustomTextField
+                variant="outlined"
                 placeholder="Correo"
                 field="email"
                 required
@@ -119,6 +136,7 @@ export default function ForgotPasswword(): JSX.Element {
             </Grid>
             <Grid item xs={12}>
               <CustomTextField
+                variant="outlined"
                 placeholder="Nueva Clave"
                 field="password"
                 required
@@ -130,6 +148,7 @@ export default function ForgotPasswword(): JSX.Element {
             </Grid>
             <Grid item xs={12}>
               <CustomTextField
+                variant="outlined"
                 placeholder="Confirmar Clave"
                 field="password2"
                 required
@@ -141,7 +160,7 @@ export default function ForgotPasswword(): JSX.Element {
                 }
               />
             </Grid>
-            <Grid item xs={12} style={{ marginTop: 20 }} >
+            <Grid item xs={12} style={{ marginTop: 20 }}>
               <div className={classes.wrapper}>
                 <Button
                   type="submit"
@@ -162,17 +181,19 @@ export default function ForgotPasswword(): JSX.Element {
               </div>
             </Grid>
             <Grid item xs={12}>
-              <Button
-                type="button"
-                fullWidth
-                variant="contained"
-                color="primary"
-                disabled={loading}
-                className={classes.submit}
-                onClick={handleBack}
-              >
-                Regresar
-              </Button>
+              <div className={classes.wrapper}>
+                <Button
+                  type="button"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  disabled={loading}
+                  className={classes.submit}
+                  onClick={handleBack}
+                >
+                  Regresar
+                </Button>
+              </div>
             </Grid>
           </form>
         </Grid>

@@ -57,6 +57,7 @@ type CustomTextFieldProps = {
   maxDate?: any;
   formatNumber?: boolean;
   label?: string;
+  variant?: any;
 };
 
 const CustomTextField: FunctionComponent<CustomTextFieldProps> = ({
@@ -74,9 +75,11 @@ const CustomTextField: FunctionComponent<CustomTextFieldProps> = ({
   multiline = false,
   maxDate,
   formatNumber,
-  label
+  label,
+  variant = 'standard'
 }) => (
   <TextField
+    variant={variant}
     rows={multiline ? "4" : ""}
     multiline={multiline}
     label={ label ? label : placeholder}
