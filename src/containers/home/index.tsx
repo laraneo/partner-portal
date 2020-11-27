@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { makeStyles, createStyles, Theme, useTheme } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  createStyles,
+  Theme,
+  useTheme,
+} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 import PaymentIcon from "@material-ui/icons/Payment";
@@ -50,7 +55,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Home() {
   const theme = useTheme();
-  const match = useMediaQuery(theme.breakpoints.down("xs"))
+  const match = useMediaQuery(theme.breakpoints.down("xs"));
   const classes = useStyles();
   const {
     webServiceReducer: { clientBalance, setBalanceLoading },
@@ -80,7 +85,12 @@ export default function Home() {
 
   useEffect(() => {
     if (parameterList.length > 0 && validateWidget("PARTNERPORTAL_saldo")) {
-      dispatch(getBalance(wsAttemps.value));
+      const valSaldo = Helper.getParameter(parameterList, "VALIDAR_SALDO");
+      if (!_.isEmpty(valSaldo)) {
+        if (valSaldo.value == 1) {
+          dispatch(getBalance(wsAttemps.value));
+        }
+      }
     }
   }, [dispatch, widgetList, parameterList, wsAttemps.value]);
 
@@ -115,14 +125,13 @@ export default function Home() {
       "LINK_ACTUALIZACION_DATOS"
     );
     actualizacionDatosLink = parameter.value;
-    if(!hiddeMobileWidget("PARTNERPORTAL_actualizacion-datos")) {
-      if(match) {
-        actualizacionDatosLink = '/dashboard/actualizacion-datos-mobile';
+    if (!hiddeMobileWidget("PARTNERPORTAL_actualizacion-datos")) {
+      if (match) {
+        actualizacionDatosLink = "/dashboard/actualizacion-datos-mobile";
       } else {
-        actualizacionDatosLink = '/dashboard/actualizacion-datos-mobile';
+        actualizacionDatosLink = "/dashboard/actualizacion-datos-mobile";
       }
     }
-
   }
 
   let miAccesoLink = null;
@@ -144,56 +153,94 @@ export default function Home() {
   }
 
   const renderWidgetGolf = () => {
-    if (setBalanceLoading) {
-      return (
-        <Grid item sm={12} xs={12} md={3}>
-          <Loader />
-        </Grid>
-      );
-    }
-    if (!_.isEmpty(clientBalance)) {
-      return (
-        <Grid item sm={12} xs={12} md={3}>
-          <Paper>
-            <Widgtet1
-              Icon={EventAvailableIcon}
-              title="Golf"
-              type="Saldo"
-              amount={clientBalance.saldo_vigencia}
-              statusSaldo={clientBalance.status}
-              link={reservacionesLink}
-              paramText="SHOW_GOLF"
-            />
-          </Paper>
-        </Grid>
-      );
+    const validarSaldo = Helper.getParameter(parameterList, "VALIDAR_SALDO");
+    if (!_.isEmpty(validarSaldo)) {
+      if (validarSaldo.value == 0) {
+        return (
+          <Grid item sm={12} xs={12} md={3}>
+            <Paper>
+              <Widgtet
+                Icon={EventAvailableIcon}
+                title="Golf"
+                link={reservacionesLink}
+              />
+            </Paper>
+          </Grid>
+        );
+      }
+
+      if (validarSaldo.value == 1) {
+        if (setBalanceLoading) {
+          return (
+            <Grid item sm={12} xs={12} md={3}>
+              <Loader />
+            </Grid>
+          );
+        }
+        if (!_.isEmpty(clientBalance)) {
+          return (
+            <Grid item sm={12} xs={12} md={3}>
+              <Paper>
+                <Widgtet1
+                  Icon={EventAvailableIcon}
+                  title="Golf"
+                  type="Saldo"
+                  amount={clientBalance.saldo_vigencia}
+                  statusSaldo={clientBalance.status}
+                  link={reservacionesLink}
+                  paramText="SHOW_GOLF"
+                />
+              </Paper>
+            </Grid>
+          );
+        }
+      }
     }
   };
 
   const renderWidgetTennis = () => {
-    if (setBalanceLoading) {
-      return (
-        <Grid item sm={12} xs={12} md={3}>
-          <Loader />
-        </Grid>
-      );
-    }
-    if (!_.isEmpty(clientBalance)) {
-      return (
-        <Grid item sm={12} xs={12} md={3}>
-          <Paper>
-            <Widgtet1
-              Icon={EventAvailableIcon}
-              title="Tenis"
-              type="Saldo"
-              amount={clientBalance.saldo_vigencia}
-              statusSaldo={clientBalance.status}
-              link={tennisLink}
-              paramText="SHOW_TENIS"
-            />
-          </Paper>
-        </Grid>
-      );
+    const validarSaldo = Helper.getParameter(parameterList, "VALIDAR_SALDO");
+    if (!_.isEmpty(validarSaldo)) {
+      if (validarSaldo.value == 0) {
+        return (
+          <Grid item sm={12} xs={12} md={3}>
+            <Paper>
+              <Widgtet
+                Icon={EventAvailableIcon}
+                title="Tenis"
+                link={tennisLink}
+              />
+            </Paper>
+          </Grid>
+        );
+      }
+
+      if (validarSaldo.value == 1) {
+        if (setBalanceLoading) {
+          return (
+            <Grid item sm={12} xs={12} md={3}>
+              <Loader />
+            </Grid>
+          );
+        }
+        if (!_.isEmpty(clientBalance)) {
+          return (
+            <Grid item sm={12} xs={12} md={3}>
+              <Paper>
+                <Widgtet1
+                  Icon={EventAvailableIcon}
+                  title="Tenis"
+                  type="Saldo"
+                  amount={clientBalance.saldo_vigencia}
+                  statusSaldo={clientBalance.status}
+                  link={tennisLink}
+                  paramText="SHOW_TENIS"
+                />
+              </Paper>
+            </Grid>
+          );
+        }
+      }
     }
   };
 
@@ -239,7 +286,7 @@ export default function Home() {
             className={`${
               hiddeMobileWidget("PARTNERPORTAL_actualizacion-datos")
                 ? classes.hideMobileWidget
-                : ''
+                : ""
             }`}
           >
             <Paper>
