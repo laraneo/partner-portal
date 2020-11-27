@@ -159,7 +159,6 @@ export default function ApplicantForm(props: Iprops): JSX.Element {
                     field="file"
                     label="Archivo"
                     required
-                    onlyImage
                     register={register}
                     setValue={setValue}
                     requiredErrorMessage={errors.pictureFile && errors.pictureFile.message}

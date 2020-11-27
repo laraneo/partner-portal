@@ -5,7 +5,12 @@ import { Card, Grid, IconButton } from "@material-ui/core";
 import AddAlertIcon from "@material-ui/icons/AddAlert";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { makeStyles, withStyles, Theme, createStyles } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  withStyles,
+  Theme,
+  createStyles,
+} from "@material-ui/core/styles";
 
 import { AnyIfEmpty, useDispatch, useSelector } from "react-redux";
 import { getActiveApplicants } from "../../actions/applicantsActions";
@@ -33,37 +38,37 @@ function ImageViewer(props: IImageViewerProps) {
   );
 }
 
-const useStyles = makeStyles((theme: Theme) => createStyles(
-  {
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
     root: {
       overflowX: "auto",
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up("sm")]: {
         width: "100%",
       },
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down("sm")]: {
         maxWidth: window.innerWidth - 20,
         width: window.innerWidth - 20,
       },
     },
     container: {
-      maxHeight: 440
+      maxHeight: 440,
     },
     progress: {
       display: "flex",
       justifyContent: "left",
-      padding: 10
+      padding: 10,
     },
     tableCellHeader: {
       padding: 4,
-      '&:first-child': {
-        paddingLeft: 5
+      "&:first-child": {
+        paddingLeft: 5,
       },
-      '&:last-child': {
-        paddingRight: '0px !important'
-      }
+      "&:last-child": {
+        paddingRight: "0px !important",
+      },
     },
-  }
-));
+  })
+);
 
 interface ItemProps {
   user: any;
@@ -73,6 +78,7 @@ interface ItemProps {
 
 function Item(props: ItemProps): JSX.Element {
   const { user, handleImage, handleDetail } = props;
+  const ext = user.sArchivo.split(".").pop();
   return (
     <Grid
       container
@@ -109,14 +115,27 @@ function Item(props: ItemProps): JSX.Element {
       <Grid item sm={3} xs={3} md={3}>
         <Grid container spacing={5} justify="center" direction="column">
           <Grid item sm={12} xs={12} md={12}>
-            <IconButton
-              aria-label="file"
-              size="medium"
-              color="primary"
-              onClick={() => handleImage(user.sArchivo)}
-            >
-              <AssignmentIcon fontSize="inherit" style={{ fontSize: 20 }} />
-            </IconButton>
+            {ext === "pdf" ? (
+              <a target="_blank" href={user.sArchivo} title="file2">
+                <IconButton
+                  aria-label="file"
+                  size="medium"
+                  color="primary"
+                  // onClick={() => handleEdit(row.id)}
+                >
+                  <AssignmentIcon fontSize="inherit" style={{ fontSize: 20 }} />
+                </IconButton>
+              </a>
+            ) : (
+              <IconButton
+                aria-label="file"
+                size="medium"
+                color="primary"
+                onClick={() => handleImage(user.sArchivo)} 
+              >
+                <AssignmentIcon fontSize="inherit" style={{ fontSize: 20 }} />
+              </IconButton>
+            )}
           </Grid>
           <Grid item sm={12} xs={12} md={12}>
             <IconButton
@@ -240,7 +259,7 @@ export default function ActiveApplicants(): JSX.Element {
       <Grid item sm={12} xs={12} md={12}>
         <Grid container spacing={5}>
           {applicantsActiveList.map((element: any, i: number) => (
-            <Grid item sm={6} xs={6} md={2} lg={2} >
+            <Grid item sm={6} xs={6} md={2} lg={2}>
               <Item
                 key={i}
                 user={element}
