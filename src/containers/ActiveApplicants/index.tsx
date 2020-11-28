@@ -11,6 +11,7 @@ import {
   Theme,
   createStyles,
 } from "@material-ui/core/styles";
+import _ from "lodash";
 
 import { AnyIfEmpty, useDispatch, useSelector } from "react-redux";
 import { getActiveApplicants } from "../../actions/applicantsActions";
@@ -77,8 +78,16 @@ interface ItemProps {
 }
 
 function Item(props: ItemProps): JSX.Element {
+  const {
+    parameterReducer: { listData: parameterList },
+  } = useSelector((state: any) => state);
   const { user, handleImage, handleDetail } = props;
   const ext = user.sArchivo.split(".").pop();
+  const allowAplicantOpinion = Helper.getParameter(
+    parameterList,
+    "ALLOW_APPLICANT_OPINION"
+  );
+
   return (
     <Grid
       container
@@ -131,22 +140,24 @@ function Item(props: ItemProps): JSX.Element {
                 aria-label="file"
                 size="medium"
                 color="primary"
-                onClick={() => handleImage(user.sArchivo)} 
+                onClick={() => handleImage(user.sArchivo)}
               >
                 <AssignmentIcon fontSize="inherit" style={{ fontSize: 20 }} />
               </IconButton>
             )}
           </Grid>
-          <Grid item sm={12} xs={12} md={12}>
-            <IconButton
-              aria-label="file"
-              size="medium"
-              color="primary"
-              onClick={() => handleDetail(user)}
-            >
-              <AddAlertIcon fontSize="inherit" style={{ fontSize: 20 }} />
-            </IconButton>
-          </Grid>
+          {!_.isEmpty(allowAplicantOpinion) && allowAplicantOpinion.value == 1 && (
+            <Grid item sm={12} xs={12} md={12}>
+              <IconButton
+                aria-label="file"
+                size="medium"
+                color="primary"
+                onClick={() => handleDetail(user)}
+              >
+                <AddAlertIcon fontSize="inherit" style={{ fontSize: 20 }} />
+              </IconButton>
+            </Grid>
+          )}
         </Grid>
       </Grid>
       <Grid
@@ -183,9 +194,6 @@ export default function ActiveApplicants(): JSX.Element {
     parameterList,
     "CONTACTID_APPLICANT"
   );
-  console.log("parameterList ", parameterList);
-  console.log("departmentList ", departmentList);
-  console.log("contactIdApplicant ", contactIdApplicant);
   useEffect(() => {
     dispatch(getDepartmentList());
     dispatch(getActiveApplicants());
