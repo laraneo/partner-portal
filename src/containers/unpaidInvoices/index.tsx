@@ -194,6 +194,9 @@ export default function UnpaidInvoices() {
       minWidth: 10,
       align: "right",
       component: (value: any) => {
+        if(tasa.dTasa === -1) {
+          return <span>N/A</span>
+        }
         if (value.value && tasa.dTasa) {
           const currentTasa = value.value * tasa.dTasa;
           return (
