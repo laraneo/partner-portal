@@ -80,7 +80,7 @@ const Paypal: FunctionComponent<ComponentProps> = ({
                 order: data.orderID,
                 invoice: invoiceId,
                 amount,
-                dTasa: tasa.tasa,
+                dTasa: tasa && tasa.dTasa ? tasa.dTasa : -1,
               };
               await dispatch(setOrder(body));
               dispatch(getUnpaidInvoices(attemps));
