@@ -226,10 +226,10 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                     const banco = item;
                     const itemLenght = item.cNumCuenta.toString().length;
                     // ${item.cNumCuenta.substring(12, 16)}
-                    const number = Number(banco.cNumCuenta) ? banco.cNumCuenta.substring(itemLenght -4, itemLenght) : '';
+                    const number = banco.cNumCuenta.substring(itemLenght -4, itemLenght);
                     return (
                         <option key={banco.cCodCuenta} value={banco.cCodCuenta}>
-                          {`${banco.cNombreBanco} - ${number}`}
+                          {`${banco.cNombreBanco} - ${Number(number) ? number : ''}`}
                         </option>
                       )
                 })}
