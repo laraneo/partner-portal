@@ -71,6 +71,7 @@ import { Chip, Grid } from "@material-ui/core";
 import Logo from "../../components/Logo";
 import Helper from "../../helpers/utilities";
 import { getTasa } from "../../actions/webServiceActions";
+import BackgroundImage from "../../styles/images/background.jpeg";
 
 const drawerWidth = 240;
 
@@ -126,6 +127,11 @@ const useStyles = makeStyles((theme: Theme) =>
         display: "none",
       },
     },
+    backgroundMain: {
+      background: `url(${BackgroundImage}) no-repeat`,
+      height: "100vh",
+      backgroundSize: "100%",
+    },
   })
 );
 
@@ -137,6 +143,7 @@ interface SubMenuProps {
 const SubMenu: FunctionComponent<SubMenuProps> = ({ menu, item }) => {
   const [menuItem, setMenuItem] = useState(null);
   const history = useHistory();
+  const location = useLocation();
   const classes = useStyles();
   const findChildrens: any = menu.filter((e: any) => e.parent == item.id);
   let Icon = SettingsIcon;
@@ -471,36 +478,56 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
   };
 
   const handleLogout = () => {
-    var strWindowFeatures = "menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=500,height=500";
+    var strWindowFeatures =
+      "menubar=no,location=no,resizable=no,scrollbars=no,status=no,width=500,height=500";
     let currentWindow = window;
 
     const httpRequestList: any = [];
-    const forcedModuleLogout = Helper.checkParameter(parameterList,"FORCED_MODULESLOGOUT");
-    const linkTennisParameter = Helper.getParameter(parameterList, "LINK_TENNIS_LOGOUT");
-    const linkGolfParameter = Helper.getParameter(parameterList, "LINK_GOLF_LOGOUT");
-    const linkTournamentParameter = Helper.checkParameter( parameterList, "SHOW_TOURNAMENT");
-
+    const forcedModuleLogout = Helper.checkParameter(
+      parameterList,
+      "FORCED_MODULESLOGOUT"
+    );
+    const linkTennisParameter = Helper.getParameter(
+      parameterList,
+      "LINK_TENNIS_LOGOUT"
+    );
+    const linkGolfParameter = Helper.getParameter(
+      parameterList,
+      "LINK_GOLF_LOGOUT"
+    );
+    const linkTournamentParameter = Helper.checkParameter(
+      parameterList,
+      "SHOW_TOURNAMENT"
+    );
 
     if (forcedModuleLogout) {
-      if(linkTournamentParameter) {
+      if (linkTournamentParameter) {
         httpRequestList.push(linkTournamentParameter);
       }
 
-      if(linkGolfParameter) {
+      if (linkGolfParameter) {
         setTimeout(() => {
-          console.log('linkGolfParameter ', linkGolfParameter);
-          currentWindow.open(linkGolfParameter.value, "test1", strWindowFeatures);
+          console.log("linkGolfParameter ", linkGolfParameter);
+          currentWindow.open(
+            linkGolfParameter.value,
+            "test1",
+            strWindowFeatures
+          );
           currentWindow.blur();
           window.focus();
-         }, 1000);
+        }, 1000);
       }
-  
-      if(linkTennisParameter) {
+
+      if (linkTennisParameter) {
         setTimeout(() => {
-          currentWindow.open(linkTennisParameter.value, "test1", strWindowFeatures);
+          currentWindow.open(
+            linkTennisParameter.value,
+            "test1",
+            strWindowFeatures
+          );
           currentWindow.blur();
           window.focus();
-         }, 5000);
+        }, 5000);
       }
 
       const finalTime = linkGolfParameter && linkTennisParameter ? 10000 : 6000;
@@ -510,17 +537,16 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
           .then((res: any) => {
             setTimeout(() => {
               dispatch(logout());
-             }, finalTime);
+            }, finalTime);
           })
           .catch((errors) => {
             console.log("errors ", errors);
           });
       } else {
-       setTimeout(() => {
-        dispatch(logout());
-       }, finalTime);
+        setTimeout(() => {
+          dispatch(logout());
+        }, finalTime);
       }
-
     } else {
       dispatch(logout());
     }
@@ -677,7 +703,8 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                       onClick={handleMenu}
                       className={classes.profileButton}
                     >
-                      {!loading && `${user.name} ${user.last_name ? user.last_name : ''}`}
+                      {!loading &&
+                        `${user.name} ${user.last_name ? user.last_name : ""}`}
                     </Button>
                     <Menu
                       id="simple-menu"
@@ -687,7 +714,12 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                       onClose={handleClose}
                     >
                       <MenuItem>
-                        <AccountCircleIcon /> Usuario: {!loading ? `${user.name} ${user.last_name ? user.last_name: ''}` : ''}
+                        <AccountCircleIcon /> Usuario:{" "}
+                        {!loading
+                          ? `${user.name} ${
+                              user.last_name ? user.last_name : ""
+                            }`
+                          : ""}
                       </MenuItem>
                       {!currentRole && (
                         <MenuItem>
@@ -757,7 +789,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
           </Drawer>
         </Hidden>
       </nav>
-      <main className={classes.content}>
+      <main className={`${classes.content} ${classes.backgroundMain} `}>
         <div className={classes.toolbar} />
         {children && children}
       </main>
