@@ -71,7 +71,7 @@ import { Chip, Grid } from "@material-ui/core";
 import Logo from "../../components/Logo";
 import Helper from "../../helpers/utilities";
 import { getTasa } from "../../actions/webServiceActions";
-import BackgroundImage from "../../styles/images/background.jpeg";
+import BackgroundImage from "../../styles/images/background2.jpeg";
 
 const drawerWidth = 240;
 
@@ -131,6 +131,7 @@ const useStyles = makeStyles((theme: Theme) =>
       background: `url(${BackgroundImage}) no-repeat`,
       height: "100vh",
       backgroundSize: "100%",
+      backdropFilter: "brightness(150%)",
     },
   })
 );
