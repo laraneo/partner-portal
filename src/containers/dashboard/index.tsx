@@ -71,7 +71,7 @@ import { Chip, Grid } from "@material-ui/core";
 import Logo from "../../components/Logo";
 import Helper from "../../helpers/utilities";
 import { getTasa } from "../../actions/webServiceActions";
-import BackgroundImage from "../../styles/images/background2.jpeg";
+import BackgroundImage from "../../styles/images/background.jpeg";
 
 const drawerWidth = 240;
 
