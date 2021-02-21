@@ -198,7 +198,7 @@ export default function UnpaidInvoices() {
           return <span>N/A</span>;
         }
         if (value.value && tasa.dTasa) {
-          const currentTasa = Number(value.value) * tasa.dTasa;
+          const currentTasa = parseFloat(value.value) * tasa.dTasa;
           return (
             <NumberFormat
               thousandSeparator={"."}
