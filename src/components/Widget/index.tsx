@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: "0px",
     },
     blue: {
-      color: "#2980b9",
+      color: "#109e2f",
     },
     red: {
       color: "#c0392b",
@@ -68,7 +68,8 @@ const Widgtet: FunctionComponent<FormComponentProps> = ({
 
   let statusAmount = false;
   if (type === "Saldo" && amount && parseFloat(amount) > 0) statusAmount = true;
-  if (type === "Saldo" && amount && parseFloat(amount) <= 0) statusAmount = false;
+  if (type === "Saldo" && amount && parseFloat(amount) <= 0)
+    statusAmount = false;
 
   const renderTitle = () => {
     if (title === "Golf" || title === "Tenis") {
@@ -129,7 +130,13 @@ const Widgtet: FunctionComponent<FormComponentProps> = ({
             <div className="widget-container__detail-title">{subTitle}</div>
           )}
           {!link && (
-            <div className="widget-container__detail-amount">{type === 'Saldo' && amount ? '$ ' + amount : ( type === 'Saldo' && !amount ? 'N/A' : '')}</div>
+            <div className="widget-container__detail-amount">
+              {type === "Saldo" && amount
+                ? "$ " + amount
+                : type === "Saldo" && !amount
+                ? "N/A"
+                : ""}
+            </div>
           )}
         </div>
       </div>

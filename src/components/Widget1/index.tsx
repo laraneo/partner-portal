@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: "0px",
     },
     blue: {
-      color: "#2980b9",
+      color: "#109e2f",
     },
     red: {
       color: "#c0392b",
