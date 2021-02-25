@@ -167,40 +167,12 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
           noValidate
         >
           <Grid container spacing={1}>
-		  
-		  
-			 <Grid item sm={12} xs={12} md={12}>
-              <CustomSelect
-                label="Banco Destino"
-                selectionMessage="Seleccione"
-                field="codCuentaDestino"
-                required
-                register={register}
-                errorsMessageField={
-                  errors.codCuentaDestino && errors.codCuentaDestino.message
-                }
-              >
-                {bancoReceptorList.map((item: any) => {
-                    const banco = item;
-                    const itemLenght = item.cNumCuenta.toString().length;
-                    // ${item.cNumCuenta.substring(12, 16)}
-                    const number = banco.cNumCuenta.substring(itemLenght -4, itemLenght);
-                    return (
-                        <option key={banco.cCodCuenta} value={banco.cCodCuenta}>
-                          {`${banco.cNombreBanco} - ${Number(number) ? number : ''}`}
-                        </option>
-                      )
-                })}
-              </CustomSelect>
-            </Grid>
-		  
-		  ¨{/*
             <Grid item sm={12} xs={12} md={12}>
               <CustomSelect
                 label="Banco Origen"
                 selectionMessage="Seleccione"
                 field="codBancoOrigen"
-                //required
+                required
                 register={register}
                 errorsMessageField={
                   errors.codBancoOrigen && errors.codBancoOrigen.message
@@ -213,8 +185,6 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                 ))}
               </CustomSelect>
             </Grid>
-			*/ }
-			
             <Grid item sm={12} xs={12} md={12}>
               <CustomTextField
                 placeholder="Referencia"
@@ -241,7 +211,30 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                 maxDate={moment().format("YYYY-MM-DD")}
               />
             </Grid>
- 
+            <Grid item sm={12} xs={12} md={12}>
+              <CustomSelect
+                label="Banco Destino"
+                selectionMessage="Seleccione"
+                field="codCuentaDestino"
+                required
+                register={register}
+                errorsMessageField={
+                  errors.codCuentaDestino && errors.codCuentaDestino.message
+                }
+              >
+                {bancoReceptorList.map((item: any) => {
+                    const banco = item;
+                    const itemLenght = item.cNumCuenta.toString().length;
+                    // ${item.cNumCuenta.substring(12, 16)}
+                    const number = banco.cNumCuenta.substring(itemLenght -4, itemLenght);
+                    return (
+                        <option key={banco.cCodCuenta} value={banco.cCodCuenta}>
+                          {`${banco.cNombreBanco} - ${Number(number) ? number : ''}`}
+                        </option>
+                      )
+                })}
+              </CustomSelect>
+            </Grid>
             <Grid item sm={12} xs={12} md={12}>
               <CustomSelect
                 label="Moneda"

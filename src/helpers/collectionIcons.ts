@@ -228,7 +228,7 @@ const icons = [
     name: MailRoundedIcon,
     slug: "MailRoundedIcon",
     description: "MailRoundedIcon",
-    import: "",
+    import: "@material-ui/icons/MailRounded",
   },
   {
     name: InfoRoundedIcon,

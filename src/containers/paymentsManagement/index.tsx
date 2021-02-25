@@ -642,7 +642,7 @@ export default function PaymentsManagement() {
                                     columns={invoicesByShareColumns}
                                     loading={setUnpaidInvoicestLoading}
                                     fontSize="10px"
-                                    colorColumn='#3f51b5'
+                                    colorColumn='#109e2f'
                                 />
                             </Grid>
                         </Grid>

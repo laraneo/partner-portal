@@ -64,7 +64,7 @@ const SimpleTable: FunctionComponent<DataTableProps> = ({
                   style={{
                     minWidth: column.minWidth, 
                     fontSize,
-                    background: '#3f51b5',
+                    background: '#109e2f',
                     color: 'white',
                   }}
                 >

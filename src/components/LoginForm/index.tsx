@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useForm } from "react-hook-form";
 
+import BackgroundImage from "../../styles/images/background-login.jpeg";
 import Logo from "../Logo";
 import { useHistory } from "react-router-dom";
 
@@ -39,6 +40,13 @@ const useStyles = makeStyles(theme => ({
     marginTop: -9,
     marginLeft: -9
   },
+  backgroundLogin: {
+      background: `url(${BackgroundImage}) no-repeat`,
+      height: "100vh",
+      backgroundSize: "100%",
+      backdropFilter: "brightness(150%)",
+    },
+  
   submit: {
     margin: theme.spacing(1, 0, 2),
   },
@@ -70,6 +78,8 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ handleForm, loading }) =
         <Typography component="h1" variant="h5">
           Portal de Socios
         </Typography>
+		
+		
         <form
           className={classes.form}
           onSubmit={handleSubmit(handleForm)}
@@ -126,7 +136,8 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ handleForm, loading }) =
           </Button>
         {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
       </div>
-      <div className={classes.wrapper}>
+      {/*
+	  <div className={classes.wrapper}>
           <Button
             type="button"
             fullWidth
@@ -138,6 +149,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ handleForm, loading }) =
             Restablecer contraseña
           </Button>
       </div>
+	  */}
       {/* <div className={classes.wrapper}>
           <Button
             type="button"

@@ -420,7 +420,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   profileName: {
     textAlign: "center",
     fontWeight: "bold",
-    color: "#3f51b5",
+    color: "#109e2f",
     fontSize: "20px"
   },
   profileSubTitle: {
@@ -432,7 +432,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   profileShareTitle: {
     textAlign: "left",
     fontWeight: "bold",
-    color: "#3f51b5",
+    color: "#109e2f",
     fontSize: "16px"
   },
   profileMovement: {
@@ -454,7 +454,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: "4px"
   },
   personLockersTitle: {
-    color: "#3f51b5",
+    color: "#109e2f",
     fontWeight: "bold"
   },
   personRecordTitle: {

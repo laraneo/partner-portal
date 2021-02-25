@@ -42,7 +42,8 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center"
   },
   activeCard: {
-    boxShadow: "0px 0px 20px 0px #3F51B5"
+    //boxShadow: "0px 0px 20px 0px #3F51B5"
+	boxShadow: "0px 0px 20px 0px #109e2f"
   },
   cardHeader: {
     padding: 0,

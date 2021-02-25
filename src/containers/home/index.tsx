@@ -14,6 +14,9 @@ import ScheduleIcon from "@material-ui/icons/Schedule";
 import CreditCardRoundedIcon from "@material-ui/icons/CreditCardRounded";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
+
+import MailRoundedIcon from "@material-ui/icons/MailRounded";
+
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
@@ -305,7 +308,7 @@ export default function Home() {
             <Paper>
               <Widgtet
                 Icon={CreditCardRoundedIcon}
-                title="Paga tu Factura"
+                title="Facturas"
                 link="/dashboard/unpaid-invoices"
                 internal
               />
@@ -381,6 +384,20 @@ export default function Home() {
             </Paper>
           </Grid>
         )}
+
+        {validateWidget("PARTNERPORTAL_contacto") && (
+          <Grid item sm={12} xs={12} md={3}>
+            <Paper>
+              <Widgtet
+                Icon={MailRoundedIcon}
+                title="Contactenos"
+                link="/dashboard/contact"
+                internal
+              />
+            </Paper>
+          </Grid>
+        )}
+
 
         {validateWidget("PARTNERPORTAL_applicants") && (
           <Grid item sm={12} xs={12} md={3}>

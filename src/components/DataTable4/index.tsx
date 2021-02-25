@@ -82,6 +82,14 @@ interface DataTableProps {
   renderSubRows?: any;
   aditionalColumn?: string;
   aditionalColumnLabel?: any;
+
+  aditionalColumn1?: string;
+  aditionalColumnLabel1?: any;
+  aditionalColumn2?: string;
+  aditionalColumnLabel2?: any;
+  aditionalColumn3?: string;
+  aditionalColumnLabel3?: any;
+  
   handleSwitch?: Function;
   getSelectRow?: any;
   colorColumn?: string;
@@ -102,8 +110,17 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
   handleSubRowComponent,
   renderSubRows,
   fontSize = '12px',
+  
   aditionalColumn,
   aditionalColumnLabel,
+  
+  aditionalColumn1,
+  aditionalColumnLabel1,
+  aditionalColumn2,
+  aditionalColumnLabel2,
+  aditionalColumn3,
+  aditionalColumnLabel3,
+
   handlePayment,
   handleSwitch,
   getSelectRow,
@@ -279,6 +296,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                 <TableCell colSpan={columns.length}><CircularProgress color="primary" /></TableCell>
               </TableRow>
             ) : renderBody()}
+
             {aditionalColumn && (
               <TableRow>
                 <TableCell
@@ -289,10 +307,60 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                   }}
                   colSpan={columns.length}
                 >
-                  {aditionalColumnLabel}: {aditionalColumn}
+                   <b>{aditionalColumnLabel} </b>: {aditionalColumn}
                 </TableCell>
               </TableRow>
             )
+			}
+			
+            {aditionalColumn1 && (
+              <TableRow>
+                <TableCell
+                  className={classes.tableCellHeader}
+                  align="right"
+                  style={{
+                    minWidth: fontSize
+                  }}
+                  colSpan={columns.length}
+                >
+                   <b>{aditionalColumnLabel1}  </b>: {aditionalColumn1}
+                </TableCell>
+              </TableRow>
+            )
+			}
+			
+			
+            {aditionalColumn2 && (
+              <TableRow>
+                <TableCell
+                  className={classes.tableCellHeader}
+                  align="right"
+                  style={{
+                    minWidth: fontSize
+                  }}
+                  colSpan={columns.length}
+                >
+                  <b>  {aditionalColumnLabel2} </b> : {aditionalColumn2}
+                </TableCell>
+              </TableRow>
+            )			
+			}
+			
+            {aditionalColumn3 && (
+              <TableRow>
+                <TableCell
+                  className={classes.tableCellHeader}
+                  align="right"
+                  style={{
+                    minWidth: fontSize
+                  }}
+                  colSpan={columns.length}
+                >
+                   <b>{aditionalColumnLabel3} </b>: {aditionalColumn3}
+                </TableCell>
+              </TableRow>
+            )			
+			
             }
           </TableBody>
         </Table>
