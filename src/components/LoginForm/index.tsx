@@ -49,6 +49,11 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(1, 0, 2),
   },
+  input: {
+    "& input": {
+      background: "white",
+    },
+  },
 }));
 
 type FormData = {
@@ -108,6 +113,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({
             required={errors.username ? true : false}
             error={errors.username ? true : false}
             helperText={errors.username && errors.username.message}
+            className={classes.input}
           />
           <TextField
             variant="outlined"
@@ -127,6 +133,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({
             InputLabelProps={{
               shrink: true,
             }}
+            className={classes.input}
           />
           <div className={classes.wrapper}>
             <Button
