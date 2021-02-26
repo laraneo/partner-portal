@@ -278,7 +278,7 @@ export default function UnpaidInvoices() {
           aditionalColumn2={
                tasa.dTasa.toFixed(2)
           }
-          aditionalColumnLabel2={ "Tasa Sugerida " 
+          aditionalColumnLabel2={ "Tasa BCV " 
           }
 
 		  

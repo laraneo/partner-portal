@@ -101,7 +101,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({
             margin="normal"
             fullWidth
             id="email"
-            label="Usuario"
+            label=""
             name="username"
             autoFocus
             inputRef={register({
@@ -120,7 +120,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({
             margin="normal"
             fullWidth
             name="password"
-            label="Clave"
+            label=""
             placeholder="Clave"
             type="password"
             id="password"
