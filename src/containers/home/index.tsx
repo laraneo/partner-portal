@@ -14,6 +14,8 @@ import ScheduleIcon from "@material-ui/icons/Schedule";
 import CreditCardRoundedIcon from "@material-ui/icons/CreditCardRounded";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import DeckIcon from '@material-ui/icons/Deck';
 
 import MailRoundedIcon from "@material-ui/icons/MailRounded";
 
@@ -411,6 +413,22 @@ export default function Home() {
             </Paper>
           </Grid>
         )}
+		
+		
+		 {validateWidget("PARTNERPORTAL_horse") && (
+          <Grid item sm={12} xs={12} md={3}>
+            <Paper>
+              <Widgtet
+                Icon={DeckIcon}
+                title="Caballeriza"
+                link="/dashboard/"
+                internal
+              />
+            </Paper>
+          </Grid>
+        )}
+		
+		
       </Grid>
     </div>
   );

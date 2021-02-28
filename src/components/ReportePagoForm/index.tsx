@@ -215,6 +215,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
             </Grid>
 			*/ }
 			
+			{/*
             <Grid item sm={12} xs={12} md={12}>
               <CustomTextField
                 placeholder="Referencia"
@@ -227,6 +228,9 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                 }
               />
             </Grid>
+			*/}
+			
+			{/*
             <Grid item sm={6} xs={6} md={3}>
               <CustomTextField
                 placeholder="Fecha"
@@ -241,7 +245,8 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                 maxDate={moment().format("YYYY-MM-DD")}
               />
             </Grid>
- 
+			*/}
+			
             <Grid item sm={12} xs={12} md={12}>
               <CustomSelect
                 label="Moneda"
@@ -269,6 +274,8 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                 formatNumber
               />
             </Grid>
+			
+			{/*
             <Grid item sm={12} xs={12} md={12}>
               <CustomTextField
                 placeholder="Descripcion"
@@ -281,6 +288,8 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                 }
               />
             </Grid>
+			*/}
+			
             <Grid item sm={12} xs={12} md={12} style={{ paddingTop: 15 }}>
               <Grid container spacing={1}>
                 <Grid item xs={12}>
