@@ -295,7 +295,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
         disabled
         inputMode="none"
         displayType="text"
-        value={value ? value.toFixed(2) : 0}
+        value={value ? value : 0}
       />
     );
   };

@@ -243,7 +243,7 @@ export default function UnpaidInvoices() {
       dispatch(getUnpaidInvoices(wsAttemps.value));
     }
   }, [dispatch, parameterList, wsAttemps]);
-
+  const totalTasa = unpaidInvoices.total * tasa.dTasa;
   return (
     <div>
       <div className={classes.headerContainer}>
@@ -266,7 +266,7 @@ export default function UnpaidInvoices() {
           }
           aditionalColumn1={
             unpaidInvoices.total && unpaidInvoices.total > 0
-              ? unpaidInvoices.total * tasa.dTasa
+              ? totalTasa.toFixed(2)
               : null
           }
           aditionalColumnLabel1={
@@ -274,7 +274,7 @@ export default function UnpaidInvoices() {
               ? "Saldo Total Bs "
               : null
           }
-          aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : 0}
+          aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : null}
           aditionalColumnLabel2={"Tasa BCV "}
           aditionalColumnLabel3={"Fecha "}
           aditionalColumn3={
