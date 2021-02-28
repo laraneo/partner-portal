@@ -24,6 +24,7 @@ import _ from "lodash";
 
 import Widgtet from "../../components/Widget";
 import Widgtet1 from "../../components/Widget1";
+import Widgtet3 from "../../components/Widget3";
 import { Paper, useMediaQuery } from "@material-ui/core";
 import Helper from "../../helpers/utilities";
 import Loader from "../../components/common/Loader";
@@ -415,25 +416,9 @@ export default function Home() {
 
         {validateWidget("PARTNERPORTAL_horse") && (
           <Grid item sm={12} xs={12} md={3}>
-            <Grid container spacing={1}>
-              <Grid item xs={12}>
-                <Paper>
-                  <Widgtet
-                    Icon={DeckIcon}
-                    title="Caballeriza"
-                    link="/dashboard/"
-                    internal
-                  />
-                </Paper>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                style={{ color: "red", fontSize: 12, fontWeight: "bold" }}
-              >
-                Este modulo se encuentra actualmente en construcción.
-              </Grid>
-            </Grid>
+            <Paper>
+              <Widgtet3 Icon={DeckIcon} title="Caballeriza" />
+            </Paper>
           </Grid>
         )}
       </Grid>

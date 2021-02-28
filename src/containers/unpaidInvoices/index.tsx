@@ -276,6 +276,10 @@ export default function UnpaidInvoices() {
           }
           aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : 0}
           aditionalColumnLabel2={"Tasa BCV "}
+          aditionalColumnLabel3={"Fecha "}
+          aditionalColumn3={
+            tasa.dFecha ? moment(tasa.dFecha).format("DD-MM-YYYY") : null
+          }
         />
       </div>
     </div>
