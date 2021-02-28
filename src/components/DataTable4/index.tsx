@@ -1,5 +1,10 @@
 import React, { FunctionComponent, createElement, useState } from "react";
-import { makeStyles, withStyles, Theme, createStyles } from "@material-ui/core/styles";
+import {
+  makeStyles,
+  withStyles,
+  Theme,
+  createStyles,
+} from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -11,59 +16,60 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { TablePagination } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
-import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityIcon from "@material-ui/icons/Visibility";
 import DeleteIcon from "@material-ui/icons/Delete";
-import PaymentIcon from '@material-ui/icons/Payment';
+import PaymentIcon from "@material-ui/icons/Payment";
 import Switch from "@material-ui/core/Switch";
 import { green } from "@material-ui/core/colors";
 
-import logo from './paypal-logo.jpeg';
+import logo from "./paypal-logo.jpeg";
+import NumberFormat from "react-number-format";
 
 const GreenSwitch = withStyles({
   switchBase: {
-    color: '#e74c3c',
+    color: "#e74c3c",
     "&$checked": {
-      color: '#27ae60'
+      color: "#27ae60",
     },
     "&$checked + $track": {
-      backgroundColor: green[500]
-    }
+      backgroundColor: green[500],
+    },
   },
   checked: {},
-  track: {}
+  track: {},
 })(Switch);
 
-const useStyles = makeStyles((theme: Theme) => createStyles(
-  {
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
     root: {
       overflowX: "auto",
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up("sm")]: {
         width: "100%",
       },
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down("sm")]: {
         maxWidth: window.innerWidth - 20,
         width: window.innerWidth - 20,
       },
     },
     container: {
-      maxHeight: 440
+      maxHeight: 440,
     },
     progress: {
       display: "flex",
       justifyContent: "left",
-      padding: 10
+      padding: 10,
     },
     tableCellHeader: {
       padding: 4,
-      '&:first-child': {
-        paddingLeft: 5
+      "&:first-child": {
+        paddingLeft: 5,
       },
-      '&:last-child': {
-        paddingRight: '0px !important'
-      }
+      "&:last-child": {
+        paddingRight: "0px !important",
+      },
     },
-  }
-));
+  })
+);
 
 interface DataTableProps {
   rows: any;
@@ -83,13 +89,13 @@ interface DataTableProps {
   aditionalColumn?: string;
   aditionalColumnLabel?: any;
 
-  aditionalColumn1?: string;
+  aditionalColumn1?: any;
   aditionalColumnLabel1?: any;
-  aditionalColumn2?: string;
+  aditionalColumn2?: any;
   aditionalColumnLabel2?: any;
-  aditionalColumn3?: string;
+  aditionalColumn3?: any;
   aditionalColumnLabel3?: any;
-  
+
   handleSwitch?: Function;
   getSelectRow?: any;
   colorColumn?: string;
@@ -109,11 +115,11 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
   onChangePerPage,
   handleSubRowComponent,
   renderSubRows,
-  fontSize = '12px',
-  
+  fontSize = "12px",
+
   aditionalColumn,
   aditionalColumnLabel,
-  
+
   aditionalColumn1,
   aditionalColumnLabel1,
   aditionalColumn2,
@@ -125,7 +131,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
   handleSwitch,
   getSelectRow,
   colorColumn,
-  handleRowEdit
+  handleRowEdit,
 }) => {
   const classes = useStyles();
   const [selectedRow, setSelectedRow] = useState(0);
@@ -146,21 +152,26 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
     } else {
       setSelectedRow(id);
     }
-  }
+  };
 
   const handleConditionSwitch = (row: any) => {
     if (row.status == "0") return false;
     if (row.status == "1") return true;
     if (row.status == "-1") return false;
-  }
+  };
 
   const renderBody = () => {
     if (rows.length === 0) {
       return (
         <TableRow>
-          <TableCell colSpan={columns.length} style={{ fontWeight: 'bold', textAlign: 'center' }} >Sin datos</TableCell>
+          <TableCell
+            colSpan={columns.length}
+            style={{ fontWeight: "bold", textAlign: "center" }}
+          >
+            Sin datos
+          </TableCell>
         </TableRow>
-      )
+      );
     }
     return rows.map((row: any) => {
       return (
@@ -168,8 +179,9 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
           <TableRow
             hover
             role="checkbox"
-            tabIndex={-1} key={row.id}
-            style={{ cursor: handleRowEdit ? 'pointer' : 'auto' }}
+            tabIndex={-1}
+            key={row.id}
+            style={{ cursor: handleRowEdit ? "pointer" : "auto" }}
             onClick={() => {
               if (handleRowEdit) {
                 return handleRowEdit(row);
@@ -187,7 +199,10 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                   className={classes.tableCellHeader}
                   style={{
                     fontSize,
-                    cursor: column.isHandleSubRow && getSelectRow ? 'pointer' : 'auto'
+                    cursor:
+                      column.isHandleSubRow && getSelectRow
+                        ? "pointer"
+                        : "auto",
                   }}
                   onClick={() => {
                     if (column.isHandleSubRow && getSelectRow) {
@@ -205,7 +220,13 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
             {handlePayment && row.originalAmount !== "0" && (
               <TableCell align="right" style={{ minWidth: 5 }}>
                 <div onClick={() => handlePayment(row)}>
-                  <img src={logo} alt="example image" style={{ cursor: 'pointer' }} width="35" height="25" />
+                  <img
+                    src={logo}
+                    alt="example image"
+                    style={{ cursor: "pointer" }}
+                    width="35"
+                    height="25"
+                  />
                 </div>
               </TableCell>
             )}
@@ -217,7 +238,16 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                 />
               </TableCell>
             )}
-            <TableCell align="right" style={{ minWidth: 7, display: !handleView && !handleEdit && !handleDelete ? 'none' : 'table-cell' }}>
+            <TableCell
+              align="right"
+              style={{
+                minWidth: 7,
+                display:
+                  !handleView && !handleEdit && !handleDelete
+                    ? "none"
+                    : "table-cell",
+              }}
+            >
               {handleView && (
                 <IconButton
                   aria-label="delete"
@@ -253,8 +283,22 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
           {renderSubRows && renderSubRows(row, selectedRow)}
         </React.Fragment>
       );
-    })
-  }
+    });
+  };
+
+  const getFormatNumber = (value: number | null) => {
+    return (
+      <NumberFormat
+        thousandSeparator={"."}
+        decimalSeparator={","}
+        isNumericString
+        disabled
+        inputMode="none"
+        displayType="text"
+        value={value ? value.toFixed(2) : 0}
+      />
+    );
+  };
 
   return (
     <Paper className={classes.root}>
@@ -270,32 +314,46 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                   style={{
                     minWidth: column.minWidth,
                     fontSize,
-                    fontWeight: 'bold',
+                    fontWeight: "bold",
                     background: colorColumn && colorColumn,
-                    color: colorColumn ? 'white' : 'black',
+                    color: colorColumn ? "white" : "black",
                   }}
                 >
                   {column.label}
                 </TableCell>
               ))}
-              {handleSwitch && <TableCell style={{
-                minWidth: 5,
-                background: colorColumn && colorColumn,
-                color: colorColumn ? 'white' : 'black',
-              }}></TableCell>}
-              <TableCell style={{
-                minWidth: 6,
-                background: colorColumn && colorColumn,
-                color: colorColumn ? 'white' : 'black', display: !handleView && !handleEdit && !handleDelete ? 'none' : 'table-cell'
-              }}></TableCell>
+              {handleSwitch && (
+                <TableCell
+                  style={{
+                    minWidth: 5,
+                    background: colorColumn && colorColumn,
+                    color: colorColumn ? "white" : "black",
+                  }}
+                ></TableCell>
+              )}
+              <TableCell
+                style={{
+                  minWidth: 6,
+                  background: colorColumn && colorColumn,
+                  color: colorColumn ? "white" : "black",
+                  display:
+                    !handleView && !handleEdit && !handleDelete
+                      ? "none"
+                      : "table-cell",
+                }}
+              ></TableCell>
             </TableRow>
           </TableHead>
-          <TableBody style={{ overflow: 'hidden', textAlign: 'center' }}>
+          <TableBody style={{ overflow: "hidden", textAlign: "center" }}>
             {loading ? (
               <TableRow className={classes.progress}>
-                <TableCell colSpan={columns.length}><CircularProgress color="primary" /></TableCell>
+                <TableCell colSpan={columns.length}>
+                  <CircularProgress color="primary" />
+                </TableCell>
               </TableRow>
-            ) : renderBody()}
+            ) : (
+              renderBody()
+            )}
 
             {aditionalColumn && (
               <TableRow>
@@ -303,82 +361,76 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                   className={classes.tableCellHeader}
                   align="right"
                   style={{
-                    minWidth: fontSize
+                    minWidth: fontSize,
                   }}
                   colSpan={columns.length}
                 >
-                   <b>{aditionalColumnLabel} </b>: {aditionalColumn}
+                  <b>{aditionalColumnLabel} </b>: {aditionalColumn}
                 </TableCell>
               </TableRow>
-            )
-			}
-			
+            )}
+
             {aditionalColumn1 && (
               <TableRow>
                 <TableCell
                   className={classes.tableCellHeader}
                   align="right"
                   style={{
-                    minWidth: fontSize
+                    minWidth: fontSize,
                   }}
                   colSpan={columns.length}
                 >
-                   <b>{aditionalColumnLabel1}  </b>: {aditionalColumn1}
+                  <b>{aditionalColumnLabel1} </b>:{" "}
+                  {getFormatNumber(aditionalColumn1)}
                 </TableCell>
               </TableRow>
-            )
-			}
-			
-			
+            )}
+
             {aditionalColumn2 && (
               <TableRow>
                 <TableCell
                   className={classes.tableCellHeader}
                   align="right"
                   style={{
-                    minWidth: fontSize
+                    minWidth: fontSize,
                   }}
                   colSpan={columns.length}
                 >
-                  <b>  {aditionalColumnLabel2} </b> : {aditionalColumn2}
+                  <b> {aditionalColumnLabel2} </b> :{" "}
+                  {getFormatNumber(aditionalColumn2)}
                 </TableCell>
               </TableRow>
-            )			
-			}
-			
+            )}
+
             {aditionalColumn3 && (
               <TableRow>
                 <TableCell
                   className={classes.tableCellHeader}
                   align="right"
                   style={{
-                    minWidth: fontSize
+                    minWidth: fontSize,
                   }}
                   colSpan={columns.length}
                 >
-                   <b>{aditionalColumnLabel3} </b>: {aditionalColumn3}
+                  <b>{aditionalColumnLabel3} </b>: {aditionalColumn3}
                 </TableCell>
               </TableRow>
-            )			
-			
-            }
+            )}
           </TableBody>
         </Table>
       </TableContainer>
-      {
-        pagination && (
-          <TablePagination
-            labelRowsPerPage="Filas"
-            labelDisplayedRows={() => `${pagination.from}-${pagination.to}`}
-            component="div"
-            count={rows.to}
-            rowsPerPage={pagination.perPage}
-            page={pagination.prevPageUrl === null ? 0 : pagination.currentPage}
-            onChangePage={handlePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
-        )
-      }
+      {pagination && (
+        <TablePagination
+          labelRowsPerPage="Filas"
+          labelDisplayedRows={() => `${pagination.from}-${pagination.to}`}
+          component="div"
+          count={rows.to}
+          rowsPerPage={pagination.perPage}
+          page={pagination.prevPageUrl === null ? 0 : pagination.currentPage}
+          onChangePage={handlePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      )}
     </Paper>
   );
 };

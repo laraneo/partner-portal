@@ -14,8 +14,8 @@ import ScheduleIcon from "@material-ui/icons/Schedule";
 import CreditCardRoundedIcon from "@material-ui/icons/CreditCardRounded";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
-import MenuBookIcon from '@material-ui/icons/MenuBook';
-import DeckIcon from '@material-ui/icons/Deck';
+import MenuBookIcon from "@material-ui/icons/MenuBook";
+import DeckIcon from "@material-ui/icons/Deck";
 
 import MailRoundedIcon from "@material-ui/icons/MailRounded";
 
@@ -400,7 +400,6 @@ export default function Home() {
           </Grid>
         )}
 
-
         {validateWidget("PARTNERPORTAL_applicants") && (
           <Grid item sm={12} xs={12} md={3}>
             <Paper>
@@ -413,22 +412,30 @@ export default function Home() {
             </Paper>
           </Grid>
         )}
-		
-		
-		 {validateWidget("PARTNERPORTAL_horse") && (
+
+        {validateWidget("PARTNERPORTAL_horse") && (
           <Grid item sm={12} xs={12} md={3}>
-            <Paper>
-              <Widgtet
-                Icon={DeckIcon}
-                title="Caballeriza"
-                link="/dashboard/"
-                internal
-              />
-            </Paper>
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <Paper>
+                  <Widgtet
+                    Icon={DeckIcon}
+                    title="Caballeriza"
+                    link="/dashboard/"
+                    internal
+                  />
+                </Paper>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                style={{ color: "red", fontSize: 12, fontWeight: "bold" }}
+              >
+                Este modulo se encuentra actualmente en construcción.
+              </Grid>
+            </Grid>
           </Grid>
         )}
-		
-		
       </Grid>
     </div>
   );

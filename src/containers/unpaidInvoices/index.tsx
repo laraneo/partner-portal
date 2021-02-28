@@ -248,41 +248,34 @@ export default function UnpaidInvoices() {
     <div>
       <div className={classes.headerContainer}>
         <div className={classes.headerTitle}>Facturas</div>
-		
       </div>
       <div className={classes.tableContainer}>
         <DataTable4
           rows={unpaidInvoices.data}
           columns={columns}
           loading={setUnpaidInvoicestLoading}
-		  
           aditionalColumn={
             unpaidInvoices.total && unpaidInvoices.total > 0
-              ? formatNumber(unpaidInvoices.total)
+              ? unpaidInvoices.total
               : null
           }
           aditionalColumnLabel={
-            unpaidInvoices.total && unpaidInvoices.total > 0 ? "Saldo Total " + moneda.value : null
+            unpaidInvoices.total && unpaidInvoices.total > 0
+              ? "Saldo Total " + moneda.value
+              : null
           }
-
-
           aditionalColumn1={
             unpaidInvoices.total && unpaidInvoices.total > 0
-              ? formatNumber(unpaidInvoices.total * tasa.dTasa)
+              ? unpaidInvoices.total * tasa.dTasa
               : null
           }
           aditionalColumnLabel1={
-            unpaidInvoices.total && unpaidInvoices.total > 0 ? "Saldo Total Bs "  : null
+            unpaidInvoices.total && unpaidInvoices.total > 0
+              ? "Saldo Total Bs "
+              : null
           }
-		  
-          aditionalColumn2={
-               tasa.dTasa.toFixed(2)
-          }
-          aditionalColumnLabel2={ "Tasa BCV " 
-          }
-
-		  
-		  
+          aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : 0}
+          aditionalColumnLabel2={"Tasa BCV "}
         />
       </div>
     </div>
