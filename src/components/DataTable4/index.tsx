@@ -286,7 +286,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
     });
   };
 
-  const getFormatNumber = (value: number | null) => {
+  const getFormatNumber = (value: any) => {
     return (
       <NumberFormat
         thousandSeparator={"."}
