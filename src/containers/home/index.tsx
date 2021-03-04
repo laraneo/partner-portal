@@ -16,6 +16,14 @@ import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
 import DeckIcon from "@material-ui/icons/Deck";
+import {
+  FaGolfBall,
+  FaHorseHead,
+  FaFileInvoiceDollar,
+  FaFileAlt,
+  FaFileImport,
+} from "react-icons/fa";
+import { BiTennisBall } from "react-icons/bi";
 
 import MailRoundedIcon from "@material-ui/icons/MailRounded";
 
@@ -29,6 +37,16 @@ import { Paper, useMediaQuery } from "@material-ui/core";
 import Helper from "../../helpers/utilities";
 import Loader from "../../components/common/Loader";
 import { getBalance } from "../../actions/webServiceActions";
+
+class Question extends React.Component {
+  render() {
+    return (
+      <h3>
+        Lets go for a <FaGolfBall color="#109e2f" size={50} />?{" "}
+      </h3>
+    );
+  }
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -166,7 +184,7 @@ export default function Home() {
           <Grid item sm={12} xs={12} md={3}>
             <Paper>
               <Widgtet
-                Icon={EventAvailableIcon}
+                Icon={FaGolfBall}
                 title="Golf"
                 link={reservacionesLink}
               />
@@ -188,7 +206,7 @@ export default function Home() {
             <Grid item sm={12} xs={12} md={3}>
               <Paper>
                 <Widgtet1
-                  Icon={EventAvailableIcon}
+                  Icon={FaGolfBall}
                   title="Golf"
                   type="Saldo"
                   amount={clientBalance.saldo_vigencia}
@@ -211,11 +229,7 @@ export default function Home() {
         return (
           <Grid item sm={12} xs={12} md={3}>
             <Paper>
-              <Widgtet
-                Icon={EventAvailableIcon}
-                title="Tenis"
-                link={tennisLink}
-              />
+              <Widgtet Icon={BiTennisBall} title="Tenis" link={tennisLink} />
             </Paper>
           </Grid>
         );
@@ -234,7 +248,7 @@ export default function Home() {
             <Grid item sm={12} xs={12} md={3}>
               <Paper>
                 <Widgtet1
-                  Icon={EventAvailableIcon}
+                  Icon={BiTennisBall}
                   title="Tenis"
                   type="Saldo"
                   amount={clientBalance.saldo_vigencia}
@@ -310,7 +324,7 @@ export default function Home() {
           <Grid item sm={12} xs={12} md={3}>
             <Paper>
               <Widgtet
-                Icon={CreditCardRoundedIcon}
+                Icon={FaFileInvoiceDollar}
                 title="Facturas"
                 link="/dashboard/unpaid-invoices"
                 internal
@@ -323,7 +337,7 @@ export default function Home() {
           <Grid item sm={12} xs={12} md={3}>
             <Paper>
               <Widgtet
-                Icon={PlaylistAddIcon}
+                Icon={FaFileImport}
                 title="Notifica tu Pago"
                 link={reportePagosLink}
                 internal
@@ -336,7 +350,7 @@ export default function Home() {
           <Grid item sm={12} xs={12} md={3}>
             <Paper>
               <Widgtet
-                Icon={AccountBoxIcon}
+                Icon={FaFileAlt}
                 title="Pagos Reportados"
                 link="/dashboard/reported-payments"
                 internal
@@ -417,7 +431,7 @@ export default function Home() {
         {validateWidget("PARTNERPORTAL_horse") && (
           <Grid item sm={12} xs={12} md={3}>
             <Paper>
-              <Widgtet3 Icon={DeckIcon} title="Caballeriza" />
+              <Widgtet3 Icon={FaHorseHead} title="Caballeriza" />
             </Paper>
           </Grid>
         )}
