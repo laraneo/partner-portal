@@ -15,6 +15,7 @@ import moment from "moment";
 import Paypal from "../../components/Paypal";
 import Helper from "../../helpers/utilities";
 import logo from "../../styles/images/paypal-small-logo.jpeg";
+import globalConnectLogo from "../../styles/images/global-connect.jpeg";
 import mercantilLogo from "../../styles/images/mercantil-small-logo.jpeg";
 import { TableCell, TableRow, Chip, Grid } from "@material-ui/core";
 
@@ -101,6 +102,11 @@ export default function UnpaidInvoices() {
     "ENABLE_PAYMENTS_CACHE"
   );
 
+  const globalClientId = Helper.getParameter(
+    parameterList,
+    "GLOBALCONNECT_CLIENT_ID"
+  );
+  console.log("globalClientId ", globalClientId);
   const paypalClientId =
     !_.isEmpty(paypalParameter) &&
     habilitarPagoParameter.value == 1 &&
@@ -137,6 +143,22 @@ export default function UnpaidInvoices() {
       return (
         <div onClick={() => handlePayment(current)}>
           <img src={logo} alt="example image" style={{ cursor: "pointer" }} />
+        </div>
+      );
+    }
+  };
+
+  const renderGlobalConnectButton = (row: any) => {
+    const current = unpaidInvoices.data.find((e: any) => e.fact_num == row);
+    if (current && current.originalAmount !== "0") {
+      return (
+        <div>
+          <img
+            src={globalConnectLogo}
+            alt="example image"
+            style={{ cursor: "pointer" }}
+            width={72}
+          />
         </div>
       );
     }
@@ -253,6 +275,9 @@ export default function UnpaidInvoices() {
           <div style={{ display: "flex", justifyContent: "flex-end" }}>
             {paypalClientId && renderPaypalButton(value.value)}
             {renderMercantilButton()}
+            {globalClientId &&
+              globalClientId.value &&
+              renderGlobalConnectButton(value.value)}
           </div>
         );
       },
@@ -286,16 +311,23 @@ export default function UnpaidInvoices() {
       },
       {
         id: "",
+        label: "",
+        minWidth: 40,
+        align: "right",
+        component: (value: any) => <span></span>,
+      },
+      {
+        id: "",
         label: "Moneda",
         minWidth: 10,
-        align: "left",
+        align: "right",
         component: (value: any) => <span>{moneda.value}</span>,
       },
       {
         id: "prec_vta2",
         label: "Total",
         minWidth: 10,
-        align: "left",
+        align: "right",
         component: (value: any) => <span>{value.value}</span>,
       },
     ];
