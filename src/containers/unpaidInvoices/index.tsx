@@ -172,6 +172,7 @@ export default function UnpaidInvoices() {
       label: "Nro",
       minWidth: 10,
       component: (value: any) => <span>{value.value}</span>,
+      isHandleSubRow: true,
     },
     {
       id: "fec_emis",
@@ -180,6 +181,7 @@ export default function UnpaidInvoices() {
       component: (value: any) => (
         <span>{moment(value.value).format("DD-MM-YYYY")}</span>
       ),
+      isHandleSubRow: true,
     },
     {
       id: "fec_venc",
@@ -188,6 +190,7 @@ export default function UnpaidInvoices() {
       component: (value: any) => (
         <span>{moment(value.value).format("DD-MM-YYYY")}</span>
       ),
+      isHandleSubRow: true,
     },
     {
       id: "descrip",
@@ -201,6 +204,7 @@ export default function UnpaidInvoices() {
       label: "Moneda",
       minWidth: 10,
       component: (value: any) => <span>{moneda.value}</span>,
+      isHandleSubRow: true,
     },
     {
       id: "saldo",
@@ -208,6 +212,7 @@ export default function UnpaidInvoices() {
       minWidth: 10,
       align: "right",
       component: (value: any) => <span>{value.value}</span>,
+      isHandleSubRow: true,
     }, //<span>{value.value * tasa.dTasa}</span>,
     {
       id: "saldo",
@@ -233,6 +238,7 @@ export default function UnpaidInvoices() {
           );
         }
       },
+      isHandleSubRow: true,
     },
     {
       id: "fact_num",
@@ -250,6 +256,7 @@ export default function UnpaidInvoices() {
           </div>
         );
       },
+      isHandleSubRow: true,
     },
   ];
 
