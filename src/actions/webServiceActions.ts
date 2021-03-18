@@ -414,9 +414,7 @@ export const setInvoicePayment = (body: any) => async (dispatch: Function) => {
   }
 };
 
-export const getTasa = (count: number = 0) => async (
-  dispatch: Function
-) => {
+export const getTasa = (count: number = 0) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_TASA_LOADING,
     payload: true,
@@ -456,6 +454,42 @@ export const getTasa = (count: number = 0) => async (
       type: ACTIONS.SET_TASA_LOADING,
       payload: false,
     });
+    return error;
+  }
+};
+
+export const getInvoiceDetail = (invoice: number) => async (
+  dispatch: Function
+) => {
+  dispatch({
+    type: ACTIONS.SET_INVOICE_DETAIL_LOADING,
+    payload: true,
+  });
+  try {
+    const { data, status } = await API.getInvoiceDetail(invoice);
+    let response = [];
+    if (status === 200) {
+      response = data.data;
+      console.log("response ", response);
+      dispatch({
+        type: ACTIONS.GET_INVOICE_DETAIL,
+        payload: response,
+      });
+      dispatch({
+        type: ACTIONS.SET_INVOICE_DETAIL_LOADING,
+        payload: false,
+      });
+    }
+    return response;
+  } catch (error) {
+    const message = Message.exception(error);
+    snackBarUpdate({
+      payload: {
+        message,
+        status: true,
+        type: "error",
+      },
+    })(dispatch);
     return error;
   }
 };

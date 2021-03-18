@@ -1,22 +1,31 @@
 import React, { useEffect, useState } from "react";
-import _ from "lodash";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
 import { useDispatch, useSelector } from "react-redux";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import NumberFormat from "react-number-format";
+import _ from "lodash";
 
-import { getUnpaidInvoices } from "../../actions/webServiceActions";
+import {
+  getInvoiceDetail,
+  getUnpaidInvoices,
+} from "../../actions/webServiceActions";
 import { updateModal } from "../../actions/modalActions";
-import LockerForm from "../../components/LockerForm";
 import DataTable4 from "../../components/DataTable4";
 import UnpaidInvoicesColumns from "../../interfaces/UnpaidInvoicesColumns";
-import CustomSearch from "../../components/FormElements/CustomSearch";
 import moment from "moment";
 import Paypal from "../../components/Paypal";
 import Helper from "../../helpers/utilities";
 import logo from "../../styles/images/paypal-small-logo.jpeg";
 import mercantilLogo from "../../styles/images/mercantil-small-logo.jpeg";
+import { TableCell, TableRow, Chip, Grid } from "@material-ui/core";
+
+interface InvoiceDetailColumns {
+  id: "" | "status" | "fact_num" | "art_des" | "prec_vta" | "prec_vta2";
+  label: string;
+  minWidth?: number;
+  align?: "left" | "right";
+  component?: any;
+  isHandleSubRow?: boolean;
+}
 
 function formatNumber(num: any) {
   num = "" + Math.floor(num * 100.0 + 0.5) / 100.0;
@@ -49,6 +58,9 @@ const useStyles = makeStyles(() => ({
   tableContainer: {
     marginTop: 20,
   },
+  subtitleRow: {
+    textAlign: "center",
+  },
 }));
 
 export default function UnpaidInvoices() {
@@ -64,6 +76,8 @@ export default function UnpaidInvoices() {
       setUnpaidInvoicestLoading,
       cache,
       tasa,
+      invoiceDetails,
+      setInvoiceDetailLoading,
     },
   } = useSelector((state: any) => state);
 
@@ -146,6 +160,12 @@ export default function UnpaidInvoices() {
     return <div />;
   };
 
+  const getSelectRow = (row: any) => {
+    console.log("selectedrow ", row);
+    dispatch(getInvoiceDetail(row.fact_num));
+    return row.fact_num;
+  };
+
   const columns: UnpaidInvoicesColumns[] = [
     {
       id: "fact_num",
@@ -174,6 +194,7 @@ export default function UnpaidInvoices() {
       label: "Descripcion",
       minWidth: 10,
       component: (value: any) => <span>{value.value}</span>,
+      isHandleSubRow: true,
     },
     {
       id: "descrip",
@@ -232,6 +253,83 @@ export default function UnpaidInvoices() {
     },
   ];
 
+  const getTotalInvoiceDetail = (): any => {
+    const list = [...invoiceDetails];
+    let total = 0;
+    list.forEach((element) => {
+      if (element.prec_vta2) {
+        console.log(
+          "parseFloat(element.prec_vta2); ",
+          parseFloat(element.prec_vta2)
+        );
+        total = total + parseFloat(element.prec_vta2);
+      }
+    });
+    return total;
+  };
+
+  const renderSubRows = (row: any, selected: any) => {
+    const invoiceDetailColumns: InvoiceDetailColumns[] = [
+      {
+        id: "art_des",
+        label: "Descripción",
+        minWidth: 10,
+        align: "left",
+        component: (value: any) => <span>{value.value}</span>,
+      },
+      {
+        id: "",
+        label: "Moneda",
+        minWidth: 10,
+        align: "left",
+        component: (value: any) => <span>{moneda.value}</span>,
+      },
+      {
+        id: "prec_vta2",
+        label: "Total",
+        minWidth: 10,
+        align: "left",
+        component: (value: any) => <span>{value.value}</span>,
+      },
+    ];
+    if (row.fact_num == selected) {
+      const totalInvoices = getTotalInvoiceDetail();
+      const total = totalInvoices * tasa.dTasa;
+      return (
+        <TableRow>
+          <TableCell colSpan={13}>
+            <Grid container spacing={1}>
+              <Grid item xs={12} className={classes.subtitleRow}>
+                <Chip label="Detalle" color="primary" />
+              </Grid>
+              <Grid item xs={12}>
+                <DataTable4
+                  rows={invoiceDetails}
+                  columns={invoiceDetailColumns}
+                  loading={setInvoiceDetailLoading}
+                  fontSize="10px"
+                  colorColumn="#109e2f"
+                  aditionalColumn={totalInvoices.toFixed(2)}
+                  aditionalColumnLabel={
+                    invoiceDetails.length > 0 ? "Total " + moneda.value : null
+                  }
+                  aditionalColumn1={
+                    invoiceDetails.length > 0 ? total.toFixed(2) : null
+                  }
+                  aditionalColumnLabel1={
+                    invoiceDetails.length > 0 ? "Total Bs " : null
+                  }
+                  aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : null}
+                  aditionalColumnLabel2={"Tasa BCV "}
+                />
+              </Grid>
+            </Grid>
+          </TableCell>
+        </TableRow>
+      );
+    }
+  };
+
   useEffect(() => {
     if (cache) {
       setIsCache(true);
@@ -280,6 +378,8 @@ export default function UnpaidInvoices() {
           aditionalColumn3={
             tasa.dFecha ? moment(tasa.dFecha).format("DD-MM-YYYY") : null
           }
+          renderSubRows={renderSubRows}
+          getSelectRow={getSelectRow}
         />
       </div>
     </div>

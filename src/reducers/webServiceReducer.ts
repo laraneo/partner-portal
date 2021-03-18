@@ -18,6 +18,8 @@ type InitState = {
   setBalanceLoading: boolean;
   cache: boolean;
   tasa: object;
+  invoiceDetails: Array<string | number>;
+  setInvoiceDetailLoading: boolean;
 };
 
 const initialState: InitState = {
@@ -40,6 +42,8 @@ const initialState: InitState = {
   clientBalance: {},
   cache: false,
   tasa: {},
+  setInvoiceDetailLoading: false,
+  invoiceDetails: [],
 };
 
 const webServiceReducer = (state = initialState, action: ActionTypes) => {
@@ -118,6 +122,16 @@ const webServiceReducer = (state = initialState, action: ActionTypes) => {
       return {
         ...state,
         listData: initialState.listData,
+      };
+    case ACTIONS.SET_INVOICE_DETAIL_LOADING:
+      return {
+        ...state,
+        setInvoiceDetailLoading: action.payload,
+      };
+    case ACTIONS.GET_INVOICE_DETAIL:
+      return {
+        ...state,
+        invoiceDetails: action.payload,
       };
     default:
       return state;
