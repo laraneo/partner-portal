@@ -196,7 +196,7 @@ export default function UnpaidInvoices() {
       component: (value: any) => <span>{value.value}</span>,
       isHandleSubRow: true,
     },
-    {
+    /*{
       id: "fec_emis",
       label: "Emision",
       minWidth: 10,
@@ -204,7 +204,7 @@ export default function UnpaidInvoices() {
         <span>{moment(value.value).format("DD-MM-YYYY")}</span>
       ),
       isHandleSubRow: true,
-    },
+    },*/
     {
       id: "fec_venc",
       label: "Vencimiento",
@@ -358,8 +358,12 @@ export default function UnpaidInvoices() {
                   aditionalColumnLabel1={
                     invoiceDetails.length > 0 ? "Total Bs " : null
                   }
-                  aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : null}
+                  /*aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : null}
                   aditionalColumnLabel2={"Tasa BCV "}
+                  aditionalColumnAlign2={"left"}
+                  aditionalColumn3={tasa.dFecha ? moment(tasa.dFecha).format("DD-MM-YYYY") : null}
+                  aditionalColumnLabel3={"Fecha"}
+                  aditionalColumnAlign3={"left"}*/
                 />
               </Grid>
             </Grid>
@@ -413,10 +417,12 @@ export default function UnpaidInvoices() {
           }
           aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : null}
           aditionalColumnLabel2={"Tasa BCV "}
+          aditionalColumnAlign2={"left"}
           aditionalColumnLabel3={"Fecha "}
           aditionalColumn3={
             tasa.dFecha ? moment(tasa.dFecha).format("DD-MM-YYYY") : null
           }
+          aditionalColumnAlign3={"left"}
           renderSubRows={renderSubRows}
           getSelectRow={getSelectRow}
         />

@@ -92,9 +92,11 @@ interface DataTableProps {
   aditionalColumn1?: any;
   aditionalColumnLabel1?: any;
   aditionalColumn2?: any;
+  aditionalColumnAlign2?: any;
   aditionalColumnLabel2?: any;
   aditionalColumn3?: any;
   aditionalColumnLabel3?: any;
+  aditionalColumnAlign3?: any;
 
   handleSwitch?: Function;
   getSelectRow?: any;
@@ -124,8 +126,10 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
   aditionalColumnLabel1,
   aditionalColumn2,
   aditionalColumnLabel2,
+  aditionalColumnAlign2,
   aditionalColumn3,
   aditionalColumnLabel3,
+  aditionalColumnAlign3,
 
   handlePayment,
   handleSwitch,
@@ -390,7 +394,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
               <TableRow>
                 <TableCell
                   className={classes.tableCellHeader}
-                  align="right"
+                  align={aditionalColumnAlign2 ? aditionalColumnAlign2 : 'right'}
                   style={{
                     minWidth: fontSize,
                   }}
@@ -406,7 +410,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
               <TableRow>
                 <TableCell
                   className={classes.tableCellHeader}
-                  align="right"
+                  align={aditionalColumnAlign3 ? aditionalColumnAlign3 : 'right'}
                   style={{
                     minWidth: fontSize,
                   }}
