@@ -13,7 +13,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { TablePagination } from "@material-ui/core";
+import { Checkbox, TablePagination } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import VisibilityIcon from "@material-ui/icons/Visibility";
@@ -193,6 +193,13 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
               return {};
             }}
           >
+            <TableCell>
+              <Checkbox
+                checked={false}
+                onChange={() => {}}
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+              />
+            </TableCell>
             {columns.map((column: any) => {
               const value = row[column.id];
               const isHandleSubRow = row[column.isHandleSubRow];
@@ -310,6 +317,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
         <Table stickyHeader aria-label="sticky table" size="small">
           <TableHead>
             <TableRow>
+              <TableCell/>
               {columns.map((column: any) => (
                 <TableCell
                   key={column.id}

@@ -13,6 +13,7 @@ import DataTable4 from "../../components/DataTable4";
 import UnpaidInvoicesColumns from "../../interfaces/UnpaidInvoicesColumns";
 import moment from "moment";
 import Paypal from "../../components/Paypal";
+import GlobalConnection from "../../components/GlobalConnection";
 import Helper from "../../helpers/utilities";
 import logo from "../../styles/images/paypal-small-logo.jpeg";
 import globalConnectLogo from "../../styles/images/global-connect.jpeg";
@@ -64,7 +65,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function UnpaidInvoices() {
+export default function UnpaidInvoices(props : any) {
   const [isCache, setIsCache] = useState<boolean>(false);
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -106,31 +107,56 @@ export default function UnpaidInvoices() {
     parameterList,
     "GLOBALCONNECT_CLIENT_ID"
   );
-  console.log("globalClientId ", globalClientId);
+  
   const paypalClientId =
     !_.isEmpty(paypalParameter) &&
-    habilitarPagoParameter.value == 1 &&
+    parseInt(habilitarPagoParameter.value) === 1 &&
     !_.isEmpty(paypalParameter) &&
     paypalParameter.value !== ""
       ? paypalParameter.value
       : null;
 
-  const handlePayment = (row: any) => {
+  const handlePayment = (row: any , context: string) => {
     const monto = Number(row.saldo);
+    console.log('selected row',row)
+
     dispatch(
       updateModal({
         payload: {
           status: true,
           element: (
-            <Paypal
-              description={row.descrip}
-              invoiceId={row.fact_num}
-              customId={user.username}
-              amountDetail={monto.toFixed(2)}
-              amount={monto.toFixed(2)}
-              client={paypalClientId}
-              attemps={wsAttemps.value}
-            />
+            <>
+              {
+                context === 'PAYPAL'
+                  ? (
+                      <Paypal
+                        description={row.descrip}
+                        invoiceId={row.fact_num}
+                        customId={user.username}
+                        amountDetail={monto.toFixed(2)}
+                        amount={monto.toFixed(2)}
+                        client={paypalClientId}
+                        attemps={wsAttemps.value}
+                      />
+                    )
+                  : (
+                      context === 'GLOBALCONNECTION'
+                        ? (
+                            <GlobalConnection
+                              description={row.descrip}
+                              invoiceId={row.fact_num}
+                              customId={user.username}
+                              amountDetail={monto.toFixed(2)}
+                              amount={monto.toFixed(2)}
+                              client={paypalClientId}
+                              attemps={wsAttemps.value} 
+                            />
+                          )
+                        : null
+                    )
+                   
+              }
+            </>
           ),
         },
       })
@@ -141,8 +167,8 @@ export default function UnpaidInvoices() {
     const current = unpaidInvoices.data.find((e: any) => e.fact_num == row);
     if (current && current.originalAmount !== "0") {
       return (
-        <div onClick={() => handlePayment(current)}>
-          <img src={logo} alt="example image" style={{ cursor: "pointer" }} />
+        <div onClick={() => handlePayment(current,'PAYPAL')}>
+          <img src={logo} alt="example" style={{ cursor: "pointer" }} />
         </div>
       );
     }
@@ -152,10 +178,10 @@ export default function UnpaidInvoices() {
     const current = unpaidInvoices.data.find((e: any) => e.fact_num == row);
     if (current && current.originalAmount !== "0") {
       return (
-        <div>
+        <div onClick={() => handlePayment(current,'GLOBALCONNECTION')} >
           <img
             src={globalConnectLogo}
-            alt="example image"
+            alt="example"
             style={{ cursor: "pointer" }}
             width={72}
           />
@@ -173,7 +199,7 @@ export default function UnpaidInvoices() {
         >
           <img
             src={mercantilLogo}
-            alt="mercantil image"
+            alt="mercantil"
             style={{ cursor: "pointer" }}
           />
         </div>
@@ -303,6 +329,13 @@ export default function UnpaidInvoices() {
   const renderSubRows = (row: any, selected: any) => {
     const invoiceDetailColumns: InvoiceDetailColumns[] = [
       {
+        id: "",
+        label: "Check",
+        minWidth: 10,
+        align: "left",
+        component: () => <span>check</span>,
+      },
+      {
         id: "art_des",
         label: "Descripción",
         minWidth: 10,
@@ -378,6 +411,28 @@ export default function UnpaidInvoices() {
       setIsCache(true);
     }
   }, [cache, setIsCache]);
+
+  useEffect(() => {
+    const globalConnectTransactionToken = new URLSearchParams(props.location.search).get('tk')
+    if (globalConnectTransactionToken) {
+      const { GBC_PaymentGatewayResult } = $.fn as any
+      if (GBC_PaymentGatewayResult) {
+        GBC_PaymentGatewayResult.setup.Token = globalConnectTransactionToken
+        GBC_PaymentGatewayResult(function (Result : any) {
+          let ReferenceCode = Result[0].ReferenceCode;
+          let ResultCode = Result[0].ResultCode;
+          let TotalAmount = Result[0].TotalAmount;
+          let error = Result[0].Error;
+          console.log('global result',{
+            ReferenceCode,
+            ResultCode,
+            TotalAmount,
+            error
+          })
+        });
+      }
+    }
+  },[props])
 
   useEffect(() => {
     if (parameterList.length > 0) {

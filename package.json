@@ -72,6 +72,7 @@
     ]
   },
   "devDependencies": {
+    "@types/jquery": "^3.5.5",
     "node-sass": "^4.14.1"
   }
 }
