@@ -71,7 +71,7 @@ const GlobalConnection: FunctionComponent<ComponentProps> = ({
           variant="contained"
           color="primary"
         >
-          Pay
+          Pagar
         </Button>
       </Grid>
     </Grid>

@@ -136,7 +136,7 @@ export default function UnpaidInvoices(props : any) {
     let total = 0
     let invoiceIds = ''
 
-    invoicesToPay.forEach(invoice => { total += parseFloat(invoice.saldo); invoiceIds = `${invoiceIds} - ${invoice.fact_num}` })
+    invoicesToPay.forEach(invoice => { total += parseFloat(invoice.saldo); invoiceIds = `${invoiceIds},${invoice.fact_num}` })
 
     const description = payAll ? 'Pay all unpaid invoices' : 'Pay multiple invoices'
     const invoiceId = invoiceIds
@@ -206,7 +206,6 @@ export default function UnpaidInvoices(props : any) {
 
   const handlePayment = (row: any , context: string) => {
     const monto = Number(row.saldo);
-    console.log('selected row',row)
 
     dispatch(
       updateModal({
@@ -297,7 +296,6 @@ export default function UnpaidInvoices(props : any) {
   };
 
   const getSelectRow = (row: any) => {
-    console.log("selectedrow ", row);
     dispatch(getInvoiceDetail(row.fact_num));
     return row.fact_num;
   };
@@ -528,7 +526,7 @@ export default function UnpaidInvoices(props : any) {
     <div>
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)} >
         <DialogTitle>
-          Chose your payment method
+          Seleccione su metodo de pago
         </DialogTitle>
         <DialogActions>
           <Button onClick={usePaypal} >
