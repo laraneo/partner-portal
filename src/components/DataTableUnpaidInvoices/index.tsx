@@ -13,7 +13,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { TablePagination } from "@material-ui/core";
+import { Checkbox, TablePagination } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import VisibilityIcon from "@material-ui/icons/Visibility";
@@ -92,17 +92,23 @@ interface DataTableProps {
   aditionalColumn1?: any;
   aditionalColumnLabel1?: any;
   aditionalColumn2?: any;
+  aditionalColumnAlign2?: any;
   aditionalColumnLabel2?: any;
   aditionalColumn3?: any;
   aditionalColumnLabel3?: any;
+  aditionalColumnAlign3?: any;
 
   handleSwitch?: Function;
   getSelectRow?: any;
   colorColumn?: string;
   handleRowEdit?: any;
+
+  addSelectRow?: any
+  removeSelectRow?: any
+  invoicesSelected?: any
 }
 
-const DataTable4: FunctionComponent<DataTableProps> = ({
+const DataTableUnpaidInvoices: FunctionComponent<DataTableProps> = ({
   rows = [],
   pagination,
   columns,
@@ -124,14 +130,20 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
   aditionalColumnLabel1,
   aditionalColumn2,
   aditionalColumnLabel2,
+  aditionalColumnAlign2,
   aditionalColumn3,
   aditionalColumnLabel3,
+  aditionalColumnAlign3,
 
   handlePayment,
   handleSwitch,
   getSelectRow,
   colorColumn,
   handleRowEdit,
+
+  addSelectRow,
+  removeSelectRow,
+  invoicesSelected
 }) => {
   const classes = useStyles();
   const [selectedRow, setSelectedRow] = useState(0);
@@ -189,6 +201,13 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
               return {};
             }}
           >
+            <TableCell>
+              <Checkbox
+                checked={invoicesSelected?.includes(row)}
+                onChange={({target}) => invoicesSelected?.includes(row) ? removeSelectRow(row) : addSelectRow(row)}
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+              />
+            </TableCell>
             {columns.map((column: any) => {
               const value = row[column.id];
               const isHandleSubRow = row[column.isHandleSubRow];
@@ -306,6 +325,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
         <Table stickyHeader aria-label="sticky table" size="small">
           <TableHead>
             <TableRow>
+              <TableCell/>
               {columns.map((column: any) => (
                 <TableCell
                   key={column.id}
@@ -390,7 +410,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
               <TableRow>
                 <TableCell
                   className={classes.tableCellHeader}
-                  align="right"
+                  align={aditionalColumnAlign2 ? aditionalColumnAlign2 : 'right'}
                   style={{
                     minWidth: fontSize,
                   }}
@@ -406,7 +426,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
               <TableRow>
                 <TableCell
                   className={classes.tableCellHeader}
-                  align="right"
+                  align={aditionalColumnAlign3 ? aditionalColumnAlign3 : 'right'}
                   style={{
                     minWidth: fontSize,
                   }}
@@ -435,4 +455,4 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
   );
 };
 
-export default DataTable4;
+export default DataTableUnpaidInvoices;

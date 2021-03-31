@@ -5,11 +5,14 @@ import NumberFormat from "react-number-format";
 import _ from "lodash";
 
 import {
-  getInvoiceDetail,
+  setOrder,
   getUnpaidInvoices,
+  getReportedPayments,
+  getInvoiceDetail,
 } from "../../actions/webServiceActions";
 import { updateModal } from "../../actions/modalActions";
 import DataTable4 from "../../components/DataTable4";
+import DataTableUnpaidInvoices from "../../components/DataTableUnpaidInvoices";
 import UnpaidInvoicesColumns from "../../interfaces/UnpaidInvoicesColumns";
 import moment from "moment";
 import Paypal from "../../components/Paypal";
@@ -22,6 +25,7 @@ import {
   TableCell, TableRow, Chip, Grid, Button,
   Dialog, DialogTitle, DialogActions
 } from "@material-ui/core";
+import snackBarUpdate from "../../actions/snackBarActions";
 
 interface InvoiceDetailColumns {
   id: "" | "status" | "fact_num" | "art_des" | "prec_vta" | "prec_vta2";
@@ -72,9 +76,9 @@ export default function UnpaidInvoices(props : any) {
   const [isCache, setIsCache] = useState<boolean>(false);
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [invoicesSelected,setInvoicesSelected] = useState<any[]>([])
-  const [openDialog,setOpenDialog] = useState<boolean>(false)
-  const [payAll,setPayAll] = useState<boolean>(false)
+  const [invoicesSelected,setInvoicesSelected] = useState<any[]>([]);
+  const [openDialog,setOpenDialog] = useState<boolean>(false);
+  const [payAll,setPayAll] = useState<boolean>(false);
 
   const addSelectRow = (invoice:any) => setInvoicesSelected([...invoicesSelected , invoice])
   const removeSelectRow = (invoice:any) => setInvoicesSelected(invoicesSelected.filter(aux => aux !== invoice))
@@ -136,7 +140,14 @@ export default function UnpaidInvoices(props : any) {
     let total = 0
     let invoiceIds = ''
 
-    invoicesToPay.forEach(invoice => { total += parseFloat(invoice.saldo); invoiceIds = `${invoiceIds},${invoice.fact_num}` })
+    invoicesToPay.forEach(invoice => { 
+      total += parseFloat(invoice.saldo);
+      if(!invoiceIds) {
+        invoiceIds = invoice.fact_num;
+      } else {
+        invoiceIds = `${invoiceIds},${invoice.fact_num}`;
+      }
+    });
 
     const description = payAll ? 'Pay all unpaid invoices' : 'Pay multiple invoices'
     const invoiceId = invoiceIds
@@ -183,7 +194,7 @@ export default function UnpaidInvoices(props : any) {
           element: (
             <GlobalConnection
               { ...data }
-              client={globalClientId}
+              client={globalClientId?.value}
             />
           ),
         },
@@ -235,7 +246,7 @@ export default function UnpaidInvoices(props : any) {
                               customId={user.username}
                               amountDetail={monto.toFixed(2)}
                               amount={monto.toFixed(2)}
-                              client={globalClientId}
+                              client={globalClientId?.value}
                               attemps={wsAttemps.value} 
                             />
                           )
@@ -492,26 +503,41 @@ export default function UnpaidInvoices(props : any) {
   }, [cache, setIsCache]);
 
   useEffect(() => {
-    const globalConnectTransactionToken = new URLSearchParams(props.location.search).get('tk')
-    if (globalConnectTransactionToken) {
+    const globalConnectTransactionToken = new URLSearchParams(props.location.search).get('tk');
+    if (globalConnectTransactionToken && tasa?.dTasa) {
       const { GBC_PaymentGatewayResult } = $.fn as any
       if (GBC_PaymentGatewayResult) {
         GBC_PaymentGatewayResult.setup.Token = globalConnectTransactionToken
-        GBC_PaymentGatewayResult(function (Result : any) {
-          let ReferenceCode = Result[0].ReferenceCode;
+        GBC_PaymentGatewayResult(async function (Result : any) {
           let ResultCode = Result[0].ResultCode;
-          let TotalAmount = Result[0].TotalAmount;
-          let error = Result[0].Error;
-          console.log('global result',{
-            ReferenceCode,
-            ResultCode,
-            TotalAmount,
-            error
-          })
+          if(ResultCode == '00') {
+            const body = {
+              order: Result[0].ReferenceCode,
+              invoices:  Result[0].Reference,
+              amount: Result[0].TotalAmount,
+              channel: 'GLOBALCONNECTION',
+              dTasa: tasa && tasa.dTasa ? tasa.dTasa : -1,
+            };
+            await dispatch(setOrder(body));
+            dispatch(getUnpaidInvoices(wsAttemps.value));
+            dispatch(getReportedPayments());
+            new URLSearchParams(props.location.search).delete('tk');
+          } else {
+            let error = Result[0].Error;
+            dispatch(
+              snackBarUpdate({
+                payload: {
+                  message: `Su Pago no pudo ser procesado <br> Mensaje de Error de Paypal: ${error}`,
+                  status: true,
+                  type: "error",
+                },
+              })
+            );
+          }
         });
       }
     }
-  },[props])
+  },[props, tasa])
 
   useEffect(() => {
     if (parameterList.length > 0) {
@@ -546,7 +572,7 @@ export default function UnpaidInvoices(props : any) {
         <div className={classes.headerTitle}>Facturas</div>
       </div>
       <div className={classes.tableContainer}>
-        <DataTable4
+        <DataTableUnpaidInvoices
           rows={unpaidInvoices.data}
           columns={columns}
           loading={setUnpaidInvoicestLoading}
