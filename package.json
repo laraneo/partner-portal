@@ -2,6 +2,7 @@
   "name": "partners-portal",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "@material-ui/core": "^4.9.2",
     "@material-ui/icons": "^4.9.1",
@@ -72,6 +73,7 @@
     ]
   },
   "devDependencies": {
+    "@types/jquery": "^3.5.5",
     "node-sass": "^4.14.1"
   }
 }

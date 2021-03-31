@@ -42,6 +42,16 @@ const API = {
       headers: headers(),
     });
   },
+  setOrderChannel(data: object) {
+    return AXIOS.post(`${Prefix.api}/set-order-channel`, 
+      {
+        ...data,
+      },
+      {
+        headers: headers(),
+      }
+    );
+  },
   setInvoicePayment(data: object) {
     return AXIOS.get(`${Prefix.api}/set-invoice-payment`, {
       params: {

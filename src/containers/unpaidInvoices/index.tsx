@@ -5,19 +5,27 @@ import NumberFormat from "react-number-format";
 import _ from "lodash";
 
 import {
-  getInvoiceDetail,
+  setOrder,
   getUnpaidInvoices,
+  getReportedPayments,
+  getInvoiceDetail,
 } from "../../actions/webServiceActions";
 import { updateModal } from "../../actions/modalActions";
 import DataTable4 from "../../components/DataTable4";
+import DataTableUnpaidInvoices from "../../components/DataTableUnpaidInvoices";
 import UnpaidInvoicesColumns from "../../interfaces/UnpaidInvoicesColumns";
 import moment from "moment";
 import Paypal from "../../components/Paypal";
+import GlobalConnection from "../../components/GlobalConnection";
 import Helper from "../../helpers/utilities";
 import logo from "../../styles/images/paypal-small-logo.jpeg";
 import globalConnectLogo from "../../styles/images/global-connect.jpeg";
 import mercantilLogo from "../../styles/images/mercantil-small-logo.jpeg";
-import { TableCell, TableRow, Chip, Grid } from "@material-ui/core";
+import {
+  TableCell, TableRow, Chip, Grid, Button,
+  Dialog, DialogTitle, DialogActions
+} from "@material-ui/core";
+import snackBarUpdate from "../../actions/snackBarActions";
 
 interface InvoiceDetailColumns {
   id: "" | "status" | "fact_num" | "art_des" | "prec_vta" | "prec_vta2";
@@ -64,10 +72,16 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function UnpaidInvoices() {
+export default function UnpaidInvoices(props : any) {
   const [isCache, setIsCache] = useState<boolean>(false);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [invoicesSelected,setInvoicesSelected] = useState<any[]>([]);
+  const [openDialog,setOpenDialog] = useState<boolean>(false);
+  const [payAll,setPayAll] = useState<boolean>(false);
+
+  const addSelectRow = (invoice:any) => setInvoicesSelected([...invoicesSelected , invoice])
+  const removeSelectRow = (invoice:any) => setInvoicesSelected(invoicesSelected.filter(aux => aux !== invoice))
 
   const {
     parameterReducer: { listData: parameterList },
@@ -106,31 +120,141 @@ export default function UnpaidInvoices() {
     parameterList,
     "GLOBALCONNECT_CLIENT_ID"
   );
-  console.log("globalClientId ", globalClientId);
+  
   const paypalClientId =
     !_.isEmpty(paypalParameter) &&
-    habilitarPagoParameter.value == 1 &&
+    parseInt(habilitarPagoParameter.value) === 1 &&
     !_.isEmpty(paypalParameter) &&
     paypalParameter.value !== ""
       ? paypalParameter.value
       : null;
 
-  const handlePayment = (row: any) => {
-    const monto = Number(row.saldo);
+
+  const calculatePayMultipleData = () => {
+    let invoicesToPay = [...invoicesSelected]
+    
+    if(payAll){
+      invoicesToPay = [...unpaidInvoices.data]
+    }
+
+    let total = 0
+    let invoiceIds = ''
+
+    invoicesToPay.forEach(invoice => { 
+      total += parseFloat(invoice.saldo);
+      if(!invoiceIds) {
+        invoiceIds = invoice.fact_num;
+      } else {
+        invoiceIds = `${invoiceIds},${invoice.fact_num}`;
+      }
+    });
+
+    const description = payAll ? 'Pay all unpaid invoices' : 'Pay multiple invoices'
+    const invoiceId = invoiceIds
+    const customId = user.username
+    const amountDetail = total.toFixed(2).toString()
+    const amount = total.toFixed(2).toString()
+    const attemps = wsAttemps.value
+
+    return {
+      description,
+      invoiceId,
+      customId,
+      amountDetail,
+      amount,
+      attemps,
+    }
+  }
+
+  const usePaypal = () => {
+    setOpenDialog(false)
+    const data = calculatePayMultipleData()
     dispatch(
       updateModal({
         payload: {
           status: true,
           element: (
             <Paypal
-              description={row.descrip}
-              invoiceId={row.fact_num}
-              customId={user.username}
-              amountDetail={monto.toFixed(2)}
-              amount={monto.toFixed(2)}
+              { ...data }
               client={paypalClientId}
-              attemps={wsAttemps.value}
             />
+          ),
+        },
+      })
+    );
+  }
+  
+  const useGlobalConnection = () => {
+    setOpenDialog(false)
+    const data = calculatePayMultipleData()
+    dispatch(
+      updateModal({
+        payload: {
+          status: true,
+          element: (
+            <GlobalConnection
+              { ...data }
+              client={globalClientId?.value}
+            />
+          ),
+        },
+      })
+    );
+  }
+
+  const handlePayMultiple = (all = false) => {
+    setPayAll(all)
+    if(paypalClientId && globalClientId){
+      setOpenDialog(true)
+    }else if(paypalClientId){
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      usePaypal()      
+    }else if(globalClientId){
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      useGlobalConnection()      
+    }
+  }
+
+  const handlePayment = (row: any , context: string) => {
+    const monto = Number(row.saldo);
+
+    dispatch(
+      updateModal({
+        payload: {
+          status: true,
+          element: (
+            <>
+              {
+                context === 'PAYPAL'
+                  ? (
+                      <Paypal
+                        description={row.descrip}
+                        invoiceId={row.fact_num}
+                        customId={user.username}
+                        amountDetail={monto.toFixed(2)}
+                        amount={monto.toFixed(2)}
+                        client={paypalClientId}
+                        attemps={wsAttemps.value}
+                      />
+                    )
+                  : (
+                      context === 'GLOBALCONNECTION'
+                        ? (
+                            <GlobalConnection
+                              description={row.descrip}
+                              invoiceId={row.fact_num}
+                              customId={user.username}
+                              amountDetail={monto.toFixed(2)}
+                              amount={monto.toFixed(2)}
+                              client={globalClientId?.value}
+                              attemps={wsAttemps.value} 
+                            />
+                          )
+                        : null
+                    )
+                   
+              }
+            </>
           ),
         },
       })
@@ -141,8 +265,8 @@ export default function UnpaidInvoices() {
     const current = unpaidInvoices.data.find((e: any) => e.fact_num == row);
     if (current && current.originalAmount !== "0") {
       return (
-        <div onClick={() => handlePayment(current)}>
-          <img src={logo} alt="example image" style={{ cursor: "pointer" }} />
+        <div onClick={() => handlePayment(current,'PAYPAL')}>
+          <img src={logo} alt="example" style={{ cursor: "pointer" }} />
         </div>
       );
     }
@@ -152,10 +276,10 @@ export default function UnpaidInvoices() {
     const current = unpaidInvoices.data.find((e: any) => e.fact_num == row);
     if (current && current.originalAmount !== "0") {
       return (
-        <div>
+        <div onClick={() => handlePayment(current,'GLOBALCONNECTION')} >
           <img
             src={globalConnectLogo}
-            alt="example image"
+            alt="example"
             style={{ cursor: "pointer" }}
             width={72}
           />
@@ -173,7 +297,7 @@ export default function UnpaidInvoices() {
         >
           <img
             src={mercantilLogo}
-            alt="mercantil image"
+            alt="mercantil"
             style={{ cursor: "pointer" }}
           />
         </div>
@@ -183,7 +307,6 @@ export default function UnpaidInvoices() {
   };
 
   const getSelectRow = (row: any) => {
-    console.log("selectedrow ", row);
     dispatch(getInvoiceDetail(row.fact_num));
     return row.fact_num;
   };
@@ -380,18 +503,76 @@ export default function UnpaidInvoices() {
   }, [cache, setIsCache]);
 
   useEffect(() => {
+    const globalConnectTransactionToken = new URLSearchParams(props.location.search).get('tk');
+    if (globalConnectTransactionToken && tasa?.dTasa) {
+      const { GBC_PaymentGatewayResult } = $.fn as any
+      if (GBC_PaymentGatewayResult) {
+        GBC_PaymentGatewayResult.setup.Token = globalConnectTransactionToken
+        GBC_PaymentGatewayResult(async function (Result : any) {
+          let ResultCode = Result[0].ResultCode;
+          if(ResultCode == '00') {
+            const body = {
+              order: Result[0].ReferenceCode,
+              invoices:  Result[0].Reference,
+              amount: Result[0].TotalAmount,
+              channel: 'GLOBALCONNECTION',
+              dTasa: tasa && tasa.dTasa ? tasa.dTasa : -1,
+            };
+            await dispatch(setOrder(body));
+            dispatch(getUnpaidInvoices(wsAttemps.value));
+            dispatch(getReportedPayments());
+            new URLSearchParams(props.location.search).delete('tk');
+          } else {
+            let error = Result[0].Error;
+            dispatch(
+              snackBarUpdate({
+                payload: {
+                  message: `Su Pago no pudo ser procesado <br> Mensaje de Error de Paypal: ${error}`,
+                  status: true,
+                  type: "error",
+                },
+              })
+            );
+          }
+        });
+      }
+    }
+  },[props, tasa])
+
+  useEffect(() => {
     if (parameterList.length > 0) {
       dispatch(getUnpaidInvoices(wsAttemps.value));
     }
   }, [dispatch, parameterList, wsAttemps]);
+
+  
+
   const totalTasa = unpaidInvoices.total * tasa.dTasa;
   return (
     <div>
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} >
+        <DialogTitle>
+          Seleccione su metodo de pago
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={usePaypal} >
+              <img src={logo} alt="example" style={{ cursor: "pointer" }} />
+          </Button>
+          <Button onClick={useGlobalConnection} >
+              <img
+                src={globalConnectLogo}
+                alt="example"
+                style={{ cursor: "pointer" }}
+                width={72}
+              />            
+          </Button>
+        </DialogActions>
+      </Dialog>
       <div className={classes.headerContainer}>
         <div className={classes.headerTitle}>Facturas</div>
       </div>
       <div className={classes.tableContainer}>
-        <DataTable4
+        <DataTableUnpaidInvoices
           rows={unpaidInvoices.data}
           columns={columns}
           loading={setUnpaidInvoicestLoading}
@@ -425,7 +606,36 @@ export default function UnpaidInvoices() {
           aditionalColumnAlign3={"left"}
           renderSubRows={renderSubRows}
           getSelectRow={getSelectRow}
+          addSelectRow={addSelectRow}
+          removeSelectRow={removeSelectRow}
+          invoicesSelected={invoicesSelected}
         />
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          marginTop: '15px'
+        }}
+      >
+        <Button
+          variant='contained'
+          color='primary'
+          style={{
+            marginRight: '15px'
+          }}
+          onClick={() => handlePayMultiple(false)}
+        >
+          Pagar Multiple
+        </Button>
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={() => handlePayMultiple(true)}
+        >
+          Pagar Todo
+        </Button>
       </div>
     </div>
   );

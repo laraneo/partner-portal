@@ -325,7 +325,7 @@ export const setOrder = (order: object) => async (dispatch: Function) => {
     })
   );
   try {
-    const { data, status } = await API.setOrder(order);
+    const { data, status } = await API.setOrderChannel(order);
     let response = [];
     if (status === 200) {
       if (data) {

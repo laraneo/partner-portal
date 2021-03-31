@@ -78,8 +78,9 @@ const Paypal: FunctionComponent<ComponentProps> = ({
               // OPTIONAL: Call your server to save the transaction
               const body = {
                 order: data.orderID,
-                invoice: invoiceId,
+                invoices: invoiceId,
                 amount,
+                channel: 'PAYPAL',
                 dTasa: tasa && tasa.dTasa ? tasa.dTasa : -1,
               };
               await dispatch(setOrder(body));
