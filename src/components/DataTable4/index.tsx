@@ -102,6 +102,10 @@ interface DataTableProps {
   getSelectRow?: any;
   colorColumn?: string;
   handleRowEdit?: any;
+
+  addSelectRow?: any
+  removeSelectRow?: any
+  invoicesSelected?: any
 }
 
 const DataTable4: FunctionComponent<DataTableProps> = ({
@@ -136,6 +140,10 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
   getSelectRow,
   colorColumn,
   handleRowEdit,
+
+  addSelectRow,
+  removeSelectRow,
+  invoicesSelected
 }) => {
   const classes = useStyles();
   const [selectedRow, setSelectedRow] = useState(0);
@@ -195,8 +203,8 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
           >
             <TableCell>
               <Checkbox
-                checked={false}
-                onChange={() => {}}
+                checked={invoicesSelected?.includes(row)}
+                onChange={({target}) => invoicesSelected?.includes(row) ? removeSelectRow(row) : addSelectRow(row)}
                 inputProps={{ 'aria-label': 'primary checkbox' }}
               />
             </TableCell>

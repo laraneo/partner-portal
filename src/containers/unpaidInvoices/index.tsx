@@ -18,7 +18,10 @@ import Helper from "../../helpers/utilities";
 import logo from "../../styles/images/paypal-small-logo.jpeg";
 import globalConnectLogo from "../../styles/images/global-connect.jpeg";
 import mercantilLogo from "../../styles/images/mercantil-small-logo.jpeg";
-import { TableCell, TableRow, Chip, Grid } from "@material-ui/core";
+import {
+  TableCell, TableRow, Chip, Grid, Button,
+  Dialog, DialogTitle, DialogActions
+} from "@material-ui/core";
 
 interface InvoiceDetailColumns {
   id: "" | "status" | "fact_num" | "art_des" | "prec_vta" | "prec_vta2";
@@ -69,6 +72,12 @@ export default function UnpaidInvoices(props : any) {
   const [isCache, setIsCache] = useState<boolean>(false);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [invoicesSelected,setInvoicesSelected] = useState<any[]>([])
+  const [openDialog,setOpenDialog] = useState<boolean>(false)
+  const [payAll,setPayAll] = useState<boolean>(false)
+
+  const addSelectRow = (invoice:any) => setInvoicesSelected([...invoicesSelected , invoice])
+  const removeSelectRow = (invoice:any) => setInvoicesSelected(invoicesSelected.filter(aux => aux !== invoice))
 
   const {
     parameterReducer: { listData: parameterList },
@@ -116,6 +125,85 @@ export default function UnpaidInvoices(props : any) {
       ? paypalParameter.value
       : null;
 
+
+  const calculatePayMultipleData = () => {
+    let invoicesToPay = [...invoicesSelected]
+    
+    if(payAll){
+      invoicesToPay = [...unpaidInvoices.data]
+    }
+
+    let total = 0
+    let invoiceIds = ''
+
+    invoicesToPay.forEach(invoice => { total += parseFloat(invoice.saldo); invoiceIds = `${invoiceIds} - ${invoice.fact_num}` })
+
+    const description = payAll ? 'Pay all unpaid invoices' : 'Pay multiple invoices'
+    const invoiceId = invoiceIds
+    const customId = user.username
+    const amountDetail = total.toFixed(2).toString()
+    const amount = total.toFixed(2).toString()
+    const attemps = wsAttemps.value
+
+    return {
+      description,
+      invoiceId,
+      customId,
+      amountDetail,
+      amount,
+      attemps,
+    }
+  }
+
+  const usePaypal = () => {
+    setOpenDialog(false)
+    const data = calculatePayMultipleData()
+    dispatch(
+      updateModal({
+        payload: {
+          status: true,
+          element: (
+            <Paypal
+              { ...data }
+              client={paypalClientId}
+            />
+          ),
+        },
+      })
+    );
+  }
+  
+  const useGlobalConnection = () => {
+    setOpenDialog(false)
+    const data = calculatePayMultipleData()
+    dispatch(
+      updateModal({
+        payload: {
+          status: true,
+          element: (
+            <GlobalConnection
+              { ...data }
+              client={globalClientId}
+            />
+          ),
+        },
+      })
+    );
+  }
+
+  const handlePayMultiple = (all = false) => {
+    setPayAll(all)
+    if(paypalClientId && globalClientId){
+      setOpenDialog(true)
+    }else if(paypalClientId){
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      usePaypal()      
+    }else if(globalClientId){
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      useGlobalConnection()      
+    }
+  }
+
   const handlePayment = (row: any , context: string) => {
     const monto = Number(row.saldo);
     console.log('selected row',row)
@@ -148,7 +236,7 @@ export default function UnpaidInvoices(props : any) {
                               customId={user.username}
                               amountDetail={monto.toFixed(2)}
                               amount={monto.toFixed(2)}
-                              client={paypalClientId}
+                              client={globalClientId}
                               attemps={wsAttemps.value} 
                             />
                           )
@@ -329,13 +417,6 @@ export default function UnpaidInvoices(props : any) {
   const renderSubRows = (row: any, selected: any) => {
     const invoiceDetailColumns: InvoiceDetailColumns[] = [
       {
-        id: "",
-        label: "Check",
-        minWidth: 10,
-        align: "left",
-        component: () => <span>check</span>,
-      },
-      {
         id: "art_des",
         label: "Descripción",
         minWidth: 10,
@@ -439,9 +520,30 @@ export default function UnpaidInvoices(props : any) {
       dispatch(getUnpaidInvoices(wsAttemps.value));
     }
   }, [dispatch, parameterList, wsAttemps]);
+
+  
+
   const totalTasa = unpaidInvoices.total * tasa.dTasa;
   return (
     <div>
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} >
+        <DialogTitle>
+          Chose your payment method
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={usePaypal} >
+              <img src={logo} alt="example" style={{ cursor: "pointer" }} />
+          </Button>
+          <Button onClick={useGlobalConnection} >
+              <img
+                src={globalConnectLogo}
+                alt="example"
+                style={{ cursor: "pointer" }}
+                width={72}
+              />            
+          </Button>
+        </DialogActions>
+      </Dialog>
       <div className={classes.headerContainer}>
         <div className={classes.headerTitle}>Facturas</div>
       </div>
@@ -480,7 +582,36 @@ export default function UnpaidInvoices(props : any) {
           aditionalColumnAlign3={"left"}
           renderSubRows={renderSubRows}
           getSelectRow={getSelectRow}
+          addSelectRow={addSelectRow}
+          removeSelectRow={removeSelectRow}
+          invoicesSelected={invoicesSelected}
         />
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          marginTop: '15px'
+        }}
+      >
+        <Button
+          variant='contained'
+          color='primary'
+          style={{
+            marginRight: '15px'
+          }}
+          onClick={() => handlePayMultiple(false)}
+        >
+          Pagar Multiple
+        </Button>
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={() => handlePayMultiple(true)}
+        >
+          Pagar Todo
+        </Button>
       </div>
     </div>
   );
