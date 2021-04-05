@@ -1,10 +1,8 @@
 import React, { FunctionComponent } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, Box, Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Button
-} from '@material-ui/core';
 import snackBarUpdate from "../../actions/snackBarActions";
+import logo from "../../styles/images/global-connect.jpeg";
 
 interface ComponentProps {
   invoiceId: any;
@@ -62,6 +60,11 @@ const GlobalConnection: FunctionComponent<ComponentProps> = ({
 
   return (
     <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Box display="flex" justifyContent="center" width="100%">
+          <img src={logo} alt="example" style={{ cursor: "pointer" }} height={50} />
+        </Box>
+      </Grid>
       <Grid item xs={12}>
         <Grid container>
           <Grid item xs={12}>

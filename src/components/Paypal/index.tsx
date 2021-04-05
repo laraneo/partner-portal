@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { PayPalButton } from "react-paypal-button-v2";
-import { Grid } from "@material-ui/core";
+import { Grid, Box } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setOrder,
@@ -9,6 +9,7 @@ import {
 } from "../../actions/webServiceActions";
 import { updateModal } from "../../actions/modalActions";
 import snackBarUpdate from "../../actions/snackBarActions";
+import logo from "../../styles/images/paypal-small-logo.jpeg";
 
 interface ComponentProps {
   invoiceId: any;
@@ -33,6 +34,11 @@ const Paypal: FunctionComponent<ComponentProps> = ({
   const { webServiceReducer: { tasa } } = useSelector((state: any) => state);
   return (
     <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <Box display="flex" justifyContent="center" width="100%">
+          <img src={logo} alt="example" style={{ cursor: "pointer" }} height={50} />
+        </Box>
+      </Grid>
       <Grid item xs={12}>
         <Grid container>
           <Grid item xs={12}>
