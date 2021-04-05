@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Grid, Box, Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import snackBarUpdate from "../../actions/snackBarActions";
-import logo from "../../styles/images/global-connect.jpeg";
+import logo from "../../styles/images/globalconnect-hires.png";
 
 interface ComponentProps {
   invoiceId: any;

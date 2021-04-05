@@ -19,7 +19,8 @@ import Paypal from "../../components/Paypal";
 import GlobalConnection from "../../components/GlobalConnection";
 import Helper from "../../helpers/utilities";
 import logo from "../../styles/images/paypal-small-logo.jpeg";
-import globalConnectLogo from "../../styles/images/global-connect.jpeg";
+import paypalLogo from "../../styles/images/paypal-hires.png";
+import globalConnectLogo from "../../styles/images/globalconnect-hires.png";
 import mercantilLogo from "../../styles/images/mercantil-small-logo.jpeg";
 import {
   TableCell, TableRow, Chip, Grid, Button,
@@ -204,7 +205,7 @@ export default function UnpaidInvoices(props : any) {
 
   const handlePayMultiple = (all = false) => {
     setPayAll(all);
-    if (!all && invoicesSelected.length > 0) {
+    if (all || invoicesSelected.length > 0) {
       if(paypalClientId && globalClientId){
         setOpenDialog(true)
       }else if(paypalClientId){
@@ -569,7 +570,7 @@ export default function UnpaidInvoices(props : any) {
         <DialogActions>
           <Box display="flex"justifyContent="center" width="100%">
             <Button onClick={usePaypal} >
-                <img src={logo} alt="example" style={{ cursor: "pointer" }} height={50} />
+                <img src={paypalLogo} alt="example" style={{ cursor: "pointer" }} height={50} />
             </Button>
             <Button onClick={useGlobalConnection} >
                 <img
