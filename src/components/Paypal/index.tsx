@@ -9,7 +9,7 @@ import {
 } from "../../actions/webServiceActions";
 import { updateModal } from "../../actions/modalActions";
 import snackBarUpdate from "../../actions/snackBarActions";
-import logo from "../../styles/images/paypal-small-logo.jpeg";
+import logo from "../../styles/images/paypal-hires.png";
 
 interface ComponentProps {
   invoiceId: any;
