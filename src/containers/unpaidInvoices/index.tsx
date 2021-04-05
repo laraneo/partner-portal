@@ -23,7 +23,7 @@ import globalConnectLogo from "../../styles/images/global-connect.jpeg";
 import mercantilLogo from "../../styles/images/mercantil-small-logo.jpeg";
 import {
   TableCell, TableRow, Chip, Grid, Button,
-  Dialog, DialogTitle, DialogActions
+  Dialog, DialogTitle, DialogActions, Box
 } from "@material-ui/core";
 import snackBarUpdate from "../../actions/snackBarActions";
 
@@ -77,7 +77,7 @@ export default function UnpaidInvoices(props : any) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [invoicesSelected,setInvoicesSelected] = useState<any[]>([]);
-  const [openDialog,setOpenDialog] = useState<boolean>(false);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [payAll,setPayAll] = useState<boolean>(false);
 
   const addSelectRow = (invoice:any) => setInvoicesSelected([...invoicesSelected , invoice])
@@ -203,15 +203,27 @@ export default function UnpaidInvoices(props : any) {
   }
 
   const handlePayMultiple = (all = false) => {
-    setPayAll(all)
-    if(paypalClientId && globalClientId){
-      setOpenDialog(true)
-    }else if(paypalClientId){
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      usePaypal()      
-    }else if(globalClientId){
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      useGlobalConnection()      
+    setPayAll(all);
+    if (!all && invoicesSelected.length > 0) {
+      if(paypalClientId && globalClientId){
+        setOpenDialog(true)
+      }else if(paypalClientId){
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        usePaypal()      
+      }else if(globalClientId){
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useGlobalConnection()      
+      }
+    } else {
+      dispatch(
+        snackBarUpdate({
+          payload: {
+            message: `Debe seleccionas las facturas que desea cancelar`,
+            status: true,
+            type: "error",
+          },
+        })
+      );
     }
   }
 
@@ -555,17 +567,19 @@ export default function UnpaidInvoices(props : any) {
           Seleccione su metodo de pago
         </DialogTitle>
         <DialogActions>
-          <Button onClick={usePaypal} >
-              <img src={logo} alt="example" style={{ cursor: "pointer" }} />
-          </Button>
-          <Button onClick={useGlobalConnection} >
-              <img
-                src={globalConnectLogo}
-                alt="example"
-                style={{ cursor: "pointer" }}
-                width={72}
-              />            
-          </Button>
+          <Box display="flex"justifyContent="center" width="100%">
+            <Button onClick={usePaypal} >
+                <img src={logo} alt="example" style={{ cursor: "pointer" }} height={50} />
+            </Button>
+            <Button onClick={useGlobalConnection} >
+                <img
+                  src={globalConnectLogo}
+                  alt="example"
+                  style={{ cursor: "pointer" }}
+                  height={50}
+                />            
+            </Button>
+          </Box>
         </DialogActions>
       </Dialog>
       <div className={classes.headerContainer}>

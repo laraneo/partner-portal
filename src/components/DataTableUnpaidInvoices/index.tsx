@@ -39,6 +39,16 @@ const GreenSwitch = withStyles({
   track: {},
 })(Switch);
 
+const GreenCheckbox = withStyles({
+  root: {
+    color: green[400],
+    '&$checked': {
+      color: green[600],
+    },
+  },
+  checked: {},
+})(Checkbox);
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -202,7 +212,7 @@ const DataTableUnpaidInvoices: FunctionComponent<DataTableProps> = ({
             }}
           >
             <TableCell>
-              <Checkbox
+              <GreenCheckbox
                 checked={invoicesSelected?.includes(row)}
                 onChange={({target}) => invoicesSelected?.includes(row) ? removeSelectRow(row) : addSelectRow(row)}
                 inputProps={{ 'aria-label': 'primary checkbox' }}
