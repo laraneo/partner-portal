@@ -423,14 +423,14 @@ export default function UnpaidInvoices(props : any) {
 
   const getTotalInvoiceDetail = (): any => {
     const list = [...invoiceDetails];
-    let total = 0;
+    let total = {
+      amount: 0,
+      iva: 0,
+    };
     list.forEach((element) => {
       if (element.prec_vta2) {
-        console.log(
-          "parseFloat(element.prec_vta2); ",
-          parseFloat(element.prec_vta2)
-        );
-        total = total + parseFloat(element.prec_vta2);
+        total.amount = total.amount + parseFloat(element.prec_vta2);
+        total.iva = total.iva + parseFloat(element.IVA);
       }
     });
     return total;
@@ -469,7 +469,8 @@ export default function UnpaidInvoices(props : any) {
     ];
     if (row.fact_num == selected) {
       const totalInvoices = getTotalInvoiceDetail();
-      const total = totalInvoices * tasa.dTasa;
+      const total = totalInvoices.amount + totalInvoices.iva;
+      const totalBs = (total) * tasa.dTasa;
       return (
         <TableRow>
           <TableCell colSpan={13}>
@@ -484,22 +485,28 @@ export default function UnpaidInvoices(props : any) {
                   loading={setInvoiceDetailLoading}
                   fontSize="10px"
                   colorColumn="#109e2f"
-                  aditionalColumn={totalInvoices.toFixed(2)}
+                  aditionalColumn={
+                    invoiceDetails.length > 0 ? totalInvoices.amount.toFixed(2) : null
+                  }
                   aditionalColumnLabel={
-                    invoiceDetails.length > 0 ? "Total " + moneda.value : null
+                    invoiceDetails.length > 0 ? "SubTotal " + moneda.value : null
                   }
                   aditionalColumn1={
-                    invoiceDetails.length > 0 ? total.toFixed(2) : null
+                    invoiceDetails.length > 0 ? totalInvoices.iva.toFixed(2) : null
                   }
                   aditionalColumnLabel1={
+                    invoiceDetails.length > 0 ? "Iva " + moneda.value : null
+                  }
+                  aditionalColumn2={
+                    invoiceDetails.length > 0 ? total.toFixed(2) : null
+                  }
+                  aditionalColumnLabel2={
+                    invoiceDetails.length > 0 ? "Total " + moneda.value : null
+                  }
+                  aditionalColumn3={invoiceDetails.length > 0 ? totalBs.toFixed(2) : null}
+                  aditionalColumnLabel3={
                     invoiceDetails.length > 0 ? "Total Bs " : null
                   }
-                  /*aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : null}
-                  aditionalColumnLabel2={"Tasa BCV "}
-                  aditionalColumnAlign2={"left"}
-                  aditionalColumn3={tasa.dFecha ? moment(tasa.dFecha).format("DD-MM-YYYY") : null}
-                  aditionalColumnLabel3={"Fecha"}
-                  aditionalColumnAlign3={"left"}*/
                 />
               </Grid>
             </Grid>
