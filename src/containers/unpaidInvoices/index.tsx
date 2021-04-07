@@ -495,7 +495,7 @@ export default function UnpaidInvoices(props : any) {
                     invoiceDetails.length > 0 ? totalInvoices.iva.toFixed(2) : null
                   }
                   aditionalColumnLabel1={
-                    invoiceDetails.length > 0 ? "Iva " + moneda.value : null
+                    invoiceDetails.length > 0 ? "IVA " + moneda.value : null
                   }
                   aditionalColumn2={
                     invoiceDetails.length > 0 ? total.toFixed(2) : null
