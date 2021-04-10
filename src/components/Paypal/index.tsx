@@ -32,6 +32,7 @@ const Paypal: FunctionComponent<ComponentProps> = ({
 }) => {
   const dispatch = useDispatch();
   const { webServiceReducer: { tasa } } = useSelector((state: any) => state);
+  const reference = (+new Date).toString(36);
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -59,8 +60,8 @@ const Paypal: FunctionComponent<ComponentProps> = ({
               purchase_units: [
                 {
                   description,
-                  custom_id: customId,
-                  invoice_id: invoiceId,
+                  custom_id: invoiceId,
+                  invoice_id: reference,
                   amount: {
                     currency_code: "USD",
                     value: amount,
@@ -79,15 +80,13 @@ const Paypal: FunctionComponent<ComponentProps> = ({
               })
             );
             return actions.order.capture().then(async (details: any) => {
-              // Show a success message to your buyer
-              // alert("Transaction completed by " + details.payer.name.given_name);
-              // OPTIONAL: Call your server to save the transaction
               const body = {
                 order: data.orderID,
                 invoices: invoiceId,
                 amount,
                 channel: 'PAYPAL',
                 dTasa: tasa && tasa.dTasa ? tasa.dTasa : -1,
+                reference: 'PORTAL-' + reference,
               };
               await dispatch(setOrder(body));
               dispatch(getUnpaidInvoices(attemps));

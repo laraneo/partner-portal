@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { Grid, Box, Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
+import { setPreOrder } from "../../actions/webServiceActions";
 import snackBarUpdate from "../../actions/snackBarActions";
 import logo from "../../styles/images/globalconnect-hires.png";
 
@@ -28,15 +29,15 @@ const GlobalConnection: FunctionComponent<ComponentProps> = ({
 
   const handleClick = () => {
     const { GBC_PaymentGateway } = $.fn as any
-
+    const reference = (+new Date).toString(36);
     if(GBC_PaymentGateway){
       GBC_PaymentGateway.setup.Apikey = client;
       GBC_PaymentGateway.setup.Currency = 'USD';
       GBC_PaymentGateway.setup.Totalamount = `${amountDetail}`;
-      GBC_PaymentGateway.setup.Reference = invoiceId;
-      GBC_PaymentGateway.setup.Reference2 = '';
+      GBC_PaymentGateway.setup.Reference = reference;
+      GBC_PaymentGateway.setup.Reference2 = invoiceId;
       GBC_PaymentGateway.setup.JsonData = JSON.stringify({  });
-      GBC_PaymentGateway(function (Result : any) {
+      GBC_PaymentGateway(async function (Result : any) {
         var error = Result[0].Error;
         if(error) { 
           dispatch(
@@ -50,8 +51,27 @@ const GlobalConnection: FunctionComponent<ComponentProps> = ({
           );
         }
         else {
-          var Url : string = Result[0].Url;
-          window.location.replace(Url);
+          try{
+            const { status } = await setPreOrder({
+              order: null,
+              invoices: invoiceId,
+              amount,
+              channel: "GLOBALCONNECTION",
+              dTasa: tasa && tasa.dTasa ? tasa.dTasa : -1,
+              reference: Result[0].Token,
+            });
+            if (status === 200) {
+               window.location.replace(Result[0].Url);
+            }
+          } catch (error) {
+            snackBarUpdate({
+              payload: {
+                message: error.message,
+                status: true,
+                type: "error",
+              },
+            })(dispatch);
+          }
         }
       });
     }
