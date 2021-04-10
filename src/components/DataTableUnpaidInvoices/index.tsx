@@ -42,7 +42,7 @@ const GreenSwitch = withStyles({
 const GreenCheckbox = withStyles({
   root: {
     color: green[400],
-    '&$checked': {
+    "&$checked": {
       color: green[600],
     },
   },
@@ -113,9 +113,10 @@ interface DataTableProps {
   colorColumn?: string;
   handleRowEdit?: any;
 
-  addSelectRow?: any
-  removeSelectRow?: any
-  invoicesSelected?: any
+  addSelectRow?: any;
+  removeSelectRow?: any;
+  invoicesSelected?: any;
+  isSelectionActive?: boolean;
 }
 
 const DataTableUnpaidInvoices: FunctionComponent<DataTableProps> = ({
@@ -153,7 +154,8 @@ const DataTableUnpaidInvoices: FunctionComponent<DataTableProps> = ({
 
   addSelectRow,
   removeSelectRow,
-  invoicesSelected
+  invoicesSelected,
+  isSelectionActive
 }) => {
   const classes = useStyles();
   const [selectedRow, setSelectedRow] = useState(0);
@@ -211,13 +213,20 @@ const DataTableUnpaidInvoices: FunctionComponent<DataTableProps> = ({
               return {};
             }}
           >
-            <TableCell>
-              <GreenCheckbox
-                checked={invoicesSelected?.includes(row)}
-                onChange={({target}) => invoicesSelected?.includes(row) ? removeSelectRow(row) : addSelectRow(row)}
-                inputProps={{ 'aria-label': 'primary checkbox' }}
-              />
-            </TableCell>
+            {isSelectionActive ? (
+              <TableCell>
+                <GreenCheckbox
+                  checked={invoicesSelected?.includes(row)}
+                  onChange={({ target }) =>
+                    invoicesSelected?.includes(row)
+                      ? removeSelectRow(row)
+                      : addSelectRow(row)
+                  }
+                  inputProps={{ "aria-label": "primary checkbox" }}
+                />
+              </TableCell>
+            ) : null}
+
             {columns.map((column: any) => {
               const value = row[column.id];
               const isHandleSubRow = row[column.isHandleSubRow];
@@ -335,7 +344,7 @@ const DataTableUnpaidInvoices: FunctionComponent<DataTableProps> = ({
         <Table stickyHeader aria-label="sticky table" size="small">
           <TableHead>
             <TableRow>
-              <TableCell/>
+              {isSelectionActive ? <TableCell /> : null }
               {columns.map((column: any) => (
                 <TableCell
                   key={column.id}
@@ -420,7 +429,9 @@ const DataTableUnpaidInvoices: FunctionComponent<DataTableProps> = ({
               <TableRow>
                 <TableCell
                   className={classes.tableCellHeader}
-                  align={aditionalColumnAlign2 ? aditionalColumnAlign2 : 'right'}
+                  align={
+                    aditionalColumnAlign2 ? aditionalColumnAlign2 : "right"
+                  }
                   style={{
                     minWidth: fontSize,
                   }}
@@ -436,7 +447,9 @@ const DataTableUnpaidInvoices: FunctionComponent<DataTableProps> = ({
               <TableRow>
                 <TableCell
                   className={classes.tableCellHeader}
-                  align={aditionalColumnAlign3 ? aditionalColumnAlign3 : 'right'}
+                  align={
+                    aditionalColumnAlign3 ? aditionalColumnAlign3 : "right"
+                  }
                   style={{
                     minWidth: fontSize,
                   }}

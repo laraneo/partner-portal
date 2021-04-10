@@ -368,6 +368,62 @@ export const setOrder = (order: object) => async (dispatch: Function) => {
   }
 };
 
+export const setPreOrder = async (order: object) =>  {
+  return await API.setOrderChannel(order);
+};
+
+export const updateOrder = (order: object) => async (dispatch: Function) => {
+  dispatch(
+    updateModal({
+      payload: {
+        isLoader: true,
+      },
+    })
+  );
+  try {
+    const { data, status } = await API.updateOrder(order);
+    let response = [];
+    if (status === 200) {
+      if (data) {
+        response = data;
+        snackBarUpdate({
+          payload: {
+            message: "Su pago ha sido Procesado",
+            type: "success",
+            status: true,
+          },
+        })(dispatch);
+      }
+    }
+    dispatch(
+      updateModal({
+        payload: {
+          isLoader: false,
+          status: false,
+          element: null,
+        },
+      })
+    );
+    return response;
+  } catch (error) {
+    dispatch(
+      updateModal({
+        payload: {
+          isLoader: false,
+        },
+      })
+    );
+    snackBarUpdate({
+      payload: {
+        message: error.message,
+        status: true,
+        type: "error",
+      },
+    })(dispatch);
+    return error;
+  }
+};
+
 export const setInvoicePayment = (body: any) => async (dispatch: Function) => {
   try {
     const { data, status } = await API.setInvoicePayment(body);
