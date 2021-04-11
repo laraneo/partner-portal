@@ -582,7 +582,7 @@ export default function UnpaidInvoices(props: any) {
             dispatch(
               snackBarUpdate({
                 payload: {
-                  message: `Su Pago no pudo ser procesado <br> Mensaje de Error de Paypal: ${error}`,
+                  message: `Su Pago no pudo ser procesado <br> Mensaje de Error: ${error}`,
                   status: true,
                   type: "error",
                 },
