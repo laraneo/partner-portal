@@ -61,9 +61,6 @@ const useStyles = makeStyles((theme: Theme) =>
         width: window.innerWidth - 20,
       },
     },
-    container: {
-      maxHeight: 440,
-    },
     progress: {
       display: "flex",
       justifyContent: "left",
@@ -340,7 +337,7 @@ const DataTableUnpaidInvoices: FunctionComponent<DataTableProps> = ({
 
   return (
     <Paper className={classes.root}>
-      <TableContainer className={classes.container}>
+      <TableContainer>
         <Table stickyHeader aria-label="sticky table" size="small">
           <TableHead>
             <TableRow>

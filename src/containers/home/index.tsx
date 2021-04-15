@@ -99,6 +99,11 @@ export default function Home() {
     return false;
   };
 
+  const getOrder = (value: string) => {
+    const widget = widgetList.find((e: any) => e.slug === value);
+    return widget.order;
+  };
+
   const hiddeMobileWidget = (value: string) => {
     const isValid = widgetList.find((e: any) => e.slug === value);
     if (isValid && isValid.show_mobile !== null && isValid.show_mobile == 0) {
@@ -181,7 +186,9 @@ export default function Home() {
     if (!_.isEmpty(validarSaldo)) {
       if (validarSaldo.value == 0) {
         return (
-          <Grid item sm={12} xs={12} md={3}>
+          <Grid item sm={12} xs={12} md={3} style={{
+            order: getOrder("PARTNERPORTAL_reservaciones"),
+          }}>
             <Paper>
               <Widgtet
                 Icon={FaGolfBall}
@@ -227,7 +234,9 @@ export default function Home() {
     if (!_.isEmpty(validarSaldo)) {
       if (validarSaldo.value == 0) {
         return (
-          <Grid item sm={12} xs={12} md={3}>
+          <Grid item sm={12} xs={12} md={3} style={{
+            order: getOrder("PARTNERPORTAL_tennis"),
+          }}>
             <Paper>
               <Widgtet Icon={BiTennisBall} title="Tenis" link={tennisLink} />
             </Paper>
@@ -268,7 +277,15 @@ export default function Home() {
     <div className="home-container">
       <Grid container spacing={3} className={classes.widgetContainer}>
         {validateWidget("PARTNERPORTAL_info") && (
-          <Grid item sm={12} xs={12} md={12}>
+          <Grid
+            item
+            sm={12}
+            xs={12}
+            md={12}
+            style={{
+              order: getOrder("PARTNERPORTAL_info"),
+            }}
+          >
             <Paper>
               <Widgtet title={textInfo} />
             </Paper>
@@ -276,7 +293,15 @@ export default function Home() {
         )}
 
         {validateWidget("PARTNERPORTAL_saldo") && (
-          <Grid item sm={12} xs={12} md={3}>
+          <Grid
+            item
+            sm={12}
+            xs={12}
+            md={3}
+            style={{
+              order: getOrder("PARTNERPORTAL_saldo"),
+            }}
+          >
             {setBalanceLoading ? (
               <Loader />
             ) : (
@@ -308,6 +333,9 @@ export default function Home() {
                 ? classes.hideMobileWidget
                 : ""
             }`}
+            style={{
+              order: getOrder("PARTNERPORTAL_actualizacion-datos"),
+            }}
           >
             <Paper>
               <Widgtet
@@ -321,7 +349,15 @@ export default function Home() {
         )}
 
         {validateWidget("PARTNERPORTAL_facturas") && (
-          <Grid item sm={12} xs={12} md={3}>
+          <Grid
+            item
+            sm={12}
+            xs={12}
+            md={3}
+            style={{
+              order: getOrder("PARTNERPORTAL_facturas"),
+            }}
+          >
             <Paper>
               <Widgtet
                 Icon={FaFileInvoiceDollar}
@@ -334,7 +370,15 @@ export default function Home() {
         )}
 
         {validateWidget("PARTNERPORTAL_reporte-pagos") && (
-          <Grid item sm={12} xs={12} md={3}>
+          <Grid
+            item
+            sm={12}
+            xs={12}
+            md={3}
+            style={{
+              order: getOrder("PARTNERPORTAL_reporte-pagos"),
+            }}
+          >
             <Paper>
               <Widgtet
                 Icon={FaFileImport}
@@ -347,7 +391,15 @@ export default function Home() {
         )}
 
         {validateWidget("PARTNERPORTAL_pagos-reportados") && (
-          <Grid item sm={12} xs={12} md={3}>
+          <Grid
+            item
+            sm={12}
+            xs={12}
+            md={3}
+            style={{
+              order: getOrder("PARTNERPORTAL_pagos-reportados"),
+            }}
+          >
             <Paper>
               <Widgtet
                 Icon={FaFileAlt}
@@ -364,7 +416,15 @@ export default function Home() {
         {validateWidget("PARTNERPORTAL_tennis") && renderWidgetTennis()}
 
         {validateWidget("PARTNERPORTAL_torneos") && (
-          <Grid item sm={12} xs={12} md={3}>
+          <Grid
+            item
+            sm={12}
+            xs={12}
+            md={3}
+            style={{
+              order: getOrder("PARTNERPORTAL_torneos"),
+            }}
+          >
             <Paper>
               <Widgtet
                 Icon={ScheduleIcon}
@@ -390,7 +450,15 @@ export default function Home() {
         } */}
 
         {validateWidget("PARTNERPORTAL_mi-acceso") && (
-          <Grid item sm={12} xs={12} md={3}>
+          <Grid
+            item
+            sm={12}
+            xs={12}
+            md={3}
+            style={{
+              order: getOrder("PARTNERPORTAL_mi-acceso"),
+            }}
+          >
             <Paper>
               <Widgtet
                 Icon={AccessTimeIcon}
@@ -402,21 +470,16 @@ export default function Home() {
           </Grid>
         )}
 
-        {validateWidget("PARTNERPORTAL_contacto") && (
-          <Grid item sm={12} xs={12} md={3}>
-            <Paper>
-              <Widgtet
-                Icon={MailRoundedIcon}
-                title="Contactenos"
-                link="/dashboard/contact"
-                internal
-              />
-            </Paper>
-          </Grid>
-        )}
-
         {validateWidget("PARTNERPORTAL_applicants") && (
-          <Grid item sm={12} xs={12} md={3}>
+          <Grid
+            item
+            sm={12}
+            xs={12}
+            md={3}
+            style={{
+              order: getOrder("PARTNERPORTAL_applicants"),
+            }}
+          >
             <Paper>
               <Widgtet
                 Icon={AccountBoxIcon}
@@ -429,9 +492,38 @@ export default function Home() {
         )}
 
         {validateWidget("PARTNERPORTAL_horse") && (
-          <Grid item sm={12} xs={12} md={3}>
+          <Grid
+            item
+            sm={12}
+            xs={12}
+            md={3}
+            style={{
+              order: getOrder("PARTNERPORTAL_horse"),
+            }}
+          >
             <Paper>
               <Widgtet3 Icon={FaHorseHead} title="Caballeriza" />
+            </Paper>
+          </Grid>
+        )}
+
+        {validateWidget("PARTNERPORTAL_contacto") && (
+          <Grid
+            item
+            sm={12}
+            xs={12}
+            md={3}
+            style={{
+              order: getOrder("PARTNERPORTAL_contacto"),
+            }}
+          >
+            <Paper>
+              <Widgtet
+                Icon={MailRoundedIcon}
+                title="Contactenos"
+                link="/dashboard/contact"
+                internal
+              />
             </Paper>
           </Grid>
         )}
