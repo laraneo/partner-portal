@@ -379,7 +379,7 @@ export default function UnpaidInvoices(props: any) {
     },
     {
       id: "saldo",
-      label: "Saldo",
+      label: `Monto (${moneda.value})`,
       minWidth: 10,
       align: "right",
       component: (value: any) => <span>{value.value}</span>,
@@ -387,7 +387,7 @@ export default function UnpaidInvoices(props: any) {
     }, //<span>{value.value * tasa.dTasa}</span>,
     {
       id: "saldo",
-      label: "Monto Sugerido Bs",
+      label: "Monto (Bs)",
       minWidth: 10,
       align: "right",
       component: (value: any) => {
@@ -655,7 +655,7 @@ export default function UnpaidInvoices(props: any) {
               : null
           }
           aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : null}
-          aditionalColumnLabel2={"Tasa BCV "}
+          aditionalColumnLabel2={`Tasa BCV (BS)`}
           aditionalColumnAlign2={"left"}
           aditionalColumnLabel3={"Fecha "}
           aditionalColumn3={

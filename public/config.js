@@ -22,5 +22,3 @@ var attempts = 5;
 
 // Parametro en el formulario de login
 var campoUsuario = 'Ejemplo campo usuario';
-
-document.write('<script type="text/javascript" src="https://gatewaypty.gbcpay.net/cdn/test/v1.1/GBCPaymentGateway.min.js"></script>');

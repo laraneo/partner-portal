@@ -37,6 +37,7 @@ import LockIcon from "@material-ui/icons/Lock";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import AssignmentIndIcon from "@material-ui/icons/AssignmentInd";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import DashboardIcon from "@material-ui/icons/Dashboard";
 import _ from "lodash";
 import axios from "axios";
 
@@ -749,8 +750,11 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                       >
                         <AccessTimeIcon /> Mi QR
                       </MenuItem>
+                      <MenuItem onClick={() => history.push("/dashboard")}>
+                        <DashboardIcon /> {`Accion: ${!loading && user.group_id}`}
+                      </MenuItem>
                       <MenuItem onClick={() => handleLogout()}>
-                        <ExitToAppIcon /> Logout
+                        <ExitToAppIcon /> Salir
                       </MenuItem>
                     </Menu>
                   </div>
