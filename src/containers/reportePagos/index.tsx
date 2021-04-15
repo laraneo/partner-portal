@@ -97,7 +97,7 @@ const columns: reportePagosColumns[] = [
                 status = "En Proceso";
                 backgroundColor = '#2980b9';
             }
-            if (value.value == "1") {
+            if (value.value == "2") {
                 status = "Procesado";
                 backgroundColor = '#2ecc71';
             }
