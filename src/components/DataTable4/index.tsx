@@ -51,9 +51,6 @@ const useStyles = makeStyles((theme: Theme) =>
         width: window.innerWidth - 20,
       },
     },
-    container: {
-      maxHeight: 440,
-    },
     progress: {
       display: "flex",
       justifyContent: "left",
@@ -88,13 +85,17 @@ interface DataTableProps {
   renderSubRows?: any;
   aditionalColumn?: string;
   aditionalColumnLabel?: any;
+  aditionalColumnAlign?: any;
 
   aditionalColumn1?: any;
   aditionalColumnLabel1?: any;
+  aditionalColumnAlign1?: any;
   aditionalColumn2?: any;
   aditionalColumnLabel2?: any;
+  aditionalColumnAlign2?: any;
   aditionalColumn3?: any;
   aditionalColumnLabel3?: any;
+  aditionalColumnAlign3?: any;
 
   handleSwitch?: Function;
   getSelectRow?: any;
@@ -119,13 +120,17 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
 
   aditionalColumn,
   aditionalColumnLabel,
+  aditionalColumnAlign,
 
   aditionalColumn1,
   aditionalColumnLabel1,
+  aditionalColumnAlign1,
   aditionalColumn2,
   aditionalColumnLabel2,
+  aditionalColumnAlign2, 
   aditionalColumn3,
   aditionalColumnLabel3,
+  aditionalColumnAlign3,
 
   handlePayment,
   handleSwitch,
@@ -302,7 +307,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
 
   return (
     <Paper className={classes.root}>
-      <TableContainer className={classes.container}>
+      <TableContainer>
         <Table stickyHeader aria-label="sticky table" size="small">
           <TableHead>
             <TableRow>
@@ -359,7 +364,9 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
               <TableRow>
                 <TableCell
                   className={classes.tableCellHeader}
-                  align="right"
+                  align={
+                    aditionalColumnAlign ? aditionalColumnAlign : "right"
+                  }
                   style={{
                     minWidth: fontSize,
                   }}
@@ -374,7 +381,9 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
               <TableRow>
                 <TableCell
                   className={classes.tableCellHeader}
-                  align="right"
+                  align={
+                    aditionalColumnAlign1 ? aditionalColumnAlign1 : "right"
+                  }
                   style={{
                     minWidth: fontSize,
                   }}
@@ -390,7 +399,9 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
               <TableRow>
                 <TableCell
                   className={classes.tableCellHeader}
-                  align="right"
+                  align={
+                    aditionalColumnAlign2 ? aditionalColumnAlign2 : "right"
+                  }
                   style={{
                     minWidth: fontSize,
                   }}
@@ -406,7 +417,9 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
               <TableRow>
                 <TableCell
                   className={classes.tableCellHeader}
-                  align="right"
+                  align={
+                    aditionalColumnAlign3 ? aditionalColumnAlign3 : "right"
+                  }
                   style={{
                     minWidth: fontSize,
                   }}
