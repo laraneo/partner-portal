@@ -78,6 +78,79 @@ export const getStatusAccount = (
   }
 };
 
+export const getStatusAccountByShare = (
+  share: string | string[] | null | undefined,
+  conditionCount: number,
+  count: number = 0,
+  isCache = false
+) => async (dispatch: Function) => {
+  dispatch({
+    type: ACTIONS.SET_STATUS_ACCOUNT_LOADING,
+    payload: true,
+  });
+  try {
+    const { data, status } = await API.getStatusAccountByShare(share);
+    let response = [];
+    if (status === 200) {
+      response = data;
+      if (data.data.length === 1) {
+        const value = data.data[0];
+        if (value && value.saldo && value.saldo === "0.00") {
+          response = [];
+        }
+      }
+      dispatch({
+        type: ACTIONS.GET_STATUS_ACCOUNT,
+        payload: response,
+      });
+      dispatch({
+        type: ACTIONS.SET_STATUS_ACCOUNT_LOADING,
+        payload: false,
+      });
+    }
+    return response;
+  } catch (error) {
+    let counter = count + 1;
+    if (
+      error.response &&
+      error.response.status === 500 &&
+      Number(counter) <= Number(conditionCount)
+    ) {
+      //console.log(`${Number(counter)} <= ${Number(conditionCount)}`);
+      dispatch(getStatusAccount(conditionCount, counter, false));
+    } else {
+      const indicator = counter - 1;
+      if (
+        error.response &&
+        error.response.status === 500 &&
+        Number(indicator) === Number(conditionCount)
+      ) {
+        dispatch(getStatusAccount(conditionCount, 10, true));
+      }
+      if (error.response && error.response.status !== 500) {
+        const message = Message.exception(error);
+        dispatch({
+          type: ACTIONS.GET_STATUS_ACCOUNT,
+          payload: [],
+        });
+        snackBarUpdate({
+          payload: {
+            message,
+            status: true,
+            type: "error",
+          },
+        })(dispatch);
+      }
+    }
+
+    dispatch({
+      type: ACTIONS.SET_STATUS_ACCOUNT_LOADING,
+      payload: false,
+    });
+    return error;
+  }
+};
+
 export const getUnpaidInvoices = (
   conditionCount: number,
   count: number = 0,

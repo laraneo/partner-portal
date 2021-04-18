@@ -8,7 +8,7 @@ import queryString from "query-string";
 import "./index.sass";
 import DataTable4 from "../../components/DataTable4";
 import Columns from "../../interfaces/StatusAccountColumns";
-import { getStatusAccount } from "../../actions/webServiceActions";
+import { getStatusAccount, getStatusAccountByShare } from "../../actions/webServiceActions";
 import { Grid } from "@material-ui/core";
 import { setForcedLogin } from "../../actions/loginActions";
 import Helper from "../../helpers/utilities";
@@ -78,10 +78,9 @@ export default function StatusAccount() {
   useEffect(() => {
     async function fetchData() {
       const values = queryString.parse(location.search);
-      if (!_.isEmpty(values) && values.socio && values.token) {
-        await dispatch(setForcedLogin(values.socio, values.token));
+      if (!_.isEmpty(values) && values.socio) {
         if (parameterList.length > 0) {
-          dispatch(getStatusAccount(wsAttemps.value));
+          dispatch(getStatusAccountByShare(values.socio, wsAttemps.value));
         }
       } else {
         if (parameterList.length > 0) {
