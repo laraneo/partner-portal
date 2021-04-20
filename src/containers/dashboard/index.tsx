@@ -251,17 +251,6 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
   const [open4, setOpen4] = React.useState(false);
   const [open5, setOpen5] = React.useState(false);
 
-  const checkAuthRoutes = (items: Array<string | number>) => {
-    const route =
-      location.pathname === "/dashboard"
-        ? "/dashboard/main"
-        : location.pathname;
-    const isValid = items.find((e: any) => e.route === route);
-    if (!isValid) {
-      window.location.href = "/#/dashboard/main";
-    }
-  };
-
   useEffect(() => {
     history.listen((location, action) => {
       if (!_.isEmpty(menuList) && menuList.items.length > 0) {
@@ -270,12 +259,12 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
             ? "/dashboard/main"
             : location.pathname;
         const isValid = menuList.items.find((e: any) => e.route === route);
-        if (!isValid) {
+        if (user && user.role != -1 && !isValid) {
           window.location.href = "/#/dashboard/main";
         }
       }
     });
-  }, [menuList]);
+  }, [user, menuList]);
 
   useEffect(() => {
     async function run() {

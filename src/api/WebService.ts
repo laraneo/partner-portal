@@ -11,6 +11,11 @@ const API = {
       headers: headers(),
     });
   },
+  getStatusAccountByShare(share: string | string[] | null | undefined) {
+    return AXIOS.get(`${Prefix.api}/${share}/status-account`, {
+      headers: headers(),
+    });
+  },
   getUnpaidInvoices(isCache: boolean) {
     return AXIOS.get(`${Prefix.api}/get-unpaid-invoices`, {
       params: { isCache },

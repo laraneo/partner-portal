@@ -7,7 +7,7 @@ import {
   TableCell,
   TableRow,
 } from "@material-ui/core";
-
+import { useLocation } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
 import _ from "lodash";
 
@@ -104,7 +104,7 @@ type queryObject = {
 export default function PendingInvoices() {
   const [filter, setFilter] = useState<Array<string | number>>([]);
   const [total, setTotal] = useState<number>(0);
-
+  const location = useLocation();
   const dispatch = useDispatch();
   const classes = useStyles();
   const {
@@ -126,6 +126,7 @@ export default function PendingInvoices() {
     errors,
     reset,
     getValues,
+    watch,
   } = useForm<FormData>();
 
   const columns: Columns[] = [
@@ -375,18 +376,22 @@ export default function PendingInvoices() {
     }
   };
 
+  const share = watch('share');
+  const accountStatus = () => {
+    window.open(`/#/dashboard/status-account?socio=${share}`, '_blank');
+  }
   return (
     <Grid container spacing={3}>
-      <form
-        className={classes.form}
-        onSubmit={handleSubmit(handleForm)}
-        noValidate
-      >
-        <Grid item xs={12}>
-          Facturas por Socio
-        </Grid>
+      <Grid item xs={12}>
+        Facturas por Socio
+      </Grid>
 
-        <Grid item xs={12} style={{ marginBottom: 20 }}>
+      <Grid item xs={12} style={{ marginBottom: 20 }}>
+        <form
+          className={classes.form}
+          onSubmit={handleSubmit(handleForm)}
+          noValidate
+        >
           <Grid container spacing={3}>
             <Grid item xs={2}>
               <CustomTextField
@@ -430,7 +435,7 @@ export default function PendingInvoices() {
                 Icon={SearchIcon}
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={4}>
               <Button
                 variant="contained"
                 color="primary"
@@ -439,47 +444,44 @@ export default function PendingInvoices() {
               >
                 Buscar
               </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                style={{ marginTop: 15, marginLeft: 15 }}
+                onClick={accountStatus}
+                disabled={!share}
+              >
+                Estado de Cuenta
+              </Button>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <DataTable4
-            rows={filter}
-            columns={columns}
-            loading={loading}
-            aditionalColumn={
-                total && total > 0
-                  ? total.toString()
-                  : ''
-              }
-              aditionalColumnLabel={
-                total && total > 0
-                  ? "Saldo Total " + moneda.value
-                  : null
-              }
-              aditionalColumn1={
-                total && total > 0
-                  ? (total * tasa.dTasa).toFixed(2)
-                  : null
-              }
-              aditionalColumnLabel1={
-                total && total > 0
-                  ? "Saldo Total Bs "
-                  : null
-              }
-              aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : null}
-              aditionalColumnLabel2={`Tasa BCV (BS)`}
-              aditionalColumnAlign2={"left"}
-              aditionalColumnLabel3={"Fecha "}
-              aditionalColumn3={
-                tasa.dFecha ? moment(tasa.dFecha).format("DD-MM-YYYY") : null
-              }
-              aditionalColumnAlign3={"left"}
-            renderSubRows={renderSubRows}
-            getSelectRow={getSelectRow}
-          />
-        </Grid>
-      </form>
+        </form>
+      </Grid>
+      <Grid item xs={12}>
+        <DataTable4
+          rows={filter}
+          columns={columns}
+          loading={loading}
+          aditionalColumn={total && total > 0 ? total.toString() : ""}
+          aditionalColumnLabel={
+            total && total > 0 ? "Saldo Total " + moneda.value : null
+          }
+          aditionalColumn1={
+            total && total > 0 ? (total * tasa.dTasa).toFixed(2) : null
+          }
+          aditionalColumnLabel1={total && total > 0 ? "Saldo Total Bs " : null}
+          aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : null}
+          aditionalColumnLabel2={`Tasa BCV (BS)`}
+          aditionalColumnAlign2={"left"}
+          aditionalColumnLabel3={"Fecha "}
+          aditionalColumn3={
+            tasa.dFecha ? moment(tasa.dFecha).format("DD-MM-YYYY") : null
+          }
+          aditionalColumnAlign3={"left"}
+          renderSubRows={renderSubRows}
+          getSelectRow={getSelectRow}
+        />
+      </Grid>
     </Grid>
   );
 }
