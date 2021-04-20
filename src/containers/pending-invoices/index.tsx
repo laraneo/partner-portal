@@ -378,7 +378,7 @@ export default function PendingInvoices() {
 
   const share = watch('share');
   const accountStatus = () => {
-    window.open(`/#/dashboard/account-status?socio=${share}`, '_blank');
+    window.open(`/#/dashboard/status-account?socio=${share}`, '_blank');
   }
   return (
     <Grid container spacing={3}>
@@ -449,6 +449,7 @@ export default function PendingInvoices() {
                 color="primary"
                 style={{ marginTop: 15, marginLeft: 15 }}
                 onClick={accountStatus}
+                disabled={!share}
               >
                 Estado de Cuenta
               </Button>

@@ -123,6 +123,7 @@ export default function SinglePaymentsManagement() {
     reset,
     getValues,
     setValue,
+    watch,
   } = useForm<FormData>();
 
   const {
@@ -387,9 +388,10 @@ export default function SinglePaymentsManagement() {
 
   const synclink = Helper.getParameter(parameterList, "REPORTEPAGOS_SYNCLINK");
 
+  const share = watch('share');
   const synchronize = () => {
     if(synclink && synclink.value){
-        window.open(`${synclink.value}&groupid=${user.group_id}`, '_blank')
+        window.open(`${synclink.value}&groupid=${share}`, '_blank')
     }
   };
 
@@ -457,6 +459,7 @@ export default function SinglePaymentsManagement() {
                     color="primary"
                     style={{ marginTop: 15, marginLeft: 15 }}
                     onClick={synchronize}
+                    disabled={!share}
                   >
                     Sincronizar
                   </Button>

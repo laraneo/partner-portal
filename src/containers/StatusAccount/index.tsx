@@ -74,7 +74,6 @@ export default function StatusAccount() {
   const { client } = useSelector((state: any) => state.personReducer);
   const location = useLocation();
   const wsAttemps = Helper.getParameter(parameterList, "WS_INTENTOS");
-
   useEffect(() => {
     async function fetchData() {
       const values = queryString.parse(location.search);
@@ -91,9 +90,6 @@ export default function StatusAccount() {
     fetchData();
   }, [dispatch, parameterList]);
 
-  //replace(/[0-9]/g, "X")
-  // var str = "1234123412341234";
-  // var res = `${str.substring(0, 12).replace(/[0-9]/g, "x")}${str.substring(12, 16)}`;
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>

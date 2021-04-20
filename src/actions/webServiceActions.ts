@@ -43,7 +43,6 @@ export const getStatusAccount = (
       error.response.status === 500 &&
       Number(counter) <= Number(conditionCount)
     ) {
-      //console.log(`${Number(counter)} <= ${Number(conditionCount)}`);
       dispatch(getStatusAccount(conditionCount, counter, false));
     } else {
       const indicator = counter - 1;
@@ -116,8 +115,7 @@ export const getStatusAccountByShare = (
       error.response.status === 500 &&
       Number(counter) <= Number(conditionCount)
     ) {
-      //console.log(`${Number(counter)} <= ${Number(conditionCount)}`);
-      dispatch(getStatusAccount(conditionCount, counter, false));
+      dispatch(getStatusAccountByShare(share, conditionCount, counter, false));
     } else {
       const indicator = counter - 1;
       if (
@@ -125,7 +123,7 @@ export const getStatusAccountByShare = (
         error.response.status === 500 &&
         Number(indicator) === Number(conditionCount)
       ) {
-        dispatch(getStatusAccount(conditionCount, 10, true));
+        dispatch(getStatusAccountByShare(share, conditionCount, 10, true));
       }
       if (error.response && error.response.status !== 500) {
         const message = Message.exception(error);

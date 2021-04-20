@@ -53,14 +53,6 @@ export const getAll = (page: number = 1, perPage: number = 8) => async (dispatch
   }
 }
 
-const checkAuthRoutes = (items: Array<string | number>, location: string) => {
-  const route = location === '/dashboard' ? '/dashboard/main' : location;
-  const isValid = items.find((e: any) => e.route === route);
-  if(!isValid) {
-    window.location.href = "/#/dashboard/main";
-  }
-}
-
 export const getList = (location: string, count: number = 0) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
@@ -71,7 +63,6 @@ export const getList = (location: string, count: number = 0) => async (dispatch:
     let response = [];
     if (status === 200) {
       response = data;
-      checkAuthRoutes(data.items, location);
       dispatch({
         type: ACTIONS.GET_LIST,
         payload: response
