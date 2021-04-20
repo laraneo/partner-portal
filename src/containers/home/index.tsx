@@ -203,14 +203,18 @@ export default function Home() {
       if (validarSaldo.value == 1) {
         if (setBalanceLoading) {
           return (
-            <Grid item sm={12} xs={12} md={3}>
+            <Grid item sm={12} xs={12} md={3} style={{
+              order: getOrder("PARTNERPORTAL_reservaciones"),
+            }}>
               <Loader />
             </Grid>
           );
         }
         if (!_.isEmpty(clientBalance)) {
           return (
-            <Grid item sm={12} xs={12} md={3}>
+            <Grid item sm={12} xs={12} md={3} style={{
+              order: getOrder("PARTNERPORTAL_reservaciones"),
+            }}>
               <Paper>
                 <Widgtet1
                   Icon={FaGolfBall}
@@ -247,14 +251,18 @@ export default function Home() {
       if (validarSaldo.value == 1) {
         if (setBalanceLoading) {
           return (
-            <Grid item sm={12} xs={12} md={3}>
+            <Grid item sm={12} xs={12} md={3}  style={{
+              order: getOrder("PARTNERPORTAL_tennis"),
+            }}>
               <Loader />
             </Grid>
           );
         }
         if (!_.isEmpty(clientBalance)) {
           return (
-            <Grid item sm={12} xs={12} md={3}>
+            <Grid item sm={12} xs={12} md={3}  style={{
+              order: getOrder("PARTNERPORTAL_tennis"),
+            }}>
               <Paper>
                 <Widgtet1
                   Icon={BiTennisBall}
