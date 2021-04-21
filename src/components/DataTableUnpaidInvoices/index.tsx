@@ -229,7 +229,7 @@ const DataTableUnpaidInvoices: FunctionComponent<DataTableProps> = ({
               const isHandleSubRow = row[column.isHandleSubRow];
               return (
                 <TableCell
-                  key={column.id}
+                  key={column.key ? column.key : column.id}
                   align={column.align}
                   className={classes.tableCellHeader}
                   style={{
@@ -344,7 +344,7 @@ const DataTableUnpaidInvoices: FunctionComponent<DataTableProps> = ({
               {isSelectionActive ? <TableCell /> : null }
               {columns.map((column: any) => (
                 <TableCell
-                  key={column.id}
+                  key={column.key ? column.key : column.id}
                   align={column.align}
                   className={classes.tableCellHeader}
                   style={{
