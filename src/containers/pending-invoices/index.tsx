@@ -362,7 +362,17 @@ export default function PendingInvoices() {
                     invoiceDetails.length > 0 ? "Total " + moneda.value : null
                   }
                   aditionalColumn3={
-                    invoiceDetails.length > 0 ? totalBs.toFixed(2) : null
+                    invoiceDetails.length > 0 ? (
+                      <NumberFormat
+                        thousandSeparator={"."}
+                        decimalSeparator={","}
+                        isNumericString
+                        disabled
+                        inputMode="none"
+                        displayType="text"
+                        value={totalBs.toFixed(2)}
+                      />
+                    ) : null
                   }
                   aditionalColumnLabel3={
                     invoiceDetails.length > 0 ? "Total Bs " : null
@@ -376,10 +386,10 @@ export default function PendingInvoices() {
     }
   };
 
-  const share = watch('share');
+  const share = watch("share");
   const accountStatus = () => {
-    window.open(`/#/dashboard/status-account?socio=${share}`, '_blank');
-  }
+    window.open(`/#/dashboard/status-account?socio=${share}`, "_blank");
+  };
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>

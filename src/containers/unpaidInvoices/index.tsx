@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import NumberFormat from "react-number-format";
 import _ from "lodash";
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from "react-router-dom";
 
 import {
   updateOrder,
@@ -159,11 +159,12 @@ export default function UnpaidInvoices(props: any) {
     "PAGO_PRESELECCIONARTODOS"
   );
 
-  const calculatePayMultipleData = () => {
-    let invoicesToPay = [...invoicesSelected];
-
-    if (payAll) {
+  const calculatePayMultipleData = (forcePayAll: boolean) => {
+    let invoicesToPay: Array<any> = [];
+    if (forcePayAll) {
       invoicesToPay = [...unpaidInvoices.data];
+    } else {
+      invoicesToPay = [...invoicesSelected];
     }
 
     let total = 0;
@@ -186,7 +187,6 @@ export default function UnpaidInvoices(props: any) {
     const amountDetail = total.toFixed(2).toString();
     const amount = total.toFixed(2).toString();
     const attemps = wsAttemps.value;
-
     return {
       description,
       invoiceId,
@@ -197,9 +197,9 @@ export default function UnpaidInvoices(props: any) {
     };
   };
 
-  const usePaypal = () => {
+  const getPaypal = (forcePayAll: boolean) => {
     setOpenDialog(false);
-    const data = calculatePayMultipleData();
+    const data = calculatePayMultipleData(forcePayAll);
     dispatch(
       updateModal({
         payload: {
@@ -210,9 +210,9 @@ export default function UnpaidInvoices(props: any) {
     );
   };
 
-  const useGlobalConnection = () => {
+  const getGlobalConnection = (forcePayAll: boolean) => {
     setOpenDialog(false);
-    const data = calculatePayMultipleData();
+    const data = calculatePayMultipleData(forcePayAll);
     dispatch(
       updateModal({
         payload: {
@@ -226,16 +226,15 @@ export default function UnpaidInvoices(props: any) {
   };
 
   const handlePayMultiple = (all = false) => {
-    setPayAll(all);
     if (all || invoicesSelected.length > 0) {
       if (paypalClientId && globalClientId) {
         setOpenDialog(true);
       } else if (paypalClientId) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        usePaypal();
+        getPaypal(all);
       } else if (globalClientId) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        useGlobalConnection();
+        getGlobalConnection(all);
       }
     } else {
       dispatch(
@@ -295,7 +294,7 @@ export default function UnpaidInvoices(props: any) {
           <img src={logo} alt="example" style={{ cursor: "pointer" }} />
         </div>
       );
-    }
+    } else return null;
   };
 
   const renderGlobalConnectButton = (row: any) => {
@@ -311,7 +310,7 @@ export default function UnpaidInvoices(props: any) {
           />
         </div>
       );
-    }
+    } else return null;
   };
 
   const renderMercantilButton = () => {
@@ -328,8 +327,7 @@ export default function UnpaidInvoices(props: any) {
           />
         </div>
       );
-    }
-    return <div />;
+    } else return null;
   };
 
   const getSelectRow = (row: any) => {
@@ -371,7 +369,7 @@ export default function UnpaidInvoices(props: any) {
       isHandleSubRow: true,
     },
     {
-      id: "descrip",
+      id: "coin",
       label: "Moneda",
       minWidth: 10,
       component: (value: any) => <span>{moneda.value}</span>,
@@ -387,6 +385,7 @@ export default function UnpaidInvoices(props: any) {
     }, //<span>{value.value * tasa.dTasa}</span>,
     {
       id: "saldo",
+      key: "saldo_bs",
       label: "Monto (Bs)",
       minWidth: 10,
       align: "right",
@@ -407,12 +406,14 @@ export default function UnpaidInvoices(props: any) {
               value={currentTasa.toFixed(2)}
             />
           );
+        } else {
+          return null;
         }
       },
       isHandleSubRow: true,
     },
     {
-      id: "fact_num",
+      id: "payment",
       label: "",
       minWidth: 10,
       align: "right",
@@ -420,7 +421,10 @@ export default function UnpaidInvoices(props: any) {
         if (cache && !enablePaymentsCache) {
           return <div />;
         }
-        if (pagoRenglonParameter && parseInt(pagoRenglonParameter.value) === 1) {
+        if (
+          pagoRenglonParameter &&
+          parseInt(pagoRenglonParameter.value) === 1
+        ) {
           return (
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               {paypalClientId && renderPaypalButton(value.value)}
@@ -525,7 +529,17 @@ export default function UnpaidInvoices(props: any) {
                     invoiceDetails.length > 0 ? "Total " + moneda.value : null
                   }
                   aditionalColumn3={
-                    invoiceDetails.length > 0 ? totalBs.toFixed(2) : null
+                    invoiceDetails.length > 0 ? (
+                      <NumberFormat
+                        thousandSeparator={"."}
+                        decimalSeparator={","}
+                        isNumericString
+                        disabled
+                        inputMode="none"
+                        displayType="text"
+                        value={totalBs.toFixed(2)}
+                      />
+                    ) : null
                   }
                   aditionalColumnLabel3={
                     invoiceDetails.length > 0 ? "Total Bs " : null
@@ -536,7 +550,7 @@ export default function UnpaidInvoices(props: any) {
           </TableCell>
         </TableRow>
       );
-    }
+    } else return null;
   };
 
   useEffect(() => {
@@ -546,16 +560,19 @@ export default function UnpaidInvoices(props: any) {
   }, [cache, setIsCache]);
 
   useEffect(() => {
-    if(pagoSeleccionParameter && parseInt(pagoSeleccionParameter.value) === 1 
-      && selectAllParameter && parseInt(selectAllParameter.value) ===1 && unpaidInvoices?.data?.length > 0) {
+    if (
+      pagoSeleccionParameter &&
+      parseInt(pagoSeleccionParameter.value) === 1 &&
+      selectAllParameter &&
+      parseInt(selectAllParameter.value) === 1 &&
+      unpaidInvoices?.data?.length > 0
+    ) {
       setInvoicesSelected([...unpaidInvoices.data]);
     }
   }, [pagoSeleccionParameter, selectAllParameter, unpaidInvoices]);
 
   useEffect(() => {
-    const queryParams = new URLSearchParams(
-      location.search
-    );
+    const queryParams = new URLSearchParams(location.search);
     const globalConnectTransactionToken = queryParams.get("tk");
     if (globalConnectTransactionToken && tasa?.dTasa) {
       const { GBC_PaymentGatewayResult } = $.fn as any;
@@ -576,7 +593,7 @@ export default function UnpaidInvoices(props: any) {
             queryParams.delete("tk");
             history.replace({
               search: queryParams.toString(),
-            })
+            });
           } else {
             let error = Result[0].Error;
             dispatch(
@@ -607,7 +624,11 @@ export default function UnpaidInvoices(props: any) {
         <DialogTitle>Seleccione su metodo de pago</DialogTitle>
         <DialogActions>
           <Box display="flex" justifyContent="center" width="100%">
-            <Button onClick={usePaypal}>
+            <Button
+              onClick={() => {
+                getPaypal(payAll);
+              }}
+            >
               <img
                 src={paypalLogo}
                 alt="example"
@@ -615,7 +636,11 @@ export default function UnpaidInvoices(props: any) {
                 height={50}
               />
             </Button>
-            <Button onClick={useGlobalConnection}>
+            <Button
+              onClick={() => {
+                getGlobalConnection(payAll);
+              }}
+            >
               <img
                 src={globalConnectLogo}
                 alt="example"
@@ -667,7 +692,10 @@ export default function UnpaidInvoices(props: any) {
           addSelectRow={addSelectRow}
           removeSelectRow={removeSelectRow}
           invoicesSelected={invoicesSelected}
-          isSelectionActive={pagoSeleccionParameter && parseInt(pagoSeleccionParameter.value) === 1}
+          isSelectionActive={
+            pagoSeleccionParameter &&
+            parseInt(pagoSeleccionParameter.value) === 1
+          }
         />
       </div>
       <div
@@ -678,7 +706,8 @@ export default function UnpaidInvoices(props: any) {
           marginTop: "15px",
         }}
       >
-        {pagoSeleccionParameter && parseInt(pagoSeleccionParameter.value) === 1 ? (
+        {pagoSeleccionParameter &&
+        parseInt(pagoSeleccionParameter.value) === 1 ? (
           <Button
             variant="contained"
             color="primary"
@@ -687,7 +716,7 @@ export default function UnpaidInvoices(props: any) {
             }}
             onClick={() => handlePayMultiple(false)}
           >
-            Pagar Multiple
+            Pagar
           </Button>
         ) : null}
         {pagoTotalParameter && parseInt(pagoTotalParameter.value) === 1 ? (
