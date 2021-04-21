@@ -387,8 +387,8 @@ export default function SinglePaymentsManagement() {
   };
 
   const synclink = Helper.getParameter(parameterList, "REPORTEPAGOS_SYNCLINK");
+  const share = watch('accion');
 
-  const share = watch('share');
   const synchronize = () => {
     if(synclink && synclink.value){
         window.open(`${synclink.value}&groupid=${share}`, '_blank')

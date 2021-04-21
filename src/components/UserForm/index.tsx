@@ -4,9 +4,11 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import Grid from "@material-ui/core/Grid";
+import Switch from "@material-ui/core/Switch";
+import FormLabel from "@material-ui/core/FormLabel";
 
 import TransferList from "../TransferList";
 import CustomTextField from "../FormElements/CustomTextField";
@@ -15,34 +17,34 @@ import { getAll as getAllRoles } from "../../actions/roleActions";
 import snackBarUpdate from "../../actions/snackBarActions";
 import RangeAge from "../FormElements/RangeAge";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   rootUserForm: {
-    width: "100%"
+    width: "100%",
   },
   paper: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   wrapper: {
     margin: theme.spacing(1),
     position: "relative",
-    textAlign: 'center',
+    textAlign: "center",
   },
   buttonProgress: {
     position: "absolute",
     top: "50%",
     left: "50%",
     marginTop: -9,
-    marginLeft: -9
+    marginLeft: -9,
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    width: '30%',
+    width: "30%",
   },
 }));
 
@@ -56,6 +58,8 @@ type FormData = {
   roles: string;
   share_from: string;
   share_to: string;
+  role: string;
+  is_active: boolean;
 };
 
 type FormComponentProps = {
@@ -66,31 +70,51 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
   const classes = useStyles();
   const [selectedData, setSelectedData] = useState<any>([]);
   const [currentUsername, setCurrentUsername] = useState<boolean>(false);
-  const [currentUsernameLegacy, setCurrentUsernameLegacy] = useState<boolean>(false);
-  const { handleSubmit, register, errors, reset, setValue, watch } = useForm<
-    FormData
-  >();
+  const [currentUsernameLegacy, setCurrentUsernameLegacy] = useState<boolean>(
+    false
+  );
+  
+  const {
+    handleSubmit,
+    register,
+    errors,
+    reset,
+    setValue,
+    watch,
+    control,
+  } = useForm<FormData>();
   const loading = useSelector((state: any) => state.userReducer.loading);
   const { list } = useSelector((state: any) => state.roleReducer);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllRoles());
     async function fetch() {
       if (id) {
         const response: any = await dispatch(get(id));
-        const { name, email, roles, username, share_from, share_to, username_legacy } = response;
+        const {
+          name,
+          email,
+          roles,
+          username,
+          share_from,
+          share_to,
+          username_legacy,
+          role,
+          is_active,
+        } = response;
         setValue("username", username);
         setValue("username_legacy", username_legacy);
         setValue("name", name);
         setValue("email", email);
         setValue("share_from", share_from);
         setValue("share_to", share_to);
-        if(username !== null || username !== '') {
+        if (username !== null || username !== "") {
           setCurrentUsername(true);
         } else {
           setCurrentUsername(false);
         }
-        if(typeof username_legacy == 'string' && username_legacy !== '' ) {
+        if (typeof username_legacy == "string" && username_legacy !== "") {
           setCurrentUsernameLegacy(true);
         } else {
           setCurrentUsernameLegacy(false);
@@ -102,6 +126,24 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
         } else {
           setSelectedData([]);
         }
+
+        if (role == "-1") {
+          setValue("role", "Interno");
+        } else if (role == "0") {
+          setValue("role", "Usuario Principal");
+        } else if (role == "1") {
+          setValue("role", "Usuario Individual");
+        } else {
+          setValue("role", "Otro");
+        }
+
+        if (is_active == "1") {
+          setValue("is_active", true);
+        } else {
+          setValue("is_active", false);
+        }
+      } else {
+        setValue("role", "Interno");
       }
     }
     fetch();
@@ -114,28 +156,28 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
   }, [reset]);
 
   const handleForm = (form: FormData) => {
-
-    let data = {
+    let { role, ...data }= {
       ...form,
     };
 
-    if (form.password2 !== '' && form.password !== form.password2) {
-      dispatch(snackBarUpdate({
-        payload: {
-          message: 'Las claves no coinciden',
-          type: "error",
-          status: true
-        }
-      }));
+    if (form.password2 !== "" && form.password !== form.password2) {
+      dispatch(
+        snackBarUpdate({
+          payload: {
+            message: "Las claves no coinciden",
+            type: "error",
+            status: true,
+          },
+        })
+      );
     } else {
-      if (form.password2 === '') delete data.password;
+      if (form.password2 === "") delete data.password;
       if (id) {
         dispatch(update({ id, ...data }));
       } else {
         dispatch(create({ ...data }));
       }
     }
-
   };
 
   const onPermissionsChange = (event: any) => {
@@ -171,7 +213,9 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                 required
                 register={register}
                 errorsField={errors.username_legacy}
-                errorsMessageField={errors.username_legacy && errors.username_legacy.message}
+                errorsMessageField={
+                  errors.username_legacy && errors.username_legacy.message
+                }
                 disable={currentUsernameLegacy}
               />
             </Grid>
@@ -201,9 +245,7 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                 field="password"
                 register={register}
                 errorsField={errors.password}
-                errorsMessageField={
-                  errors.password && errors.password.message
-                }
+                errorsMessageField={errors.password && errors.password.message}
                 type="password"
               />
             </Grid>
@@ -220,7 +262,7 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
               />
             </Grid>
             <Grid item xs={4}>
-            <RangeAge
+              <RangeAge
                 label="Accion"
                 startField="share_from"
                 endField="share_to"
@@ -230,6 +272,45 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                 endMsgErr={errors.share_to && errors.share_to.message}
               />
             </Grid>
+            <Grid item xs={4}>
+              <CustomTextField
+                placeholder="Rol"
+                field="role"
+                required
+                register={register}
+                disable={true}
+              />
+            </Grid>
+            {id ? (
+              <Grid item xs={4}>
+                <Typography component="div">
+                  <FormLabel component="legend">Activo</FormLabel>
+                  <Grid
+                    component="label"
+                    container
+                    alignItems="center"
+                    spacing={1}
+                  >
+                    <Grid item>No</Grid>
+                    <Grid item>
+                      <Controller
+                        name="is_active"
+                        control={control}
+                        defaultValue={false}
+                        as={({ value, onChange, checked }) => (
+                          <Switch
+                            checked={checked}
+                            value={value}
+                            onChange={(event, value) => onChange(value)}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item>Si</Grid>
+                  </Grid>
+                </Typography>
+              </Grid>
+            ) : null}
             <Grid item xs={12}>
               {list.length > 0 && (
                 <TransferList
@@ -239,11 +320,7 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                   onSelectedList={onPermissionsChange}
                 />
               )}
-              <input
-                style={{ display: "none" }}
-                name="roles"
-                ref={register}
-              />
+              <input style={{ display: "none" }} name="roles" ref={register} />
             </Grid>
           </Grid>
 
