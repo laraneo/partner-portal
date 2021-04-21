@@ -390,7 +390,6 @@ export default function SinglePaymentsManagement() {
   const share = watch('accion');
 
   const synchronize = () => {
-    console.log(getValues());
     if(synclink && synclink.value){
         window.open(`${synclink.value}&groupid=${share}`, '_blank')
     }

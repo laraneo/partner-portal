@@ -4,9 +4,11 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import Grid from "@material-ui/core/Grid";
+import Switch from "@material-ui/core/Switch";
+import FormLabel from "@material-ui/core/FormLabel";
 
 import TransferList from "../TransferList";
 import CustomTextField from "../FormElements/CustomTextField";
@@ -56,6 +58,8 @@ type FormData = {
   roles: string;
   share_from: string;
   share_to: string;
+  role: string;
+  is_active: boolean;
 };
 
 type FormComponentProps = {
@@ -69,6 +73,7 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
   const [currentUsernameLegacy, setCurrentUsernameLegacy] = useState<boolean>(
     false
   );
+  
   const {
     handleSubmit,
     register,
@@ -76,6 +81,7 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
     reset,
     setValue,
     watch,
+    control,
   } = useForm<FormData>();
   const loading = useSelector((state: any) => state.userReducer.loading);
   const { list } = useSelector((state: any) => state.roleReducer);
@@ -86,7 +92,6 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
     async function fetch() {
       if (id) {
         const response: any = await dispatch(get(id));
-        console.log(response);
         const {
           name,
           email,
@@ -96,6 +101,7 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
           share_to,
           username_legacy,
           role,
+          is_active,
         } = response;
         setValue("username", username);
         setValue("username_legacy", username_legacy);
@@ -130,6 +136,12 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
         } else {
           setValue("role", "Otro");
         }
+
+        if (is_active == "1") {
+          setValue("is_active", true);
+        } else {
+          setValue("is_active", false);
+        }
       } else {
         setValue("role", "Interno");
       }
@@ -144,7 +156,7 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
   }, [reset]);
 
   const handleForm = (form: FormData) => {
-    let data = {
+    let { role, ...data }= {
       ...form,
     };
 
@@ -269,6 +281,36 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                 disable={true}
               />
             </Grid>
+            {id ? (
+              <Grid item xs={4}>
+                <Typography component="div">
+                  <FormLabel component="legend">Activo</FormLabel>
+                  <Grid
+                    component="label"
+                    container
+                    alignItems="center"
+                    spacing={1}
+                  >
+                    <Grid item>No</Grid>
+                    <Grid item>
+                      <Controller
+                        name="is_active"
+                        control={control}
+                        defaultValue={false}
+                        as={({ value, onChange, checked }) => (
+                          <Switch
+                            checked={checked}
+                            value={value}
+                            onChange={(event, value) => onChange(value)}
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item>Si</Grid>
+                  </Grid>
+                </Typography>
+              </Grid>
+            ) : null}
             <Grid item xs={12}>
               {list.length > 0 && (
                 <TransferList
