@@ -716,7 +716,7 @@ export default function UnpaidInvoices(props: any) {
             }}
             onClick={() => handlePayMultiple(false)}
           >
-            Pagar Multiple
+            Pagar
           </Button>
         ) : null}
         {pagoTotalParameter && parseInt(pagoTotalParameter.value) === 1 ? (
