@@ -109,17 +109,19 @@ export default function User() {
       },
     },
     {
-      id: "isPartner",
+      id: "role",
       label: "Rol",
       minWidth: 10,
       component: (value: any) => {
         let status = "";
-        if (value.value == "1") {
-          status = "Socio";
-        } else if (value.value == "2") {
-          status = "Familiar";
+        if (value.value == "-1") {
+          status = "Interno";
+        } else if (value.value == "0") {
+          status = "Usuario Principal";
+        } else if (value.value == "1") {
+          status = "Usuario Individual";
         } else {
-          status = "Otros";
+          status = "Otro";
         }
 
         return (
