@@ -435,7 +435,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
       {pagination && (
         <TablePagination
           labelRowsPerPage="Filas"
-          labelDisplayedRows={() => `${pagination.from}-${pagination.to}`}
+          labelDisplayedRows={() => `${pagination.from}-${pagination.to} de ${pagination.total}`}
           component="div"
           count={rows.to}
           rowsPerPage={pagination.perPage}

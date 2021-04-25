@@ -11,6 +11,8 @@ const initialState: initStates = {
     list: [],
     loading: false,
     pagination: {
+        from: 0,
+        to: 0,
         total: 0,
         perPage: 0,
         prevPageUrl: null,
