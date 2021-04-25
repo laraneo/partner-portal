@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 import moment from "moment";
@@ -9,8 +9,7 @@ import "./index.sass";
 import DataTable4 from "../../components/DataTable4";
 import Columns from "../../interfaces/StatusAccountColumns";
 import { getStatusAccount, getStatusAccountByShare } from "../../actions/webServiceActions";
-import { Grid } from "@material-ui/core";
-import { setForcedLogin } from "../../actions/loginActions";
+import { Grid, Typography } from "@material-ui/core";
 import Helper from "../../helpers/utilities";
 
 const columns: Columns[] = [
@@ -74,10 +73,13 @@ export default function StatusAccount() {
   const { client } = useSelector((state: any) => state.personReducer);
   const location = useLocation();
   const wsAttemps = Helper.getParameter(parameterList, "WS_INTENTOS");
+  const [socio, setSocio] = useState<any>('');
+
   useEffect(() => {
     async function fetchData() {
       const values = queryString.parse(location.search);
       if (!_.isEmpty(values) && values.socio) {
+        setSocio(values.socio);
         if (parameterList.length > 0) {
           dispatch(getStatusAccountByShare(values.socio, wsAttemps.value));
         }
@@ -94,6 +96,7 @@ export default function StatusAccount() {
     <Grid container spacing={3}>
       <Grid item xs={12}>
         Estado de Cuenta
+        <Typography variant="h5" component="span"><b>{` ${socio}`}</b></Typography>
       </Grid>
       <Grid item xs={12}>
         {!_.isEmpty(client) && (
