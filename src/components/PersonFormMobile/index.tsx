@@ -6,7 +6,7 @@ import {
   makeStyles,
   Theme,
   useTheme,
-  withStyles
+  withStyles,
 } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useForm } from "react-hook-form";
@@ -36,8 +36,8 @@ import Chip from "@material-ui/core/Chip";
 import _ from "lodash";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
-import moment from 'moment';
-import Skeleton from '@material-ui/lab/Skeleton';
+import moment from "moment";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 import CustomSelect from "../FormElements/CustomSelect";
 import CustomTextField from "../FormElements/CustomTextField";
@@ -53,18 +53,18 @@ import {
   getLockersByLocation,
   getLockersByPartner,
   clearPersonLockersByLocation,
-  clear
+  clear,
 } from "../../actions/personActions";
 
 import { getByLocation, clearList } from "../../actions/lockerActions";
 import {
   getAll as getCardPerson,
-  remove as removeCardPerson
+  remove as removeCardPerson,
 } from "../../actions/cardPersonActions";
 import {
   getSharesByPartner,
   get as getShare,
-  reset as resetShare
+  reset as resetShare,
 } from "../../actions/shareActions";
 import { updateModal } from "../../actions/secondModalActions";
 import TransferList from "../TransferList";
@@ -78,24 +78,23 @@ import DataTable4 from "../DataTable4";
 import LoadingButton from "../FormElements/LoadingButton";
 import CardPersonForm from "../CardPersonForm";
 import Loader from "../common/Loader";
+import { getRecordsByPerson } from "../../actions/recordActions";
+import { getNotesByPerson } from "../../actions/noteActions";
 import {
-  getRecordsByPerson,
-} from "../../actions/recordActions";
-import {
-  getNotesByPerson,
-} from "../../actions/noteActions";
-import { getLastMovement, updateLastMovement } from "../../actions/shareMovementActions";
+  getLastMovement,
+  updateLastMovement,
+} from "../../actions/shareMovementActions";
 import SearchAutoComplete from "../SearchAutoComplete";
 
 import FamilyForm from "../FamilyForm";
-import Helper from '../../helpers/utilities';
+import Helper from "../../helpers/utilities";
 
-const formatCreditCard = (card: string) => card.replace(/.(?=.{4})/g, 'x');
+const formatCreditCard = (card: string) => card.replace(/.(?=.{4})/g, "x");
 
 const ExpansionPanelSummary = withStyles({
   root: {
-    backgroundColor: "rgba(0, 0, 0, .03)"
-  }
+    backgroundColor: "rgba(0, 0, 0, .03)",
+  },
 })(MuiExpansionPanelSummary);
 const cardPersonColumns: CardPersonColumns[] = [
   {
@@ -103,56 +102,58 @@ const cardPersonColumns: CardPersonColumns[] = [
     label: "ID",
     minWidth: 5,
     align: "left",
-    component: (value: any) => <span>{value.value}</span>
+    component: (value: any) => <span>{value.value}</span>,
   },
   {
     id: "titular",
     label: "Titular",
     minWidth: 30,
     align: "left",
-    component: (value: any) => <span>{value.value}</span>
+    component: (value: any) => <span>{value.value}</span>,
   },
   {
     id: "ci",
     label: "Cedula",
     minWidth: 10,
     align: "left",
-    component: (value: any) => <span>{value.value}</span>
+    component: (value: any) => <span>{value.value}</span>,
   },
   {
     id: "card_number",
     label: "Numero",
     minWidth: 15,
     align: "left",
-    component: (value: any) => <span>{formatCreditCard(value.value)}</span>
+    component: (value: any) => <span>{formatCreditCard(value.value)}</span>,
   },
   {
     id: "sec_code",
     label: "CVC",
     minWidth: 10,
     align: "left",
-    component: (value: any) => <span>{value.value.replace(/[0-9]/g, "x")}</span>
+    component: (value: any) => (
+      <span>{value.value.replace(/[0-9]/g, "x")}</span>
+    ),
   },
   {
     id: "expiration_date",
     label: "Vence",
     minWidth: 30,
     align: "left",
-    component: (value: any) => <span>{value.value}</span>
+    component: (value: any) => <span>{value.value}</span>,
   },
   {
     id: "card",
     label: "Tipo",
     minWidth: 10,
     align: "left",
-    component: (value: any) => <span>{value.value.description}</span>
+    component: (value: any) => <span>{value.value.description}</span>,
   },
   {
     id: "bank",
     label: "Banco",
     minWidth: 10,
     align: "left",
-    component: (value: any) => <span>{value.value.description}</span>
+    component: (value: any) => <span>{value.value.description}</span>,
   },
   {
     id: "orderDetail",
@@ -163,13 +164,13 @@ const cardPersonColumns: CardPersonColumns[] = [
       <Chip
         label={value.value}
         style={{
-          fontSize: "10px"
+          fontSize: "10px",
         }}
         size="small"
         color="primary"
       />
-    )
-  }
+    ),
+  },
 ];
 
 const recordColumns: RecordColumns[] = [
@@ -177,36 +178,36 @@ const recordColumns: RecordColumns[] = [
     id: "id",
     label: "Id",
     minWidth: 10,
-    component: (value: any) => <span>{value.value}</span>
+    component: (value: any) => <span>{value.value}</span>,
   },
   {
     id: "created",
     label: "Fecha",
     minWidth: 10,
     align: "left",
-    component: (value: any) => <span>{value.value}</span>
+    component: (value: any) => <span>{value.value}</span>,
   },
   {
     id: "description",
     label: "Descripcion",
     minWidth: 10,
     align: "left",
-    component: (value: any) => <span>{value.value}</span>
+    component: (value: any) => <span>{value.value}</span>,
   },
   {
     id: "type",
     label: "Motivo",
     minWidth: 10,
     align: "left",
-    component: (value: any) => <span>{value.value.description}</span>
+    component: (value: any) => <span>{value.value.description}</span>,
   },
   {
     id: "blocked",
     label: "Bloqueado",
     minWidth: 10,
     align: "left",
-    component: (value: any) => <span>{value.value === 1 ? "SI" : "NO"}</span>
-  }
+    component: (value: any) => <span>{value.value === 1 ? "SI" : "NO"}</span>,
+  },
 ];
 
 function getParsePerson(data: any, classes: any) {
@@ -217,11 +218,17 @@ function getParsePerson(data: any, classes: any) {
     rif_ci,
     address,
     primary_email,
-    type_person
+    type_person,
   } = data;
   return (
     <Grid container spacing={1} className={classes.parsedPersonContainer}>
-      <Grid item sm={12} xs={12} md={4} className={classes.parsedPersonContainerTitle}>
+      <Grid
+        item
+        sm={12}
+        xs={12}
+        md={4}
+        className={classes.parsedPersonContainerTitle}
+      >
         <Paper className={classes.parsedPersonContainerDetail}>
           <strong>Tipo Persona:</strong>
           {type_person == 1 ? "Natural" : "Empresa"}
@@ -282,38 +289,37 @@ function TabPanel(props: TabPanelProps) {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
   },
   personContent: {
     backgroundColor: theme.palette.background.paper,
-    width: '100%',
+    width: "100%",
   },
-  paper: {
-  },
+  paper: {},
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   wrapper: {
     margin: theme.spacing(1),
     position: "relative",
-    textAlign: "center"
+    textAlign: "center",
   },
   actionButtonContainer: {
     margin: theme.spacing(1),
     position: "relative",
-    textAlign: "right"
+    textAlign: "right",
   },
   buttonProgress: {
     position: "absolute",
     top: "50%",
     left: "50%",
     marginTop: -9,
-    marginLeft: -9
+    marginLeft: -9,
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    width: "40%"
+    width: "40%",
   },
   select: {
     padding: "10px 0px 10px 0px",
@@ -323,82 +329,79 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderBottom: "1px solid grey",
     fontSize: "16px",
     "&:focus": {
-      outline: 0
-    }
+      outline: 0,
+    },
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 200
+    width: 200,
   },
   pictureContainer: {
-    maxWidth: 185
+    maxWidth: 185,
   },
   media: {
-    height: 200
+    height: 200,
   },
-  formContainer: {
-
-  },
+  formContainer: {},
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular
+    fontWeight: "normal",
   },
-  swipeableViewsContainer: {
-  },
+  swipeableViewsContainer: {},
   reportButtonContainer: {
-    textAlign: "right"
+    textAlign: "right",
   },
   profileName: {
     textAlign: "center",
     fontWeight: "bold",
     color: "#109e2f",
-    fontSize: "20px"
+    fontSize: "20px",
   },
   profileSubTitle: {
     textAlign: "center",
     fontWeight: "bold",
     color: "#c0392b",
-    fontSize: "18px"
+    fontSize: "18px",
   },
   profileShareTitle: {
     textAlign: "left",
     fontWeight: "bold",
     color: "#109e2f",
     fontSize: "16px",
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: "12px",
     },
   },
   profileMovement: {
     textAlign: "left",
-    fontSize: "14px"
+    fontSize: "14px",
   },
   cardPersonButtonContainer: {
-    textAlign: "right"
+    textAlign: "right",
   },
   cardPersonButton: {
     width: "15%",
-    fontSize: "12px"
+    fontSize: "12px",
   },
   parsedPersonContainer: {
-    fontSize: "12px"
+    fontSize: "12px",
   },
   parsedPersonContainerDetail: {
     textAlign: "left",
-    padding: "4px"
+    padding: "4px",
   },
   personLockersTitle: {
     color: "#109e2f",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   personRecordTitle: {
-    textAlign: "right"
+    textAlign: "right",
   },
   transferListContainer: {
-    textAlign: 'center',
-    justifyContent: 'center !important'
-  }
+    textAlign: "center",
+    justifyContent: "center !important",
+  },
 }));
 
 type FormData = {
@@ -441,7 +444,7 @@ type FormData = {
   sport_list: any;
   locker_list: any;
   locker_location_id: string;
-  branch_company_id: number,
+  branch_company_id: number;
   company: string;
 };
 
@@ -461,7 +464,7 @@ interface SelectedItems {
 
 const initialSelectedItems = {
   itemsToAdd: [],
-  itemsToRemove: []
+  itemsToRemove: [],
 };
 
 const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
@@ -476,21 +479,15 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
   const [selectedCountries, setSelectedCountries] = useState<
     Array<string | number>
   >([]);
-  const [relation, setRelation] = useState<string>("")
+  const [relation, setRelation] = useState<string>("");
   const [selectedSports, setSelectedSports] = useState<Array<string | number>>(
     []
   );
   const [selectedCompany, setSelectedCompany] = useState<any>(null);
   /* Form */
 
-  const {
-    handleSubmit,
-    register,
-    errors,
-    reset,
-    setValue,
-    getValues,
-  } = useForm<FormData>();
+  const { handleSubmit, register, errors, reset, setValue, getValues } =
+    useForm<FormData>();
   const { picture, name, last_name } = getValues();
 
   /* Redux */
@@ -522,7 +519,9 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
 
   const { sports: sportList } = useSelector((state: any) => state.sportReducer);
 
-  const { listData: parameterList } = useSelector((state: any) => state.parameterReducer);
+  const { listData: parameterList } = useSelector(
+    (state: any) => state.parameterReducer
+  );
 
   const { professions: professionList } = useSelector(
     (state: any) => state.professionReducer
@@ -538,14 +537,11 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
     (state: any) => state.branchCompanyReducer
   );
 
-  const { user, userRoles } = useSelector(
-    (state: any) => state.loginReducer
-  );
+  const { user, userRoles } = useSelector((state: any) => state.loginReducer);
 
   const { lastMovement, lastMovementLoading } = useSelector(
     (state: any) => state.shareMovementReducer
   );
-
 
   const {
     recordsByPerson,
@@ -553,11 +549,9 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
     pagination: recordPagination,
   } = useSelector((state: any) => state.recordReducer);
 
-
-
   const disableTabs = tempPersonId > 0 ? false : true;
   let hideTabs = false;
-  if (Helper.getRole(userRoles, 'socio')) {
+  if (Helper.getRole(userRoles, "socio")) {
     hideTabs = true;
   }
 
@@ -574,12 +568,10 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
     setTabValue(index);
   };
 
-  const handleExpandedPanel = (panel: string) => (
-    event: React.ChangeEvent<{}>,
-    isExpanded: boolean
-  ) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  const handleExpandedPanel =
+    (panel: string) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false);
+    };
 
   const initPerson = async (id: any) => {
     const response: any = await dispatch(get(id));
@@ -625,7 +617,7 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
       company_person,
       relation,
       branch_company_id,
-      company
+      company,
     } = response;
     if (isPartner === "1") {
       const shareResponse: any = await dispatch(getSharesByPartner(id));
@@ -696,8 +688,7 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
       setSelectedProff([]);
     }
     setTempPersonId(id);
-  }
-
+  };
 
   useEffect(() => {
     setSelectedProff([]);
@@ -705,7 +696,6 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
       initPerson(id);
     }
   }, [id]);
-
 
   useEffect(() => {
     if (!_.isEmpty(sharesByPartner)) {
@@ -729,11 +719,11 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
       lockers: initialSelectedItems,
       id_card_picture: null,
       user: user.username,
-      date: moment().format('YYYY-MM-DD'),
+      date: moment().format("YYYY-MM-DD"),
       profession_list: null,
       sport_list: null,
       country_list: null,
-      group_id: user.group_id
+      group_id: user.group_id,
     };
     if (tempPersonId > 0) {
       await dispatch(update({ id: tempPersonId, ...form, ...data }));
@@ -763,7 +753,7 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
     const ObjecUrlImage = window.URL.createObjectURL(e.target.files[0]);
     setImage({
       preview: ObjecUrlImage,
-      raw: e.target.files[0]
+      raw: e.target.files[0],
     });
     const reader: any = new FileReader();
     reader.onload = () => {
@@ -780,38 +770,39 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
       label: "RIF/CI",
       minWidth: 30,
       align: "left",
-      component: (value: any) => <span>{value.value}</span>
+      component: (value: any) => <span>{value.value}</span>,
     },
     {
       id: "description",
       label: "Parentesco",
       minWidth: 30,
       align: "left",
-      component: (value: any) => (<Chip
-        label={value.value}
-        style={{
-          backgroundColor: "#f1c40f",
-          color: "white",
-          fontWeight: "bold",
-          fontSize: "10px"
-        }}
-        size="small"
-      />
-      )
+      component: (value: any) => (
+        <Chip
+          label={value.value}
+          style={{
+            backgroundColor: "#f1c40f",
+            color: "white",
+            fontWeight: "bold",
+            fontSize: "10px",
+          }}
+          size="small"
+        />
+      ),
     },
     {
       id: "name",
       label: "Nombre",
       minWidth: 30,
       align: "left",
-      component: (value: any) => <span>{value.value}</span>
+      component: (value: any) => <span>{value.value}</span>,
     },
     {
       id: "last_name",
       label: "Apellido",
       minWidth: 30,
       align: "left",
-      component: (value: any) => <span>{value.value}</span>
+      component: (value: any) => <span>{value.value}</span>,
     },
     {
       id: "status",
@@ -825,14 +816,13 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
             backgroundColor: value.value == "1" ? "#2ecc71" : "#e74c3c",
             color: "white",
             fontWeight: "bold",
-            fontSize: "10px"
+            fontSize: "10px",
           }}
           size="small"
         />
-      )
-    }
+      ),
+    },
   ];
-
 
   const onProfessionsChange = (event: any) => {
     setValue("profession_list", JSON.stringify(event));
@@ -852,7 +842,9 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
 
   const handleShareSelect = (event: any) => {
     dispatch(getShare(event.target.value));
-    const share: any = sharesByPartner.find((e: any) => e.id === event.target.value);
+    const share: any = sharesByPartner.find(
+      (e: any) => e.id === event.target.value
+    );
     if (share) {
       dispatch(getLastMovement(share.share_number));
     } else {
@@ -870,8 +862,8 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
       updateModal({
         payload: {
           status: true,
-          element: <FamilyForm id={id} />
-        }
+          element: <FamilyForm id={id} />,
+        },
       })
     );
   };
@@ -882,7 +874,8 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
 
   const renderMainData = () => {
     const { expiration_date, card_number } = getValues();
-    const promotor = userRoles.length > 0 && userRoles.find((e: any) => e.slug === 'promotor');
+    const promotor =
+      userRoles.length > 0 && userRoles.find((e: any) => e.slug === "promotor");
     let disableField = false;
     if (!_.isEmpty(promotor)) {
       disableField = true;
@@ -1057,7 +1050,8 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
         </Grid>
         <Grid item xs={3} style={{ lineHeight: 2.5 }}>
           <Paper className={classes.parsedPersonContainerDetail}>
-            <strong>Vencimiento</strong> {expiration_date && moment(expiration_date).format('DD-MM-YYYY')}
+            <strong>Vencimiento</strong>{" "}
+            {expiration_date && moment(expiration_date).format("DD-MM-YYYY")}
           </Paper>
           <input
             style={{ display: "none" }}
@@ -1148,7 +1142,7 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
   };
 
   const renderContactsData = () => {
-    const gridPartner = Helper.getRole(userRoles, 'socio') ? 12 : 6;
+    const gridPartner = Helper.getRole(userRoles, "socio") ? 12 : 6;
     return (
       <Grid container spacing={2}>
         <Grid item xs={gridPartner}>
@@ -1183,7 +1177,9 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
                 field="telephone1"
                 register={register}
                 errorsField={errors.telephone1}
-                errorsMessageField={errors.telephone1 && errors.telephone1.message}
+                errorsMessageField={
+                  errors.telephone1 && errors.telephone1.message
+                }
               />
             </Grid>
             <Grid item sm={12} xs={12} md={6}>
@@ -1192,7 +1188,9 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
                 field="telephone2"
                 register={register}
                 errorsField={errors.telephone2}
-                errorsMessageField={errors.telephone2 && errors.telephone2.message}
+                errorsMessageField={
+                  errors.telephone2 && errors.telephone2.message
+                }
               />
             </Grid>
             <Grid item sm={12} xs={12} md={6}>
@@ -1220,29 +1218,32 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
           </Grid>
         </Grid>
 
-        <Grid item xs={gridPartner} style={{
-          display: 'flex',
-          alignItems: 'center',
-        }}>
+        <Grid
+          item
+          xs={gridPartner}
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
           <Grid
-            container spacing={3}
+            container
+            spacing={3}
             direction="row"
             justify="flex-start"
             alignItems="center"
           >
-            {Helper.getRole(userRoles, 'promotor') &&
-              (
-                <Grid item xs={12}>
-                  <CustomTextField
-                    placeholder="Fax"
-                    field="fax"
-                    register={register}
-                    errorsField={errors.fax}
-                    errorsMessageField={errors.fax && errors.fax.message}
-                  />
-                </Grid>
-              )
-            }
+            {Helper.getRole(userRoles, "promotor") && (
+              <Grid item xs={12}>
+                <CustomTextField
+                  placeholder="Fax"
+                  field="fax"
+                  register={register}
+                  errorsField={errors.fax}
+                  errorsMessageField={errors.fax && errors.fax.message}
+                />
+              </Grid>
+            )}
           </Grid>
         </Grid>
       </Grid>
@@ -1250,7 +1251,13 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
   };
 
   const renderPaymentMethod = () => {
-    const { share_number, tarjeta_primaria, tarjeta_secundaria, tarjeta_terciaria, payment_method } = selectedShare;
+    const {
+      share_number,
+      tarjeta_primaria,
+      tarjeta_secundaria,
+      tarjeta_terciaria,
+      payment_method,
+    } = selectedShare;
     return (
       <TableContainer component={Paper}>
         <Table size="small" aria-label="a dense table">
@@ -1282,13 +1289,16 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
                 {payment_method && payment_method.description}
               </TableCell>
               <TableCell align="left" style={{ fontSize: "12px" }}>
-                {tarjeta_primaria && formatCreditCard(tarjeta_primaria.card_number)}
+                {tarjeta_primaria &&
+                  formatCreditCard(tarjeta_primaria.card_number)}
               </TableCell>
               <TableCell align="left" style={{ fontSize: "12px" }}>
-                {tarjeta_secundaria && formatCreditCard(tarjeta_secundaria.card_number)}
+                {tarjeta_secundaria &&
+                  formatCreditCard(tarjeta_secundaria.card_number)}
               </TableCell>
               <TableCell align="left" style={{ fontSize: "12px" }}>
-                {tarjeta_terciaria && formatCreditCard(tarjeta_terciaria.card_number)}
+                {tarjeta_terciaria &&
+                  formatCreditCard(tarjeta_terciaria.card_number)}
               </TableCell>
             </TableRow>
           </TableBody>
@@ -1298,11 +1308,8 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
   };
 
   const renderCardPersonData = () => {
-    const {
-      tarjeta_primaria,
-      tarjeta_secundaria,
-      tarjeta_terciaria
-    } = selectedShare;
+    const { tarjeta_primaria, tarjeta_secundaria, tarjeta_terciaria } =
+      selectedShare;
     const cardList = [];
     const dataList = [];
 
@@ -1315,7 +1322,7 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
       dataList.push({
         ...tarjeta_secundaria,
         orderDetail: "Secundario",
-        order: 2
+        order: 2,
       });
       cardList.push({ ...tarjeta_secundaria });
     }
@@ -1324,7 +1331,7 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
       dataList.push({
         ...tarjeta_terciaria,
         orderDetail: "Terciario",
-        order: 3
+        order: 3,
       });
       cardList.push({ ...tarjeta_terciaria });
     }
@@ -1382,9 +1389,7 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
             field="company"
             register={register}
             errorsField={errors.company}
-            errorsMessageField={
-              errors.company && errors.company.message
-            }
+            errorsMessageField={errors.company && errors.company.message}
           />
         </Grid>
         <Grid item sm={12} xs={12} md={6}>
@@ -1404,27 +1409,33 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
             ))}
           </CustomSelect>
         </Grid>
-        {
-          selectedCompany && (
-            <React.Fragment>
-              <Grid item sm={12} xs={12} md={12} >Actual Compania:</Grid>
-              <Grid item sm={12} xs={12} md={12} >{getParsePerson(selectedCompany, classes)}</Grid>
-            </React.Fragment>
-          )
-        }
+        {selectedCompany && (
+          <React.Fragment>
+            <Grid item sm={12} xs={12} md={12}>
+              Actual Compania:
+            </Grid>
+            <Grid item sm={12} xs={12} md={12}>
+              {getParsePerson(selectedCompany, classes)}
+            </Grid>
+          </React.Fragment>
+        )}
       </Grid>
-    )
-  }
+    );
+  };
 
   const getNacionalityLabel = (row: any) => row.citizenship;
 
   const renderShareProfile = () => {
-    const promotor = userRoles.length > 0 && userRoles.find((e: any) => e.slug === 'promotor');
-    const socio = userRoles.length > 0 && userRoles.find((e: any) => e.slug === 'socio');
+    const promotor =
+      userRoles.length > 0 && userRoles.find((e: any) => e.slug === "promotor");
+    const socio =
+      userRoles.length > 0 && userRoles.find((e: any) => e.slug === "socio");
     if (!_.isEmpty(promotor)) {
       return (
         <Grid item xs={12}>
-          <Grid item xs={12} className={classes.profileShareTitle}>Acciones</Grid>
+          <Grid item xs={12} className={classes.profileShareTitle}>
+            Acciones
+          </Grid>
           <div className="custom-select-container">
             <select
               name="relation"
@@ -1437,30 +1448,39 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
             </select>
           </div>
         </Grid>
-      )
+      );
     }
     if (!_.isEmpty(socio)) {
       return (
         <Grid item sm={12} xs={12} md={12} className={classes.profileMovement}>
-          <div className={classes.profileShareTitle}>Accion N° {user.group_id}</div>
+          <div className={classes.profileShareTitle}>
+            Accion N° {user.group_id}
+          </div>
         </Grid>
-      )
+      );
     }
-  }
+  };
 
   const renderLastMovement = () => {
     if (lastMovementLoading) {
-      return <Loader />
+      return <Loader />;
     }
-    return !_.isEmpty(lastMovement) &&
-      (
+    return (
+      !_.isEmpty(lastMovement) && (
         <React.Fragment>
-          <Grid item xs={12} className={classes.profileMovement}>{lastMovement.created}</Grid>
-          <Grid item xs={12} className={classes.profileMovement}>{lastMovement.description}</Grid>
-          <Grid item xs={12} className={classes.profileMovement}>{lastMovement.transaction.description}</Grid>
+          <Grid item xs={12} className={classes.profileMovement}>
+            {lastMovement.created}
+          </Grid>
+          <Grid item xs={12} className={classes.profileMovement}>
+            {lastMovement.description}
+          </Grid>
+          <Grid item xs={12} className={classes.profileMovement}>
+            {lastMovement.transaction.description}
+          </Grid>
         </React.Fragment>
       )
-  }
+    );
+  };
 
   const rendeWork = () => {
     return (
@@ -1487,17 +1507,17 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
           /> */}
         </Grid>
       </Grid>
-    )
-  }
+    );
+  };
 
   const renderName = () => {
-    if (Helper.getRole(userRoles, 'socio')) {
+    if (Helper.getRole(userRoles, "socio")) {
       return relation;
     }
-    if (Helper.getRole(userRoles, 'promotor')) {
-      return isFamily ? 'Familiar' : 'Socio';
+    if (Helper.getRole(userRoles, "promotor")) {
+      return isFamily ? "Familiar" : "Socio";
     }
-  }
+  };
 
   let imagePreview = picture;
   if (image.preview) imagePreview = image.preview;
@@ -1505,9 +1525,17 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
   if (isLoader) {
     return (
       <Grid container>
-        <Grid item sm={12} xs={12} md={12} style={{ textAlign: 'center', height: 100 }}><Loader size={50} /></Grid>
+        <Grid
+          item
+          sm={12}
+          xs={12}
+          md={12}
+          style={{ textAlign: "center", height: 100 }}
+        >
+          <Loader size={50} />
+        </Grid>
       </Grid>
-    )
+    );
   }
 
   return (
@@ -1517,20 +1545,12 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
         onSubmit={handleSubmit(handleForm)}
         noValidate
       >
-        <input
-          style={{ display: "none" }}
-          name="rif_ci"
-          ref={register}
-        />
+        <input style={{ display: "none" }} name="rif_ci" ref={register} />
         <Grid container spacing={3}>
-
           <Grid item sm={3} xs={6} md={6}>
             <Card className={classes.pictureContainer}>
               <CardActionArea onClick={() => handleImage()}>
-                <CardMedia
-                  className={classes.media}
-                  image={imagePreview}
-                />
+                <CardMedia className={classes.media} image={imagePreview} />
               </CardActionArea>
             </Card>
             <input
@@ -1541,18 +1561,11 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
               ref={triggerClick}
               onChange={loadImage}
             />
-            <input
-              style={{ display: "none" }}
-              name="picture"
-              ref={register}
-            />
-
+            <input style={{ display: "none" }} name="picture" ref={register} />
           </Grid>
 
           <Grid item sm={9} xs={6} md={6}>
-
             <Grid container spacing={2}>
-
               <Grid item xs={12} className={classes.profileName}>
                 {name} {last_name}
               </Grid>
@@ -1562,7 +1575,6 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
               {renderShareProfile()}
               {renderLastMovement()}
             </Grid>
-
           </Grid>
 
           <Grid item sm={12} xs={12} md={12}>
@@ -1576,9 +1588,7 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <Typography className={classes.heading}>
-                  Direccion
-                            </Typography>
+                <Typography className={classes.heading}>Direccion</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 {renderAddressData()}
@@ -1595,9 +1605,7 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <Typography className={classes.heading}>
-                  Contactos
-                            </Typography>
+                <Typography className={classes.heading}>Contactos</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 {renderContactsData()}
@@ -1613,13 +1621,9 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <Typography className={classes.heading}>
-                  Trabajo
-                            </Typography>
+                <Typography className={classes.heading}>Trabajo</Typography>
               </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                {renderWork()}
-              </ExpansionPanelDetails>
+              <ExpansionPanelDetails>{renderWork()}</ExpansionPanelDetails>
             </ExpansionPanel>
             <ExpansionPanel
               expanded={expanded === "panel-familiars"}
@@ -1632,11 +1636,11 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
               >
                 <Typography className={classes.heading}>
                   Familiares Asignados
-                            </Typography>
+                </Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
                 <Grid container spacing={2}>
-                  <Grid item sm={12} xs={12} md={12} >
+                  <Grid item sm={12} xs={12} md={12}>
                     <DataTable2
                       data={familyByPerson}
                       columns={FamilysColumns}
@@ -1648,8 +1652,6 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
                 </Grid>
               </ExpansionPanelDetails>
             </ExpansionPanel>
-
-
           </Grid>
           <Grid item xs={12}>
             <div className={classes.wrapper}>

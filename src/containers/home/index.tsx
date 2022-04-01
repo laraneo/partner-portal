@@ -90,8 +90,9 @@ export default function Home() {
   const dispatch = useDispatch();
 
   const wsAttemps = Helper.getParameter(parameterList, "WS_INTENTOS");
-
+  const taxParameter = Helper.getParameter(parameterList, "IMPUESTO_IGTF");
   const validateWidget = (value: string) => {
+    console.log(widgetList);
     const isValid = widgetList.find((e: any) => e.slug === value);
     if (isValid) {
       return true;
@@ -186,9 +187,15 @@ export default function Home() {
     if (!_.isEmpty(validarSaldo)) {
       if (validarSaldo.value == 0) {
         return (
-          <Grid item sm={12} xs={12} md={3} style={{
-            order: getOrder("PARTNERPORTAL_reservaciones"),
-          }}>
+          <Grid
+            item
+            sm={12}
+            xs={12}
+            md={3}
+            style={{
+              order: getOrder("PARTNERPORTAL_reservaciones"),
+            }}
+          >
             <Paper>
               <Widgtet
                 Icon={FaGolfBall}
@@ -203,18 +210,30 @@ export default function Home() {
       if (validarSaldo.value == 1) {
         if (setBalanceLoading) {
           return (
-            <Grid item sm={12} xs={12} md={3} style={{
-              order: getOrder("PARTNERPORTAL_reservaciones"),
-            }}>
+            <Grid
+              item
+              sm={12}
+              xs={12}
+              md={3}
+              style={{
+                order: getOrder("PARTNERPORTAL_reservaciones"),
+              }}
+            >
               <Loader />
             </Grid>
           );
         }
         if (!_.isEmpty(clientBalance)) {
           return (
-            <Grid item sm={12} xs={12} md={3} style={{
-              order: getOrder("PARTNERPORTAL_reservaciones"),
-            }}>
+            <Grid
+              item
+              sm={12}
+              xs={12}
+              md={3}
+              style={{
+                order: getOrder("PARTNERPORTAL_reservaciones"),
+              }}
+            >
               <Paper>
                 <Widgtet1
                   Icon={FaGolfBall}
@@ -238,9 +257,15 @@ export default function Home() {
     if (!_.isEmpty(validarSaldo)) {
       if (validarSaldo.value == 0) {
         return (
-          <Grid item sm={12} xs={12} md={3} style={{
-            order: getOrder("PARTNERPORTAL_tennis"),
-          }}>
+          <Grid
+            item
+            sm={12}
+            xs={12}
+            md={3}
+            style={{
+              order: getOrder("PARTNERPORTAL_tennis"),
+            }}
+          >
             <Paper>
               <Widgtet Icon={BiTennisBall} title="Tenis" link={tennisLink} />
             </Paper>
@@ -251,18 +276,30 @@ export default function Home() {
       if (validarSaldo.value == 1) {
         if (setBalanceLoading) {
           return (
-            <Grid item sm={12} xs={12} md={3}  style={{
-              order: getOrder("PARTNERPORTAL_tennis"),
-            }}>
+            <Grid
+              item
+              sm={12}
+              xs={12}
+              md={3}
+              style={{
+                order: getOrder("PARTNERPORTAL_tennis"),
+              }}
+            >
               <Loader />
             </Grid>
           );
         }
         if (!_.isEmpty(clientBalance)) {
           return (
-            <Grid item sm={12} xs={12} md={3}  style={{
-              order: getOrder("PARTNERPORTAL_tennis"),
-            }}>
+            <Grid
+              item
+              sm={12}
+              xs={12}
+              md={3}
+              style={{
+                order: getOrder("PARTNERPORTAL_tennis"),
+              }}
+            >
               <Paper>
                 <Widgtet1
                   Icon={BiTennisBall}
@@ -321,7 +358,13 @@ export default function Home() {
                       ? "Saldo a Favor"
                       : "Saldo Deudor"
                   }
-                  amount={clientBalance.saldo}
+                  amount={() => {
+                    const fee =
+                      taxParameter && taxParameter.value > 0
+                        ? (clientBalance.saldo * taxParameter.value) / 100
+                        : 0;
+                    return (clientBalance.saldo + fee).toFixed(2);
+                  }}
                   statusSaldo={clientBalance.status}
                   type="Saldo"
                 />

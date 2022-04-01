@@ -7,18 +7,18 @@ import MuiExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-import RegisterPasswordForm from '../../components/RegisterPasswordForm';
+import RegisterPasswordForm from "../../components/RegisterPasswordForm";
 
 const ExpansionPanelSummary = withStyles({
   root: {
-    backgroundColor: "rgba(0, 0, 0, .03)"
-  }
+    backgroundColor: "rgba(0, 0, 0, .03)",
+  },
 })(MuiExpansionPanelSummary);
 
 const useStyles = makeStyles((theme: Theme) => ({
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular
+    fontWeight: "normal",
   },
 }));
 
@@ -26,12 +26,10 @@ export default function RegisterPassword() {
   const [expanded, setExpanded] = useState<string | false>("panel");
   const classes = useStyles();
 
-  const handleExpandedPanel = (panel: string) => (
-    event: React.ChangeEvent<{}>,
-    isExpanded: boolean
-  ) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  const handleExpandedPanel =
+    (panel: string) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false);
+    };
 
   return (
     <Grid container spacing={3}>
@@ -45,9 +43,7 @@ export default function RegisterPassword() {
             aria-controls="panel-content"
             id="panel-header"
           >
-            <Typography className={classes.heading}>
-              Cambio de clave
-            </Typography>
+            <Typography className={classes.heading}>Cambio de clave</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <Grid container>
@@ -57,7 +53,6 @@ export default function RegisterPassword() {
             </Grid>
           </ExpansionPanelDetails>
         </ExpansionPanel>
-
       </Grid>
     </Grid>
   );

@@ -119,15 +119,10 @@ export default function PendingInvoices() {
   } = useSelector((state: any) => state);
 
   const moneda = Helper.getParameter(parameterList, "MONEDA_DEFAULT");
+  const taxParameter = Helper.getParameter(parameterList, "IMPUESTO_IGTF");
 
-  const {
-    handleSubmit,
-    register,
-    errors,
-    reset,
-    getValues,
-    watch,
-  } = useForm<FormData>();
+  const { handleSubmit, register, errors, reset, getValues, watch } =
+    useForm<FormData>();
 
   const columns: Columns[] = [
     {
@@ -168,10 +163,19 @@ export default function PendingInvoices() {
     },
     {
       id: "total_fac",
-      label: `Monto (${moneda.value})`,
+      label: `Monto ${taxParameter && taxParameter.value ? "+ IGTF" : ""} (${
+        moneda.value
+      })`,
       minWidth: 10,
       align: "left",
-      component: (value: any) => <span>{value.value}</span>,
+      component: (value: any) => {
+        const fee =
+          taxParameter && taxParameter.value > 0
+            ? (value.value * taxParameter.value) / 100
+            : 0;
+        const amount = value.value + fee;
+        return <span>{amount.toFixed(2)}</span>;
+      },
       isHandleSubRow: true,
     },
     {
@@ -476,9 +480,14 @@ export default function PendingInvoices() {
           aditionalColumnLabel={
             total && total > 0 ? "Saldo Total " + moneda.value : null
           }
-          aditionalColumn1={
-            total && total > 0 ? (total * tasa.dTasa).toFixed(2) : null
-          }
+          aditionalColumn1={() => {
+            const oldAmount = total && total > 0 ? total * tasa.dTasa : 0;
+            const fee =
+              taxParameter && taxParameter.value > 0
+                ? (oldAmount * taxParameter.value) / 100
+                : 0;
+            return total && total > 0 ? (oldAmount + fee).toFixed(2) : null;
+          }}
           aditionalColumnLabel1={total && total > 0 ? "Saldo Total Bs " : null}
           aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : null}
           aditionalColumnLabel2={`Tasa BCV (BS)`}

@@ -152,7 +152,7 @@ const DataTableUnpaidInvoices: FunctionComponent<DataTableProps> = ({
   addSelectRow,
   removeSelectRow,
   invoicesSelected,
-  isSelectionActive
+  isSelectionActive,
 }) => {
   const classes = useStyles();
   const [selectedRow, setSelectedRow] = useState(0);
@@ -341,7 +341,7 @@ const DataTableUnpaidInvoices: FunctionComponent<DataTableProps> = ({
         <Table stickyHeader aria-label="sticky table" size="small">
           <TableHead>
             <TableRow>
-              {isSelectionActive ? <TableCell /> : null }
+              {isSelectionActive ? <TableCell /> : null}
               {columns.map((column: any) => (
                 <TableCell
                   key={column.key ? column.key : column.id}

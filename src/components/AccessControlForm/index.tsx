@@ -22,7 +22,7 @@ import { create } from "../../actions/accessControlActions";
 import {
   getFamiliesPartnerByCard,
   clear,
-  getGuestByPartner
+  getGuestByPartner,
 } from "../../actions/personActions";
 import CustomSelect from "../FormElements/CustomSelect";
 import { getList } from "../../actions/locationActions";
@@ -33,36 +33,36 @@ import GuestForm from "../GuestForm";
 
 const ExpansionPanelSummary = withStyles({
   root: {
-    backgroundColor: "rgba(0, 0, 0, .03)"
-  }
+    backgroundColor: "rgba(0, 0, 0, .03)",
+  },
 })(MuiExpansionPanelSummary);
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   progressContainer: {
-    textAlign: "center"
+    textAlign: "center",
   },
   activeCard: {
     //boxShadow: "0px 0px 20px 0px #3F51B5"
-	boxShadow: "0px 0px 20px 0px #109e2f"
+    boxShadow: "0px 0px 20px 0px #109e2f",
   },
   cardHeader: {
     padding: 0,
     textAlign: "center",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   rootFamilyCards: {
-    width: 150
+    width: 150,
   },
   media: {
     height: 150,
-    width: 150
+    width: 150,
   },
   cardContent: {
-    textAlign: 'center',
+    textAlign: "center",
     padding: 0,
     "&:last-child": {
-      paddingBottom: 0
-    }
+      paddingBottom: 0,
+    },
   },
   familyTitle: {
     fontSize: "10px",
@@ -70,30 +70,30 @@ const useStyles = makeStyles(theme => ({
   paper: {
     display: "flex",
     flexDirection: "column",
-    alignItems: "center"
+    alignItems: "center",
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   wrapper: {
     margin: theme.spacing(1),
     position: "relative",
-    textAlign: "center"
+    textAlign: "center",
   },
   buttonProgress: {
     position: "absolute",
     top: "50%",
     left: "50%",
     marginTop: -9,
-    marginLeft: -9
+    marginLeft: -9,
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    width: "30%"
+    width: "30%",
   },
   suggestionButton: {
-    width: "30%"
+    width: "30%",
   },
   select: {
     padding: "10px 0px 10px 0px",
@@ -101,16 +101,16 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "transparent",
     border: 0,
     borderBottom: "1px solid grey",
-    fontSize: "16px"
+    fontSize: "16px",
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular
+    fontWeight: "normal",
   },
   partnerContainer: {
     height: 230,
-    overflow: 'auto',
-  }
+    overflow: "auto",
+  },
 }));
 
 type FormData = {
@@ -132,9 +132,8 @@ export default function AccessControlForm() {
   >("");
   const [isSuggestion, SetIsSuggestion] = React.useState<boolean>(false);
   const classes = useStyles();
-  const { handleSubmit, register, errors, reset, setValue } = useForm<
-    FormData
-  >();
+  const { handleSubmit, register, errors, reset, setValue } =
+    useForm<FormData>();
 
   const {
     accessControlReducer: { loading },
@@ -142,9 +141,9 @@ export default function AccessControlForm() {
       familiesPartnerCardLoading,
       familiesPartnerByCard,
       guestByPartner,
-      guestByPartnerLoading
+      guestByPartnerLoading,
     },
-    locationReducer: { listData: locationList }
+    locationReducer: { listData: locationList },
   } = useSelector((state: any) => state);
 
   const dispatch = useDispatch();
@@ -163,7 +162,7 @@ export default function AccessControlForm() {
   const handleForm = async (form: object) => {
     const familyValues = getKeys(selectedFamilies);
     const family = familyValues.length > 0 ? familyValues : null;
-    const created = moment().format('YYYY-MM-DD');
+    const created = moment().format("YYYY-MM-DD");
     const status = 1;
     const body = { ...form, family, status, created };
     await dispatch(create(body));
@@ -175,10 +174,12 @@ export default function AccessControlForm() {
     const response: any = await dispatch(getFamiliesPartnerByCard(event.value));
     if (!_.isEmpty(response)) {
       setValue("people_id", response.id);
-      if(response.familyMembers) {
-        const family = response.familyMembers.find((e: any) => e.selectedFamily === true );
-        if(family) {
-          setSelectedFamilies([...selectedFamilies, family])
+      if (response.familyMembers) {
+        const family = response.familyMembers.find(
+          (e: any) => e.selectedFamily === true
+        );
+        if (family) {
+          setSelectedFamilies([...selectedFamilies, family]);
         }
       }
     } else {
@@ -210,12 +211,10 @@ export default function AccessControlForm() {
     }
   };
 
-  const handleExpandedPanel = (panel: string) => (
-    event: React.ChangeEvent<{}>,
-    isExpanded: boolean
-  ) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+  const handleExpandedPanel =
+    (panel: string) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false);
+    };
 
   const getKeys = (array: Array<string | number>) =>
     array.map((element: any) => element.id);
@@ -241,8 +240,8 @@ export default function AccessControlForm() {
               identification={tempIdentificationGuest}
               refresh={refresh}
             />
-          )
-        }
+          ),
+        },
       })
     );
   };
@@ -425,7 +424,7 @@ export default function AccessControlForm() {
                       style={{ display: "none" }}
                       name="guest_id"
                       ref={register({
-                        required: false
+                        required: false,
                       })}
                     />
                   </Grid>
@@ -468,8 +467,8 @@ export default function AccessControlForm() {
                         <CircularProgress color="primary" size={40} />
                       </div>
                     ) : (
-                        renderGuest()
-                      )}
+                      renderGuest()
+                    )}
                   </Grid>
                 </Grid>
               </ExpansionPanelDetails>
@@ -520,7 +519,7 @@ export default function AccessControlForm() {
                 style={{ display: "none" }}
                 name="people_id"
                 ref={register({
-                  required: true
+                  required: true,
                 })}
               />
             </Grid>
@@ -530,8 +529,8 @@ export default function AccessControlForm() {
                   <CircularProgress color="primary" size={40} />
                 </div>
               ) : (
-                  renderPartner()
-                )}
+                renderPartner()
+              )}
             </Grid>
             <Grid item xs={12}>
               <div className={classes.wrapper}>
