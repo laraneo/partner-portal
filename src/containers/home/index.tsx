@@ -353,11 +353,15 @@ export default function Home() {
               <Paper>
                 <Widgtet
                   Icon={AccountBalanceIcon}
-                  title={
+                  title={`Saldo ${
                     parseFloat(clientBalance.saldo) <= 0
-                      ? "Saldo a Favor"
-                      : "Saldo Deudor"
-                  }
+                      ? "a Favor "
+                      : "Deudor "
+                  } ${
+                    taxParameter && parseInt(taxParameter.value) > 0
+                      ? "+ IGTF "
+                      : ""
+                  }`}
                   amount={
                     taxParameter && taxParameter.value > 0
                       ? (

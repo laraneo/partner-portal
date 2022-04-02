@@ -171,9 +171,9 @@ export default function PendingInvoices() {
     },
     {
       id: "total_fac",
-      label: `Monto ${taxParameter && taxParameter.value ? "+ IGTF" : ""} (${
-        moneda.value
-      })`,
+      label: `Monto ${
+        taxParameter && parseInt(taxParameter.value) > 0 ? "+ IGTF" : ""
+      } (${moneda.value})`,
       minWidth: 10,
       align: "left",
       component: (value: any) => {
@@ -480,13 +480,17 @@ export default function PendingInvoices() {
           rows={filter}
           columns={columns}
           loading={loading}
-          aditionalColumn={total && total > 0 ? total.toString() : ""}
+          aditionalColumn={total && total > 0 ? calculateIgtx(total) : ""}
           aditionalColumnLabel={
-            total && total > 0 ? "Saldo Total " + moneda.value : null
+            total && total > 0
+              ? `Saldo Total ${
+                  taxParameter && parseInt(taxParameter.value) > 0
+                    ? "+ IGTF "
+                    : ""
+                }` + moneda.value
+              : null
           }
-          aditionalColumn1={
-            total && total > 0 ? calculateIgtx(total * tasa.dTasa) : null
-          }
+          aditionalColumn1={total && total > 0 ? total * tasa.dTasa : null}
           aditionalColumnLabel1={total && total > 0 ? "Saldo Total Bs " : null}
           aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : null}
           aditionalColumnLabel2={`Tasa BCV (BS)`}
