@@ -6,7 +6,7 @@
 
 // Prod: http://190.216.224.53:9001
 
-var BASE_URL = "http://localhost:8000";
+var BASE_URL = "https://portal.caracascountryclub.org/portal-api";
 
 var TEMPLATE_INFO = `
 <b>Texto de demo a mostrar </b>
@@ -21,6 +21,8 @@ mas informacion<br></br>
 var attempts = 5;
 
 // Parametro en el formulario de login
-var campoUsuario = 'Ejemplo campo usuario';
+var campoUsuario = "Ejemplo campo usuario";
 
-document.write('<script type="text/javascript" src="https://gatewaypty.gbcpay.net/cdn/test/v1.1/GBCPaymentGateway.min.js"></script>');
+document.write(
+  '<script type="text/javascript" src="https://gatewaypty.gbcpay.net/cdn/test/v1.1/GBCPaymentGateway.min.js"></script>'
+);

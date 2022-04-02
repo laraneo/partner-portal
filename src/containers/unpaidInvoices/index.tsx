@@ -160,6 +160,14 @@ export default function UnpaidInvoices(props: any) {
 
   const taxParameter = Helper.getParameter(parameterList, "IMPUESTO_IGTF");
 
+  const calculateIgtx = (amount: any) => {
+    const fee =
+      taxParameter && parseInt(taxParameter.value) > 0
+        ? (parseFloat(amount) * parseInt(taxParameter.value)) / 100
+        : 0;
+    return (parseFloat(amount) + fee).toFixed(2);
+  };
+
   const calculatePayMultipleData = (forcePayAll: boolean) => {
     let invoicesToPay: Array<any> = [];
     if (forcePayAll) {
@@ -384,12 +392,8 @@ export default function UnpaidInvoices(props: any) {
       minWidth: 10,
       align: "right",
       component: (value: any) => {
-        const fee =
-          taxParameter && taxParameter.value > 0
-            ? (value.value * taxParameter.value) / 100
-            : 0;
-        const amount = value.value + fee;
-        return <span>{amount.toFixed(2)}</span>;
+        const amount = calculateIgtx(value.value);
+        return <span>{amount}</span>;
       },
       isHandleSubRow: true,
     }, //<span>{value.value * tasa.dTasa}</span>,
@@ -532,17 +536,13 @@ export default function UnpaidInvoices(props: any) {
                   aditionalColumnLabel1={
                     invoiceDetails.length > 0 ? "IVA " + moneda.value : null
                   }
-                  aditionalColumn2={() => {
-                    const fee =
-                      taxParameter && taxParameter.value > 0
-                        ? (total * taxParameter.value) / 100
-                        : 0;
-                    return (total + fee).toFixed(2);
-                  }}
+                  aditionalColumn2={calculateIgtx(total)}
                   aditionalColumnLabel2={
                     invoiceDetails.length > 0
                       ? `Total ${
-                          taxParameter && taxParameter.value > 0 ? "+ IGTF" : ""
+                          taxParameter && taxParameter.value > 0
+                            ? "+ IGTF "
+                            : ""
                         }` + moneda.value
                       : null
                   }
@@ -679,28 +679,23 @@ export default function UnpaidInvoices(props: any) {
           loading={setUnpaidInvoicestLoading}
           aditionalColumn={
             unpaidInvoices.total && unpaidInvoices.total > 0
-              ? unpaidInvoices.total
-              : null
+              ? calculateIgtx(unpaidInvoices.total)
+              : undefined
           }
           aditionalColumnLabel={
             unpaidInvoices.total && unpaidInvoices.total > 0
               ? `Saldo Total ${
-                  taxParameter && taxParameter.value > 0 ? "+ IGTF" : ""
+                  taxParameter && parseInt(taxParameter.value) > 0
+                    ? "+ IGTF "
+                    : ""
                 }` + moneda.value
               : null
           }
-          aditionalColumn1={() => {
-            const oldAmount =
-              unpaidInvoices.total && unpaidInvoices.total > 0 ? totalTasa : 0;
-            const fee =
-              taxParameter && taxParameter.value > 0
-                ? (oldAmount * taxParameter.value) / 100
-                : 0;
-            const amount = (totalTasa + fee).toFixed(2);
-            return unpaidInvoices.total && unpaidInvoices.total > 0
-              ? amount
-              : null;
-          }}
+          aditionalColumn1={
+            unpaidInvoices.total && unpaidInvoices.total > 0
+              ? totalTasa.toFixed(2)
+              : null
+          }
           aditionalColumnLabel1={
             unpaidInvoices.total && unpaidInvoices.total > 0
               ? "Saldo Total Bs "

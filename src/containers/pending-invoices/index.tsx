@@ -121,6 +121,14 @@ export default function PendingInvoices() {
   const moneda = Helper.getParameter(parameterList, "MONEDA_DEFAULT");
   const taxParameter = Helper.getParameter(parameterList, "IMPUESTO_IGTF");
 
+  const calculateIgtx = (amount: any) => {
+    const fee =
+      taxParameter && parseInt(taxParameter.value) > 0
+        ? (parseFloat(amount) * parseInt(taxParameter.value)) / 100
+        : 0;
+    return (parseFloat(amount) + fee).toFixed(2);
+  };
+
   const { handleSubmit, register, errors, reset, getValues, watch } =
     useForm<FormData>();
 
@@ -169,12 +177,8 @@ export default function PendingInvoices() {
       minWidth: 10,
       align: "left",
       component: (value: any) => {
-        const fee =
-          taxParameter && taxParameter.value > 0
-            ? (value.value * taxParameter.value) / 100
-            : 0;
-        const amount = value.value + fee;
-        return <span>{amount.toFixed(2)}</span>;
+        const amount = calculateIgtx(value.value);
+        return <span>{amount}</span>;
       },
       isHandleSubRow: true,
     },
@@ -480,14 +484,9 @@ export default function PendingInvoices() {
           aditionalColumnLabel={
             total && total > 0 ? "Saldo Total " + moneda.value : null
           }
-          aditionalColumn1={() => {
-            const oldAmount = total && total > 0 ? total * tasa.dTasa : 0;
-            const fee =
-              taxParameter && taxParameter.value > 0
-                ? (oldAmount * taxParameter.value) / 100
-                : 0;
-            return total && total > 0 ? (oldAmount + fee).toFixed(2) : null;
-          }}
+          aditionalColumn1={
+            total && total > 0 ? calculateIgtx(total * tasa.dTasa) : null
+          }
           aditionalColumnLabel1={total && total > 0 ? "Saldo Total Bs " : null}
           aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : null}
           aditionalColumnLabel2={`Tasa BCV (BS)`}

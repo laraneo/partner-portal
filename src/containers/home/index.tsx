@@ -358,13 +358,16 @@ export default function Home() {
                       ? "Saldo a Favor"
                       : "Saldo Deudor"
                   }
-                  amount={() => {
-                    const fee =
-                      taxParameter && taxParameter.value > 0
-                        ? (clientBalance.saldo * taxParameter.value) / 100
-                        : 0;
-                    return (clientBalance.saldo + fee).toFixed(2);
-                  }}
+                  amount={
+                    taxParameter && taxParameter.value > 0
+                      ? (
+                          parseFloat(clientBalance.saldo) +
+                          (parseFloat(clientBalance.saldo) *
+                            parseInt(taxParameter.value)) /
+                            100
+                        ).toFixed(2)
+                      : parseFloat(clientBalance.saldo).toFixed(2)
+                  }
                   statusSaldo={clientBalance.status}
                   type="Saldo"
                 />
