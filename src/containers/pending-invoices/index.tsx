@@ -364,10 +364,16 @@ export default function PendingInvoices() {
                     invoiceDetails.length > 0 ? "IVA " + moneda.value : null
                   }
                   aditionalColumn2={
-                    invoiceDetails.length > 0 ? total.toFixed(2) : null
+                    invoiceDetails.length > 0 ? calculateIgtx(total) : null
                   }
                   aditionalColumnLabel2={
-                    invoiceDetails.length > 0 ? "Total " + moneda.value : null
+                    invoiceDetails.length > 0
+                      ? `Total ${
+                          taxParameter && parseInt(taxParameter.value) > 0
+                            ? "+ IGTF "
+                            : ""
+                        }` + moneda.value
+                      : null
                   }
                   aditionalColumn3={
                     invoiceDetails.length > 0 ? (
@@ -490,7 +496,9 @@ export default function PendingInvoices() {
                 }` + moneda.value
               : null
           }
-          aditionalColumn1={total && total > 0 ? total * tasa.dTasa : null}
+          aditionalColumn1={
+            total && total > 0 ? (total * tasa.dTasa).toFixed(2) : null
+          }
           aditionalColumnLabel1={total && total > 0 ? "Saldo Total Bs " : null}
           aditionalColumn2={tasa.dTasa ? tasa.dTasa.toFixed(2) : null}
           aditionalColumnLabel2={`Tasa BCV (BS)`}
