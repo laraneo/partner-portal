@@ -363,14 +363,20 @@ export default function Home() {
                       : ""
                   }`}
                   amount={
-                    taxParameter && taxParameter.value > 0
+                    taxParameter && parseInt(taxParameter.value) > 10
                       ? (
-                          parseFloat(clientBalance.saldo) +
-                          (parseFloat(clientBalance.saldo) *
+                          parseFloat(
+                            `${clientBalance.saldo} `.replace(",", "")
+                          ) +
+                          (parseFloat(
+                            `${clientBalance.saldo} `.replace(",", "")
+                          ) *
                             parseInt(taxParameter.value)) /
                             100
                         ).toFixed(2)
-                      : parseFloat(clientBalance.saldo).toFixed(2)
+                      : parseFloat(
+                          `${clientBalance.saldo} `.replace(",", "")
+                        ).toFixed(2)
                   }
                   statusSaldo={clientBalance.status}
                   type="Saldo"
