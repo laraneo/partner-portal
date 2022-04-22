@@ -363,7 +363,7 @@ export default function Home() {
                       : ""
                   }`}
                   amount={
-                    taxParameter && parseInt(taxParameter.value) > 3
+                    taxParameter && parseInt(taxParameter.value) > 0
                       ? (
                           parseFloat(
                             `${clientBalance.saldo} `.replace(",", "")
